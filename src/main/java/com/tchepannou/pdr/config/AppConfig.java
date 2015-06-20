@@ -3,9 +3,7 @@ package com.tchepannou.pdr.config;
 import com.tchepannou.pdr.dao.DomainDao;
 import com.tchepannou.pdr.dao.impl.DomainDaoImpl;
 import com.tchepannou.pdr.service.DomainService;
-import com.tchepannou.pdr.service.GreetingService;
 import com.tchepannou.pdr.service.impl.DomainServiceImpl;
-import com.tchepannou.pdr.service.impl.GreetingServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +12,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
-/**
- * Declare your services here!
- */
 @Configuration
 public class AppConfig {
     @Value("${database.driver}")
@@ -47,10 +42,6 @@ public class AppConfig {
         ds.setDriverClassName(driver);
         ds.setUrl(url);
         return ds;
-    }
-    @Bean
-    GreetingService greetingService (){
-        return new GreetingServiceImpl();
     }
 
     @Bean
