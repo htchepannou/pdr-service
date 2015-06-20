@@ -1,4 +1,6 @@
-# Prerequises
+# Party Directory Service
+
+## Prerequises
 - Java 8+
 - Maven 3.x+
 

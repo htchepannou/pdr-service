@@ -10,7 +10,7 @@
 
     <groupId>com.tchepannou.cdr</groupId>
     <artifactId>pdr-service</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -19,6 +19,7 @@
         <jackson-datatype-jdk8.version>2.4.3</jackson-datatype-jdk8.version>
         <metrics.dropwizard.version>3.1.2</metrics.dropwizard.version>
         <metrics-spring.version>3.0.3</metrics-spring.version>
+        <mysql.version>5.1.35</mysql.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <swagger.version>0.8.8</swagger.version>
 
@@ -64,6 +65,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
         <!-- Jackson -->
         <dependency>
@@ -98,6 +104,14 @@
             <artifactId>metrics-spring</artifactId>
             <version>${metrics-spring.version}</version>
         </dependency>
+
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
 
         <!-- Swagger -->
         <dependency>
@@ -238,6 +252,40 @@
                             <destFile>${project.build.directory}/jacoco-it.exec</destFile>
                             <propertyName>failsafeArgLine</propertyName>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ===== Database ===== -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/pdr</url>
+                    <user>root</user>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>clean-db</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>migrate-db</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
