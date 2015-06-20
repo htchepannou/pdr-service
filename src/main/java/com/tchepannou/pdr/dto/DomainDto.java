@@ -3,9 +3,11 @@ package com.tchepannou.pdr.dto;
 import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Domain;
 
-public class DomainDto {
+import java.io.Serializable;
+
+public class DomainDto implements Serializable{
     //-- Attributes
-    private long id;
+    private final long id;
     private final String name;
     private final String description;
 

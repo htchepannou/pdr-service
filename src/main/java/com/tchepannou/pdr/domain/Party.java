@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Party extends Persistent {
     //-- Attribute
@@ -8,10 +8,12 @@ public class Party extends Persistent {
     private String name;
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private String prefix;
+    private String suffix;
+    private LocalDate birthDate;
     private Gender gender;
-    private String heigth;
-    private String weight;
+    private int heigth;
+    private int weight;
 
     //-- Getter/Setter
     public PartyKind getKind() {
@@ -46,11 +48,11 @@ public class Party extends Persistent {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -62,19 +64,35 @@ public class Party extends Persistent {
         this.gender = gender;
     }
 
-    public String getHeigth() {
+    public int getHeigth() {
         return heigth;
     }
 
-    public void setHeigth(String heigth) {
+    public void setHeigth(int heigth) {
         this.heigth = heigth;
     }
 
-    public String getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 }

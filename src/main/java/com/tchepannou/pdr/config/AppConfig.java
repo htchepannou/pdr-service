@@ -1,9 +1,13 @@
 package com.tchepannou.pdr.config;
 
 import com.tchepannou.pdr.dao.DomainDao;
+import com.tchepannou.pdr.dao.PartyDao;
 import com.tchepannou.pdr.dao.impl.DomainDaoImpl;
+import com.tchepannou.pdr.dao.impl.PartyDaoImpl;
 import com.tchepannou.pdr.service.DomainService;
+import com.tchepannou.pdr.service.PartyService;
 import com.tchepannou.pdr.service.impl.DomainServiceImpl;
+import com.tchepannou.pdr.service.impl.PartyServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,4 +57,15 @@ public class AppConfig {
     DomainDao domainDao () {
         return new DomainDaoImpl(dataSource());
     }
+
+    @Bean
+    PartyService partyService () {
+        return new PartyServiceImpl();
+    }
+
+    @Bean
+    PartyDao partyDao () {
+        return new PartyDaoImpl(dataSource());
+    }
+    
 }
