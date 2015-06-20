@@ -4,6 +4,7 @@ import com.tchepannou.pdr.dao.PartyDao;
 import com.tchepannou.pdr.domain.Gender;
 import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.domain.PartyKind;
+import com.tchepannou.pdr.util.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,9 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
     public PartyDaoImpl (final DataSource ds) {
@@ -44,7 +42,7 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
                 domain.setLastName(rs.getString("last_name"));
                 domain.setPrefix(rs.getString("prefix"));
                 domain.setSuffix(rs.getString("suffix"));
-                domain.setBirthDate(asLocalDate(rs.getDate("birth_date")));
+                domain.setBirthDate(DateUtils.asLocalDate(rs.getDate("birth_date")));
                 domain.setHeigth(rs.getInt("height"));
                 domain.setWeight(rs.getInt("weight"));
                 domain.setGender(Gender.fromCode(rs.getString("gender")));
@@ -52,20 +50,6 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
                 return domain;
             }
         };
-    }
-
-    public static LocalDate asLocalDate(java.util.Date date) {
-        return asLocalDate(date, ZoneId.systemDefault());
-    }
-
-    public static LocalDate asLocalDate(java.util.Date date, ZoneId zone) {
-        if (date == null)
-            return null;
-
-        if (date instanceof java.sql.Date)
-            return ((java.sql.Date) date).toLocalDate();
-        else
-            return Instant.ofEpochMilli(date.getTime()).atZone(zone).toLocalDate();
     }
 
 }
