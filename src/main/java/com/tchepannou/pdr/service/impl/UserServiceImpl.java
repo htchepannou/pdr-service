@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(long id) {
         User user = userDao.findById(id);
-        if (user == null || !user.isDeleted()){
+        if (user == null || user.isDeleted()){
             throw new NotFoundException(id);
         }
         return user;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void update(User user) {
         try {
-            userDao.create(user);
+            userDao.update(user);
         } catch (DuplicateKeyException e) {
             throw new DuplicateLoginException(user.getLogin() + " already assigned to another user", e);
         }
@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(long id) {
+        findById(id);
         userDao.delete(id);
     }
 }

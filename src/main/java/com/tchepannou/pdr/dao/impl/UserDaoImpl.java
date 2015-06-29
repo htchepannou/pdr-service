@@ -1,7 +1,8 @@
 package com.tchepannou.pdr.dao.impl;
 
 import com.tchepannou.pdr.dao.UserDao;
-import com.tchepannou.pdr.domain.*;
+import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.domain.UserStatus;
 import com.tchepannou.pdr.util.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,10 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.UUID;
 
 public class UserDaoImpl extends JdbcTemplate implements UserDao {
@@ -74,23 +72,22 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE t_user SET login=?, password=?, status=?, from_date=?, to_date=? WHERE id=?";
+        String sql = "UPDATE t_user SET login=?, password=?, status=? WHERE id=?";
         update(sql, new Object[]{
                 user.getLogin(),
                 user.getPartyId(),
-                user.getStatus().getCode(),
-                DateUtils.asDate(user.getFromDate()),
-                DateUtils.asDate(user.getToDate()),
+                String.valueOf(user.getStatus().getCode()),
                 user.getId()
         });
     }
 
     @Override
     public void delete(long id) {
-        String sql = "UPDATE t_user SET deleted=?, login=? WHERE id=?";
+        String sql = "UPDATE t_user SET deleted=?, login=?, to_date=? WHERE id=?";
         update(sql, new Object[]{
                 true,
                 UUID.randomUUID().toString(),
+                new java.util.Date (),
                 id
         });
     }

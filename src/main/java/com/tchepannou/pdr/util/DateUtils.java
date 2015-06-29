@@ -41,7 +41,7 @@ public class DateUtils {
     }
 
     public static Timestamp asTimestamp (LocalDateTime date) {
-        return new Timestamp(asDate(date, ZoneId.systemDefault()).getTime());
+        return date != null ? new Timestamp(asDate(date, ZoneId.systemDefault()).getTime()) : null;
     }
 
     public static Date asDate (LocalDateTime date) {
