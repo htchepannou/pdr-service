@@ -1,21 +1,34 @@
-create table t_domain(
-    id int not null primary key auto_increment,
+CREATE TABLE t_domain(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
-    name varchar(50) not null,
-    description varchar(255)
+    name VARCHAR(50) NOT NULL UNIQUE,
+    description VARCHAR(255),
+    deleted BIT DEFAULT 0
 ) engine=InnoDB;
 
-create table t_party(
-    id int not null primary key auto_increment,
+CREATE TABLE t_party(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
-    name varchar(100) not null,
-    first_name varchar(50),
-    last_name varchar(50),
-    prefix varchar(10),
-    suffix varchar(10),
+    name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    prefix VARCHAR(10),
+    suffix VARCHAR(10),
     birth_date date,
-    gender char(1),
-    kind char(1),
-    height int,
-    weight int
+    gender CHAR(1),
+    kind CHAR(1),
+    height INT,
+    weight INT
+);
+
+CREATE TABLE t_user(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    party_fk BIGINT NOT NULL REFERENCES t_party(id),
+
+    login VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50),
+    from_date DATETIME,
+    to_date DATETIME,
+    status CHAR(1)
 );

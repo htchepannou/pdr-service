@@ -1,17 +1,14 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.Domain;
-import com.tchepannou.pdr.dto.DomainDto;
-import com.tchepannou.pdr.exception.NotFoundException;
+import com.tchepannou.pdr.dto.domain.DomainRequest;
+import com.tchepannou.pdr.dto.domain.DomainResponse;
 import com.tchepannou.pdr.service.DomainService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,13 +24,9 @@ public class DomainController {
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiOperation("Find a domain by ID")
-    public DomainDto findById(@PathVariable final long id) {
+    public DomainResponse findById(@PathVariable final long id) {
         final Domain domain = domainService.findById(id);
-        if (domain == null) {
-            throw new NotFoundException(id);
-        }
-
-        return new DomainDto
+        return new DomainResponse
                 .Builder()
                 .withDomain(domain)
                 .build();
@@ -41,12 +34,48 @@ public class DomainController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation("Find all the domains")
-    public List<DomainDto> findAll() {
+    public List<DomainResponse> findAll() {
         final List<Domain> all = domainService.findAll();
-        final DomainDto.Builder builder = new DomainDto.Builder();
+        final DomainResponse.Builder builder = new DomainResponse.Builder();
 
         return all.stream()
                 .map(d -> builder.withDomain(d).build())
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation("Create a new domain")
+    public DomainResponse create(@RequestBody DomainRequest request) {
+        final Domain domain = new Domain ();
+        domain.setName(request.getName());
+        domain.setDescription(request.getDescription());
+        domainService.create(domain);
+
+        return new DomainResponse
+                .Builder()
+                .withDomain(domain)
+                .build();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}")
+    @ApiOperation("Update a domain")
+    public DomainResponse update(@PathVariable final long id, @RequestBody final DomainRequest request) {
+        final Domain domain = domainService.findById(id);
+        domain.setName(request.getName());
+        domain.setDescription(request.getDescription());
+        domainService.update(domain);
+
+        return new DomainResponse
+                .Builder()
+                .withDomain(domain)
+                .build();
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    @ApiOperation("Delete a domain by ID")
+    public void delete(@PathVariable final long id) {
+        domainService.findById(id);
+
+        domainService.delete(id);
     }
 }

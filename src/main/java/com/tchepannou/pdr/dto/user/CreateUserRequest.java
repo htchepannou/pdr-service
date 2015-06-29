@@ -1,6 +1,6 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.dto.user;
 
-public class UserLogin extends Persistent {
+public class CreateUserRequest {
     //-- Attributes
     private long partyId;
     private String login;
@@ -11,7 +11,7 @@ public class UserLogin extends Persistent {
         return partyId;
     }
 
-    public void setPartyId(final long partyId) {
+    public void setPartyId(long partyId) {
         this.partyId = partyId;
     }
 
@@ -19,7 +19,7 @@ public class UserLogin extends Persistent {
         return login;
     }
 
-    public void setLogin(final String login) {
+    public void setLogin(String login) {
         this.login = login;
     }
 
@@ -27,7 +27,7 @@ public class UserLogin extends Persistent {
         return password;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

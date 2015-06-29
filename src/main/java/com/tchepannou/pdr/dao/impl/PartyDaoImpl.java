@@ -45,11 +45,10 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
                 domain.setBirthDate(DateUtils.asLocalDate(rs.getDate("birth_date")));
                 domain.setHeigth(rs.getInt("height"));
                 domain.setWeight(rs.getInt("weight"));
-                domain.setGender(Gender.fromCode(rs.getString("gender")));
-                domain.setKind(PartyKind.fromCode(rs.getString("kind")));
+                domain.setGender(Gender.fromText(rs.getString ("gender")));
+                domain.setKind(PartyKind.fromText(rs.getString("kind")));
                 return domain;
             }
         };
     }
-
 }

@@ -1,12 +1,9 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.dto.domain;
 
-public class Domain extends Persistent {
-    //-- Attributes
+public class DomainRequest {
     private String name;
     private String description;
-    private boolean deleted;
 
-    //-- Getter/Setter
     public String getName() {
         return name;
     }
@@ -21,13 +18,5 @@ public class Domain extends Persistent {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 }

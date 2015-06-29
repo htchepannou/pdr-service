@@ -23,7 +23,7 @@ public class PartyController {
 
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    @ApiOperation("Find a party by ID")
+    @ApiOperation("Returns a Party")
     public PartyDto findById(@PathVariable final long id) {
         final Party domain = partyService.findById(id);
         if (domain == null) {

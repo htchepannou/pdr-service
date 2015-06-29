@@ -1,14 +1,25 @@
 package com.tchepannou.pdr.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class User extends Persistent {
     //-- Attributes
-    public String login;
-    public String password;
-    public LocalDate expiryDate;
+    private long partyId;
+    private String login;
+    private String password;
+    private UserStatus status;
+    private LocalDateTime fromDate;
+    private LocalDateTime toDate;
 
     //-- Getter/Setter
+    public long getPartyId() {
+        return partyId;
+    }
+
+    public void setPartyId(long partyId) {
+        this.partyId = partyId;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -25,11 +36,29 @@ public class User extends Persistent {
         this.password = password;
     }
 
-    public LocalDate getExpiryDate() {
-        return expiryDate;
+    public LocalDateTime getFromDate() {
+        return fromDate;
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setFromDate(LocalDateTime fromDate) {
+        this.fromDate = fromDate;
     }
+
+    public LocalDateTime getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(LocalDateTime toDate) {
+        this.toDate = toDate;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+
 }

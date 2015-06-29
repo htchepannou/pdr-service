@@ -1,11 +1,11 @@
-package com.tchepannou.pdr.dto;
+package com.tchepannou.pdr.dto.domain;
 
 import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Domain;
 
 import java.io.Serializable;
 
-public class DomainDto implements Serializable{
+public class DomainResponse implements Serializable{
     //-- Attributes
     private final long id;
     private final String name;
@@ -13,7 +13,7 @@ public class DomainDto implements Serializable{
 
 
     //-- Attributes
-    private DomainDto (final Builder builder) {
+    private DomainResponse(final Builder builder) {
         final Domain domain = builder.domain;
 
         this.id = domain.getId();
@@ -22,7 +22,6 @@ public class DomainDto implements Serializable{
     }
 
     //-- Getter/Setter
-
     public long getId() {
         return id;
     }
@@ -39,10 +38,10 @@ public class DomainDto implements Serializable{
     public static class Builder {
         private Domain domain;
 
-        public DomainDto build () {
+        public DomainResponse build () {
             Preconditions.checkState(domain != null, "domain is null");
 
-            return new DomainDto(this);
+            return new DomainResponse(this);
         }
 
         public Builder withDomain (final Domain domain) {
