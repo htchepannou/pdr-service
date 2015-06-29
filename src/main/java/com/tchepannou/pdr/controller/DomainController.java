@@ -1,6 +1,7 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.Domain;
+import com.tchepannou.pdr.dto.domain.DomainListResponse;
 import com.tchepannou.pdr.dto.domain.DomainRequest;
 import com.tchepannou.pdr.dto.domain.DomainResponse;
 import com.tchepannou.pdr.service.DomainService;
@@ -11,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @Api(basePath = "/domains", value = "Domain Manager", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,21 +26,18 @@ public class DomainController {
     @ApiOperation("Find a domain by ID")
     public DomainResponse findById(@PathVariable final long id) {
         final Domain domain = domainService.findById(id);
-        return new DomainResponse
-                .Builder()
+        return new DomainResponse.Builder()
                 .withDomain(domain)
                 .build();
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation("Find all the domains")
-    public List<DomainResponse> findAll() {
+    public DomainListResponse findAll() {
         final List<Domain> all = domainService.findAll();
-        final DomainResponse.Builder builder = new DomainResponse.Builder();
-
-        return all.stream()
-                .map(d -> builder.withDomain(d).build())
-                .collect(Collectors.toList());
+        return new DomainListResponse.Builder()
+                .withDomains(all)
+                .build();
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -51,8 +48,7 @@ public class DomainController {
         domain.setDescription(request.getDescription());
         domainService.create(domain);
 
-        return new DomainResponse
-                .Builder()
+        return new DomainResponse.Builder()
                 .withDomain(domain)
                 .build();
     }
@@ -65,8 +61,7 @@ public class DomainController {
         domain.setDescription(request.getDescription());
         domainService.update(domain);
 
-        return new DomainResponse
-                .Builder()
+        return new DomainResponse.Builder()
                 .withDomain(domain)
                 .build();
     }
@@ -75,17 +70,5 @@ public class DomainController {
     @ApiOperation("Delete a domain by ID")
     public void delete(@PathVariable final long id) {
         domainService.delete(id);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/{id}/users/{userId}")
-    @ApiOperation("Add user into the domain")
-    public void addUser (@PathVariable final long id, @PathVariable long userId) {
-
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}/users/{userId}")
-    @ApiOperation("Remove user from the domain")
-    public void removeUser (@PathVariable final long id, @PathVariable long userId) {
-
     }
 }

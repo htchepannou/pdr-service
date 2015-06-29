@@ -98,9 +98,9 @@ public class DomainControllerIT {
             .statusCode(HttpStatus.SC_OK)
             .log()
                 .all()
-            .body("id", contains(100, 101, 102, 200, 300))
-            .body("name", contains("admin.moralab.com", "www.moralab.com", "api.moralab.com", "update.me", "delete.me"))
-            .body("description", contains("Admin site", "Main site", "API site", null, null))
+            .body("domains.id", contains(100, 101, 102, 200, 300))
+            .body("domains.name", contains("admin.moralab.com", "www.moralab.com", "api.moralab.com", "update.me", "delete.me"))
+            .body("domains.description", contains("Admin site", "Main site", "API site", null, null))
         ;
         // @formatter:on
     }
