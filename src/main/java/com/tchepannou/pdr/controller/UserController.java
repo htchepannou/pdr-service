@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @RestController
 @Api(basePath = "/users", value = "Manages user's account", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/users", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -5,7 +5,6 @@ public class CreateUserRequest {
     private long partyId;
     private String login;
     private String password;
-    private long domainId;
 
     //-- Getter/Setter
     public long getPartyId() {
@@ -30,13 +29,5 @@ public class CreateUserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public long getDomainId() {
-        return domainId;
-    }
-
-    public void setDomainId(long domainId) {
-        this.domainId = domainId;
     }
 }

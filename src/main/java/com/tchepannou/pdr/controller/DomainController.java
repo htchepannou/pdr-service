@@ -76,4 +76,16 @@ public class DomainController {
     public void delete(@PathVariable final long id) {
         domainService.delete(id);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}/users/{userId}")
+    @ApiOperation("Add user into the domain")
+    public void addUser (@PathVariable final long id, @PathVariable long userId) {
+
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}/users/{userId}")
+    @ApiOperation("Remove user from the domain")
+    public void removeUser (@PathVariable final long id, @PathVariable long userId) {
+
+    }
 }
