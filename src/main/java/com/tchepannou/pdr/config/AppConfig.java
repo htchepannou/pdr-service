@@ -1,21 +1,9 @@
 package com.tchepannou.pdr.config;
 
-import com.tchepannou.pdr.dao.DomainDao;
-import com.tchepannou.pdr.dao.DomainUserDao;
-import com.tchepannou.pdr.dao.PartyDao;
-import com.tchepannou.pdr.dao.UserDao;
-import com.tchepannou.pdr.dao.impl.DomainDaoImpl;
-import com.tchepannou.pdr.dao.impl.DomainUserDaoImpl;
-import com.tchepannou.pdr.dao.impl.PartyDaoImpl;
-import com.tchepannou.pdr.dao.impl.UserDaoImpl;
-import com.tchepannou.pdr.service.DomainService;
-import com.tchepannou.pdr.service.PartyService;
-import com.tchepannou.pdr.service.PasswordEncryptor;
-import com.tchepannou.pdr.service.UserService;
-import com.tchepannou.pdr.service.impl.DomainServiceImpl;
-import com.tchepannou.pdr.service.impl.Md5PasswordEncryptor;
-import com.tchepannou.pdr.service.impl.PartyServiceImpl;
-import com.tchepannou.pdr.service.impl.UserServiceImpl;
+import com.tchepannou.pdr.dao.*;
+import com.tchepannou.pdr.dao.impl.*;
+import com.tchepannou.pdr.service.*;
+import com.tchepannou.pdr.service.impl.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,9 +60,15 @@ public class AppConfig {
     }
 
     @Bean
+    public RoleService roleService () {
+        return new RoleServiceImpl();
+    }
+
+    @Bean
     public UserService userService () {
         return new UserServiceImpl();
     }
+
 
     @Bean
     public DomainDao domainDao () {
@@ -89,6 +83,11 @@ public class AppConfig {
     @Bean
     public PartyDao partyDao () {
         return new PartyDaoImpl(dataSource());
+    }
+
+    @Bean
+    public RoleDao roleDao () {
+        return new RoleDaoImpl(dataSource());
     }
 
     @Bean

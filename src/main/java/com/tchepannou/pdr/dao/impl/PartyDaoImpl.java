@@ -32,7 +32,7 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
     }
 
     private RowMapper<Party> getRowMapper (){
-        return new RowMapper() {
+        return new RowMapper<Party>() {
             @Override
             public Party mapRow(final ResultSet rs, final int i) throws SQLException {
                 final Party domain = new Party ();
