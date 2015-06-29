@@ -2,6 +2,7 @@ package com.tchepannou.pdr.dao.impl;
 
 import com.tchepannou.pdr.dao.DomainDao;
 import com.tchepannou.pdr.domain.Domain;
+import com.tchepannou.pdr.util.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -76,10 +77,11 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
 
     @Override
     public void delete(final long id) {
-        String sql = "UPDATE t_domain SET deleted=?, name=? WHERE id=?";
+        String sql = "UPDATE t_domain SET deleted=?, name=?, to_date=? WHERE id=?";
         update(sql, new Object[]{
                 true,
                 UUID.randomUUID().toString(),
+                new java.util.Date (),
                 id
         });
     }
@@ -89,12 +91,16 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
         return new RowMapper() {
             @Override
             public Domain mapRow(final ResultSet rs, final int i) throws SQLException {
-                final Domain domain = new Domain ();
-                domain.setId(rs.getLong("id"));
-                domain.setName(rs.getString("name"));
-                domain.setDescription(rs.getString("description"));
-                domain.setDeleted(rs.getBoolean("deleted"));
-                return domain;
+                final Domain obj = new Domain ();
+                obj.setId(rs.getLong("id"));
+
+                obj.setDeleted(rs.getBoolean("deleted"));
+                obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
+                obj.setToDate(DateUtils.asLocalDateTime(rs.getTimestamp("to_date")));
+
+                obj.setName(rs.getString("name"));
+                obj.setDescription(rs.getString("description"));
+                return obj;
             }
         };
     }

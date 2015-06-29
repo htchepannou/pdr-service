@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void create(User user) {
         try {
+            user.setFromDate(LocalDateTime.now());
             final long id = userDao.create(user);
             user.setId(id);
         } catch (DuplicateKeyException e) {

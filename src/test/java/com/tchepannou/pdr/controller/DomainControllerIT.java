@@ -22,6 +22,8 @@ import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.greaterThan;
 
@@ -120,6 +122,8 @@ public class DomainControllerIT {
             .body("id", greaterThan(0))
             .body("name", is(req.getName()))
             .body("description", is(req.getDescription()))
+            .body("fromDate", notNullValue())
+            .body("toDate", nullValue())
         ;
         // @formatter:on
     }
@@ -229,6 +233,7 @@ public class DomainControllerIT {
 
         assertThat(domain.isDeleted()).isTrue();
         assertThat(domain.getName()).matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+        assertThat(domain.getToDate()).isNotNull();
     }
 
     @Test

@@ -4,12 +4,15 @@ import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class DomainResponse implements Serializable{
     //-- Attributes
     private final long id;
     private final String name;
     private final String description;
+    private final LocalDateTime fromDate;
+    private final LocalDateTime toDate;
 
 
     //-- Attributes
@@ -19,6 +22,8 @@ public class DomainResponse implements Serializable{
         this.id = domain.getId();
         this.name = domain.getName();
         this.description = domain.getDescription();
+        this.fromDate  = domain.getFromDate();
+        this.toDate  = domain.getToDate();
     }
 
     //-- Getter/Setter
@@ -32,6 +37,14 @@ public class DomainResponse implements Serializable{
 
     public String getDescription() {
         return description;
+    }
+
+    public LocalDateTime getFromDate() {
+        return fromDate;
+    }
+
+    public LocalDateTime getToDate() {
+        return toDate;
     }
 
     //-- Builder

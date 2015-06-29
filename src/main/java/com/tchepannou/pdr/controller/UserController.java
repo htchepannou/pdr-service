@@ -48,7 +48,6 @@ public class UserController {
         final User user = new User();
         user.setStatus(UserStatus.CREATED);
         user.setPartyId(request.getPartyId());
-        user.setFromDate(LocalDateTime.now());
         user.setLogin(request.getLogin());
         user.setPassword(passwordEncryptor.encrypt(request.getPassword()));
         userService.create(user);

@@ -101,12 +101,12 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
                 obj.setPartyId(rs.getLong("party_fk"));
 
                 obj.setDeleted(rs.getBoolean("deleted"));
+                obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
+                obj.setToDate(DateUtils.asLocalDateTime(rs.getTimestamp("to_date")));
 
                 obj.setLogin(rs.getString("login"));
                 obj.setPassword(rs.getString("password"));
                 obj.setStatus(UserStatus.fromText(rs.getString("status")));
-                obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
-                obj.setToDate(DateUtils.asLocalDateTime(rs.getTimestamp("to_date")));
                 return obj;
             }
         };
