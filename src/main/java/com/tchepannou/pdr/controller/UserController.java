@@ -4,7 +4,7 @@ import com.tchepannou.pdr.domain.User;
 import com.tchepannou.pdr.domain.UserStatus;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.dto.user.CreateUserResponse;
-import com.tchepannou.pdr.dto.user.GetUserResponse;
+import com.tchepannou.pdr.dto.user.UserResponse;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.PasswordEncryptor;
 import com.tchepannou.pdr.service.UserService;
@@ -33,18 +33,18 @@ public class UserController {
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiOperation("Returns a User")
-    public GetUserResponse findById(@PathVariable final long id) {
+    public UserResponse findById(@PathVariable final long id) {
         final User user = userService.findById(id);
         if (user == null) {
             throw new NotFoundException(id);
         }
 
-        return new GetUserResponse(user);
+        return new UserResponse(user);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     @ApiOperation("Create a new user account")
-    public GetUserResponse create (CreateUserRequest request) {
+    public UserResponse create (CreateUserRequest request) {
         final User user = new User();
         user.setStatus(UserStatus.CREATED);
         user.setPartyId(request.getPartyId());

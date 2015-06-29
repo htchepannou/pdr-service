@@ -5,6 +5,7 @@ import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.internal.mapper.ObjectMapperType;
 import com.tchepannou.pdr.Starter;
 import com.tchepannou.pdr.dao.DomainDao;
+import com.tchepannou.pdr.domain.Domain;
 import com.tchepannou.pdr.dto.domain.DomainRequest;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -224,7 +225,22 @@ public class DomainControllerIT {
                 .all();
         // @formatter:on
 
-        assertThat(domainDao.findById(300)).isNull();
+        Domain domain = domainDao.findById(300);
+
+        assertThat(domain.isDeleted()).isTrue();
+        assertThat(domain.getName()).matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+    }
+
+    @Test
+    public void test_delete_not_found () {
+        // @formatter:off
+        when()
+            .delete("/api/domains/9999")
+        .then()
+            .statusCode(HttpStatus.SC_NOT_FOUND)
+            .log()
+                .all();
+        // @formatter:on
     }
 
     private DomainRequest createDomainRequest (String name, String description){

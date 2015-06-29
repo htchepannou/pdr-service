@@ -19,7 +19,7 @@ public class DomainServiceImpl implements DomainService {
     @Override
     public Domain findById(long id) {
         Domain domain = domainDao.findById(id);
-        if (domain == null) {
+        if (domain == null || domain.isDeleted()) {
             throw new NotFoundException(id);
         }
         return domain;

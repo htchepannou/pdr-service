@@ -1,5 +1,6 @@
 package com.tchepannou.pdr.util;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +38,10 @@ public class DateUtils {
         }
 
         return Instant.ofEpochMilli(date.getTime()).atZone(zone).toLocalDateTime();
+    }
+
+    public static Timestamp asTimestamp (LocalDateTime date) {
+        return new Timestamp(asDate(date, ZoneId.systemDefault()).getTime());
     }
 
     public static Date asDate (LocalDateTime date) {

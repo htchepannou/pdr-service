@@ -1,13 +1,16 @@
 CREATE TABLE t_domain(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
+    deleted BIT DEFAULT 0,
+
     name VARCHAR(50) NOT NULL UNIQUE,
-    description VARCHAR(255),
-    deleted BIT DEFAULT 0
+    description VARCHAR(255)
 ) engine=InnoDB;
 
 CREATE TABLE t_party(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    deleted BIT DEFAULT 0,
 
     name VARCHAR(100) NOT NULL,
     first_name VARCHAR(50),
@@ -25,6 +28,8 @@ CREATE TABLE t_user(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
     party_fk BIGINT NOT NULL REFERENCES t_party(id),
+
+    deleted BIT DEFAULT 0,
 
     login VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(50),

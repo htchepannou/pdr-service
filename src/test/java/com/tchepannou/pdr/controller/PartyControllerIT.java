@@ -36,12 +36,12 @@ public class PartyControllerIT {
 
         // @formatter:off
         when()
-            .get("/api/parties/1")
+            .get("/api/parties/100")
         .then()
             .statusCode(HttpStatus.SC_OK)
             .log()
                 .all()
-            .body("id", is(1))
+            .body("id", is(100))
             .body("name", is("Ray Sponsible"))
             .body("firstName", is("Ray"))
             .body("lastName", is("Sponsible"))

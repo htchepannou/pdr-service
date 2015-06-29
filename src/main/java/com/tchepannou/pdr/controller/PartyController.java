@@ -1,7 +1,7 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.Party;
-import com.tchepannou.pdr.dto.PartyDto;
+import com.tchepannou.pdr.dto.party.PartyResponse;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.PartyService;
 import com.wordnik.swagger.annotations.Api;
@@ -24,14 +24,13 @@ public class PartyController {
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiOperation("Returns a Party")
-    public PartyDto findById(@PathVariable final long id) {
+    public PartyResponse findById(@PathVariable final long id) {
         final Party domain = partyService.findById(id);
         if (domain == null) {
             throw new NotFoundException(id);
         }
 
-        return new PartyDto
-                .Builder()
+        return new PartyResponse.Builder()
                 .withParty(domain)
                 .build();
     }

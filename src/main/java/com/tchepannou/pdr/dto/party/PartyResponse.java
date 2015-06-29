@@ -1,4 +1,4 @@
-package com.tchepannou.pdr.dto;
+package com.tchepannou.pdr.dto.party;
 
 import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Gender;
@@ -8,7 +8,7 @@ import com.tchepannou.pdr.domain.PartyKind;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class PartyDto implements Serializable{
+public class PartyResponse implements Serializable{
     //-- Attribute
     private long id;
     private PartyKind kind;
@@ -24,7 +24,7 @@ public class PartyDto implements Serializable{
 
 
     //-- Constructor
-    private PartyDto (Builder builder) {
+    private PartyResponse(Builder builder) {
         final Party party = builder.party;
         this.id = party.getId();
         this.kind = party.getKind();
@@ -44,10 +44,10 @@ public class PartyDto implements Serializable{
     public static class Builder {
         private Party party;
 
-        public PartyDto build () {
+        public PartyResponse build () {
             Preconditions.checkState(party != null, "party is null");
 
-            return new PartyDto(this);
+            return new PartyResponse(this);
         }
 
         public Builder withParty (final Party party) {
@@ -57,7 +57,6 @@ public class PartyDto implements Serializable{
     }
 
     //-- Getter
-
     public long getId() {
         return id;
     }

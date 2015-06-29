@@ -7,7 +7,9 @@ public interface UserDao {
 
     User findByParty (long partyId);
 
-    void create (User user);
+    long create (User user);
 
     void update (User user);
+
+    void delete (long id);
 }

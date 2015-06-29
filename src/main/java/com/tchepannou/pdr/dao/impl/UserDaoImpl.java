@@ -5,9 +5,14 @@ import com.tchepannou.pdr.domain.*;
 import com.tchepannou.pdr.util.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,8 +25,8 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public User findById(long id) {
         try {
             return queryForObject(
-                    "SELECT * FROM t_user WHERE id=?",
-                    new Object[]{id},
+                    "SELECT U.* FROM t_user U JOIN t_party P WHERE U.id=? AND P.deleted=?",
+                    new Object[]{id, false},
                     getRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {    // NOSONAR
@@ -43,16 +48,27 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     }
 
     @Override
-    public void create(User user) {
-        String sql = "INSERT INTO t_user(party_fk, login, password, status, from_date, to_date) VALUES(?,?,?,?,?,?)";
-        update(sql, new Object[]{
-             user.getPartyId(),
-                user.getLogin(),
-                user.getPartyId(),
-                user.getStatus().getCode(),
-                DateUtils.asDate(user.getFromDate()),
-                DateUtils.asDate(user.getToDate())
-        });
+    public long create(final User user) {
+        KeyHolder holder = new GeneratedKeyHolder();
+        update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                final String sql = "INSERT INTO t_user(party_fk, login, password, status, from_date, to_date, deleted) VALUES(?,?,?,?,?,?,?)";
+                final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
+                final UserStatus status = user.getStatus();
+
+                ps.setLong(1, user.getPartyId());
+                ps.setString(2, user.getLogin());
+                ps.setString(3, user.getPassword());
+                ps.setString(4, status != null ? String.valueOf(status.getCode()) : null);
+                ps.setTimestamp(5, DateUtils.asTimestamp(user.getFromDate()));
+                ps.setTimestamp(6, DateUtils.asTimestamp(user.getToDate()));
+                ps.setBoolean(7, false);
+                return ps;
+            }
+        }, holder);
+
+        return holder.getKey().longValue();
     }
 
     @Override
@@ -68,7 +84,10 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
         });
     }
 
+    @Override
+    public void delete(long id) {
 
+    }
 
     private RowMapper<User> getRowMapper (){
         return new RowMapper() {

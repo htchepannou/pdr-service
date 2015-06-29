@@ -5,7 +5,7 @@ import com.tchepannou.pdr.domain.User;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class GetUserResponse implements Serializable {
+public class UserResponse implements Serializable {
     //-- Attribute
     private long id;
     private long partyId;
@@ -16,7 +16,7 @@ public class GetUserResponse implements Serializable {
 
 
     //-- Constructor
-    public GetUserResponse(final User user){
+    public UserResponse(final User user){
         this.id = user.getId();
         this.partyId = user.getPartyId();
         this.login = user.getLogin();

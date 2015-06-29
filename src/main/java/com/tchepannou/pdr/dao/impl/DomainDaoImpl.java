@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
     //-- Constructor
@@ -27,8 +28,8 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
     public Domain findById (final long id) {
         try {
             return queryForObject(
-                    "SELECT * FROM t_domain WHERE id=? AND deleted=?",
-                    new Object[]{id, false},
+                    "SELECT * FROM t_domain WHERE id=?",
+                    new Object[]{id},
                     getRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {    // NOSONAR
@@ -75,9 +76,10 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
 
     @Override
     public void delete(final long id) {
-        String sql = "UPDATE t_domain SET deleted=? WHERE id=?";
+        String sql = "UPDATE t_domain SET deleted=?, name=? WHERE id=?";
         update(sql, new Object[]{
                 true,
+                UUID.randomUUID().toString(),
                 id
         });
     }
