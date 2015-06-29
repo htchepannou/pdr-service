@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Api(basePath = "/users", value = "Manages user's account", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(basePath = "/users", value = "User's Account", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     //-- Attributes

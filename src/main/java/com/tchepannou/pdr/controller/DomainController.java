@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api(basePath = "/domains", value = "Domain Manager", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(basePath = "/domains", value = "Domains", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/domains", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DomainController {
     //-- Attributes

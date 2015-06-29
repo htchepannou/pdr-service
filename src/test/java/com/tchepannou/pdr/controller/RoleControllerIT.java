@@ -81,4 +81,19 @@ public class RoleControllerIT {
         // @formatter:on
     }
 
+    @Test
+    public void test_findPermissions(){
+        // @formatter:off
+        when()
+            .get("/api/roles/1/permissions")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+            .body("permissions.id", contains(101, 102))
+            .body("permissions.name", contains("Permission101", "Permission102"))
+        ;
+        // @formatter:on
+
+    }
 }

@@ -45,6 +45,20 @@ CREATE TABLE t_role(
     name VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE t_permission(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE t_role_permission(
+    role_fk BIGINT NOT NULL REFERENCES t_role(id),
+    permission_fk BIGINT NOT NULL REFERENCES t_permission(id),
+
+    PRIMARY KEY (role_fk, permission_fk)
+);
+
+
+
 CREATE TABLE t_domain_user(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 

@@ -13,12 +13,12 @@ import java.util.List;
 
 public class RoleDaoImpl extends JdbcTemplate implements RoleDao {
 
-    public RoleDaoImpl(DataSource dataSource) {
+    public RoleDaoImpl(final DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
-    public Role findById(long id) {
+    public Role findById(final long id) {
         try {
             return queryForObject(
                     "SELECT * FROM t_role WHERE id=?",

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(basePath = "/parties", value = "Manages People, Organization and Household", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(basePath = "/parties", value = "People, Organization and Household", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/parties", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PartyController {
     //-- Attributes

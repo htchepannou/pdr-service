@@ -60,6 +60,11 @@ public class AppConfig {
     }
 
     @Bean
+    public PermissionService permissionService () {
+        return new PermissionServiceImpl();
+    }
+
+    @Bean
     public RoleService roleService () {
         return new RoleServiceImpl();
     }
@@ -68,8 +73,8 @@ public class AppConfig {
     public UserService userService () {
         return new UserServiceImpl();
     }
-
-
+    
+    
     @Bean
     public DomainDao domainDao () {
         return new DomainDaoImpl(dataSource());
@@ -83,6 +88,11 @@ public class AppConfig {
     @Bean
     public PartyDao partyDao () {
         return new PartyDaoImpl(dataSource());
+    }
+
+    @Bean
+    public PermissionDao permissionDao () {
+        return new PermissionDaoImpl(dataSource());
     }
 
     @Bean
