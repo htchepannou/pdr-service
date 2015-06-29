@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +49,6 @@ public class DomainController {
         final Domain domain = new Domain ();
         domain.setName(request.getName());
         domain.setDescription(request.getDescription());
-        domain.setFromDate(LocalDateTime.now());
         domainService.create(domain);
 
         return new DomainResponse

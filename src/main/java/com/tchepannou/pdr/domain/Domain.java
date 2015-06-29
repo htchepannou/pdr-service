@@ -1,14 +1,14 @@
 package com.tchepannou.pdr.domain;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Domain extends Persistent {
     //-- Attributes
     private String name;
     private String description;
     private boolean deleted;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
+    private Date fromDate;
+    private Date toDate;
 
     //-- Getter/Setter
     public String getName() {
@@ -35,19 +35,19 @@ public class Domain extends Persistent {
         this.deleted = deleted;
     }
 
-    public LocalDateTime getFromDate() {
+    public Date getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(LocalDateTime fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDateTime getToDate() {
+    public Date getToDate() {
         return toDate;
     }
 
-    public void setToDate(LocalDateTime toDate) {
+    public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
 }

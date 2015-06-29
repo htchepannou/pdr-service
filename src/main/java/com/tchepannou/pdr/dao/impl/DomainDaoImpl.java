@@ -49,15 +49,16 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
 
     @Override
     public long create(final Domain domain) {
-        KeyHolder holder = new GeneratedKeyHolder();
+        final KeyHolder holder = new GeneratedKeyHolder();
         update(new PreparedStatementCreator() {
                    @Override
                    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                       final String sql = "INSERT INTO t_domain(name, description, deleted) VALUES(?,?,?)";
+                       final String sql = "INSERT INTO t_domain(name, description, from_date, deleted) VALUES(?,?,?,?)";
                        final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
                        ps.setString(1, domain.getName());
                        ps.setString(2, domain.getDescription());
-                       ps.setBoolean(3, domain.isDeleted());
+                       ps.setTimestamp(3, DateUtils.asTimestamp(domain.getFromDate()));
+                       ps.setBoolean(4, domain.isDeleted());
                        return ps;
                    }
                }, holder);
@@ -68,35 +69,35 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
     @Override
     public void update(final Domain domain) {
         final String sql = "UPDATE t_domain SET name=?, description=? WHERE id=?";
-        update(sql, new Object[]{
+        update(sql,
                 domain.getName(),
                 domain.getDescription(),
                 domain.getId()
-        });
+        );
     }
 
     @Override
     public void delete(final long id) {
-        String sql = "UPDATE t_domain SET deleted=?, name=?, to_date=? WHERE id=?";
-        update(sql, new Object[]{
+        final String sql = "UPDATE t_domain SET deleted=?, name=?, to_date=? WHERE id=?";
+        update(sql,
                 true,
                 UUID.randomUUID().toString(),
                 new java.util.Date (),
                 id
-        });
+        );
     }
 
     //-- Private
     private RowMapper<Domain> getRowMapper (){
-        return new RowMapper() {
+        return new RowMapper<Domain>() {
             @Override
             public Domain mapRow(final ResultSet rs, final int i) throws SQLException {
                 final Domain obj = new Domain ();
                 obj.setId(rs.getLong("id"));
 
                 obj.setDeleted(rs.getBoolean("deleted"));
-                obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
-                obj.setToDate(DateUtils.asLocalDateTime(rs.getTimestamp("to_date")));
+                obj.setFromDate(rs.getTimestamp("from_date"));
+                obj.setToDate(rs.getTimestamp("to_date"));
 
                 obj.setName(rs.getString("name"));
                 obj.setDescription(rs.getString("description"));

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 public class DomainServiceImpl implements DomainService {
@@ -35,6 +36,7 @@ public class DomainServiceImpl implements DomainService {
     @Override
     public void create(final Domain domain) {
         try {
+            domain.setFromDate(new Date());
             long id = domainDao.create(domain);
             domain.setId(id);
         } catch (DuplicateKeyException e) {
