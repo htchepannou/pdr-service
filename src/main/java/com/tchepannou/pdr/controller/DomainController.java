@@ -74,8 +74,6 @@ public class DomainController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     @ApiOperation("Delete a domain by ID")
     public void delete(@PathVariable final long id) {
-        domainService.findById(id);
-
         domainService.delete(id);
     }
 }

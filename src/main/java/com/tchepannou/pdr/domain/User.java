@@ -10,6 +10,7 @@ public class User extends Persistent {
     private UserStatus status;
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
+    private boolean deleted;
 
     //-- Getter/Setter
     public long getPartyId() {
@@ -60,5 +61,11 @@ public class User extends Persistent {
         this.status = status;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

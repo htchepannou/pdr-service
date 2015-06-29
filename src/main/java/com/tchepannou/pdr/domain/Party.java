@@ -14,6 +14,7 @@ public class Party extends Persistent {
     private Gender gender;
     private int heigth;
     private int weight;
+    private boolean deleted;
 
     //-- Getter/Setter
     public PartyKind getKind() {
@@ -95,4 +96,6 @@ public class Party extends Persistent {
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
+
+
 }

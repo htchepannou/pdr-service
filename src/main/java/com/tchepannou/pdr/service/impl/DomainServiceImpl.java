@@ -7,6 +7,7 @@ import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,27 +31,32 @@ public class DomainServiceImpl implements DomainService {
         return domainDao.findAll();
     }
 
+    @Transactional
     @Override
     public void create(final Domain domain) {
         try {
             long id = domainDao.create(domain);
             domain.setId(id);
         } catch (DuplicateKeyException e) {
-            throw new DuplicateNameException("The domain named <" + domain.getName() + "> already exists", e);
+            throw new DuplicateNameException(domain.getName() + " already assigned to another domain", e);
         }
     }
 
+    @Transactional
     @Override
     public void update(final Domain domain) {
         try {
             domainDao.update(domain);
         } catch (DuplicateKeyException e) {
-            throw new DuplicateNameException("The domain named <" + domain.getName() + "> already exists", e);
+            throw new DuplicateNameException(domain.getName() + " already assigned to another domain", e);
         }
     }
 
+    @Transactional
     @Override
     public void delete(final long id) {
+        findById(id);       // Make sure that domain exists
+
         domainDao.delete(id);
     }
 }

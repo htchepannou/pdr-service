@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public UserDaoImpl(DataSource dataSource) {
@@ -25,7 +26,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public User findById(long id) {
         try {
             return queryForObject(
-                    "SELECT U.* FROM t_user U JOIN t_party P WHERE U.id=? AND P.deleted=?",
+                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE U.id=? AND P.deleted=?",
                     new Object[]{id, false},
                     getRowMapper()
             );
@@ -38,7 +39,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public User findByParty(long partyId) {
         try {
             return queryForObject(
-                    "SELECT * FROM t_user WHERE party_fk=?",
+                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE P.id=? AND P.deleted=?",
                     new Object[]{partyId},
                     getRowMapper()
             );
@@ -86,7 +87,12 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
 
     @Override
     public void delete(long id) {
-
+        String sql = "UPDATE t_user SET deleted=?, login=? WHERE id=?";
+        update(sql, new Object[]{
+                true,
+                UUID.randomUUID().toString(),
+                id
+        });
     }
 
     private RowMapper<User> getRowMapper (){
@@ -95,12 +101,15 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
             public User mapRow(final ResultSet rs, final int i) throws SQLException {
                 final User obj = new User ();
                 obj.setId(rs.getLong("id"));
+                obj.setPartyId(rs.getLong("party_fk"));
+
+                obj.setDeleted(rs.getBoolean("deleted"));
+
                 obj.setLogin(rs.getString("login"));
                 obj.setPassword(rs.getString("password"));
                 obj.setStatus(UserStatus.fromText(rs.getString("status")));
                 obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
                 obj.setToDate(DateUtils.asLocalDateTime(rs.getTimestamp("to_date")));
-                obj.setPartyId(rs.getLong("party_fk"));
                 return obj;
             }
         };

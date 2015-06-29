@@ -2,8 +2,11 @@ package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.UserDao;
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.exception.DuplicateLoginException;
+import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 public class UserServiceImpl implements UserService {
@@ -12,23 +15,46 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(long id) {
-        return userDao.findById(id);
+        User user = userDao.findById(id);
+        if (user == null || !user.isDeleted()){
+            throw new NotFoundException(id);
+        }
+        return user;
     }
 
     @Override
     public User findByParty(long partyId) {
-        return userDao.findByParty(partyId);
+        User user = userDao.findByParty(partyId);
+        if (user == null || !user.isDeleted()){
+            throw new NotFoundException();
+        }
+        return user;
     }
 
     @Override
     @Transactional
     public void create(User user) {
-        userDao.create(user);
+        try {
+            final long id = userDao.create(user);
+            user.setId(id);
+        } catch (DuplicateKeyException e) {
+            throw new DuplicateLoginException(user.getLogin() + " already assigned to another user", e);
+        }
     }
 
     @Override
     @Transactional
     public void update(User user) {
-        userDao.update(user);
+        try {
+            userDao.create(user);
+        } catch (DuplicateKeyException e) {
+            throw new DuplicateLoginException(user.getLogin() + " already assigned to another user", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(long id) {
+        userDao.delete(id);
     }
 }
