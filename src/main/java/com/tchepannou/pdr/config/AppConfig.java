@@ -1,9 +1,11 @@
 package com.tchepannou.pdr.config;
 
 import com.tchepannou.pdr.dao.DomainDao;
+import com.tchepannou.pdr.dao.DomainUserDao;
 import com.tchepannou.pdr.dao.PartyDao;
 import com.tchepannou.pdr.dao.UserDao;
 import com.tchepannou.pdr.dao.impl.DomainDaoImpl;
+import com.tchepannou.pdr.dao.impl.DomainUserDaoImpl;
 import com.tchepannou.pdr.dao.impl.PartyDaoImpl;
 import com.tchepannou.pdr.dao.impl.UserDaoImpl;
 import com.tchepannou.pdr.service.DomainService;
@@ -65,23 +67,28 @@ public class AppConfig {
     }
 
     @Bean
-    public DomainDao domainDao () {
-        return new DomainDaoImpl(dataSource());
-    }
-
-    @Bean
     public PartyService partyService () {
         return new PartyServiceImpl();
     }
 
     @Bean
-    public PartyDao partyDao () {
-        return new PartyDaoImpl(dataSource());
+    public UserService userService () {
+        return new UserServiceImpl();
     }
 
     @Bean
-    public UserService userService () {
-        return new UserServiceImpl();
+    public DomainDao domainDao () {
+        return new DomainDaoImpl(dataSource());
+    }
+
+    @Bean
+    public DomainUserDao domainUserDao() {
+        return  new DomainUserDaoImpl(dataSource());
+    }
+
+    @Bean
+    public PartyDao partyDao () {
+        return new PartyDaoImpl(dataSource());
     }
 
     @Bean

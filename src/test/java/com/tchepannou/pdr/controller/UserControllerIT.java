@@ -60,7 +60,7 @@ public class UserControllerIT {
             .body("login", is("ray.sponsible"))
             .body("password", nullValue())
             .body("status", is("ACTIVE"))
-            .body("fromDate", is("1973-12-27T10:30:45"))
+            .body("fromDate", is("1973-12-27 10:30:45"))
             .body("toDate", nullValue())
         ;
         // @formatter:on
@@ -158,7 +158,7 @@ public class UserControllerIT {
             .body("login", is("john.smith"))
             .body("password", nullValue())
             .body("status", is("ACTIVE"))
-            .body("fromDate", is("1973-12-27T10:30:45"))
+            .body("fromDate", is("1973-12-27 10:30:45"))
             .body("toDate", nullValue())
         ;
         // @formatter:on

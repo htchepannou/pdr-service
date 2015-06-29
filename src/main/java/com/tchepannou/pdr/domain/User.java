@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.domain;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class User extends Persistent {
     //-- Attributes
@@ -8,8 +8,8 @@ public class User extends Persistent {
     private String login;
     private String password;
     private UserStatus status;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
+    private Date fromDate;
+    private Date toDate;
     private boolean deleted;
 
     //-- Getter/Setter
@@ -37,19 +37,19 @@ public class User extends Persistent {
         this.password = password;
     }
 
-    public LocalDateTime getFromDate() {
+    public Date getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(LocalDateTime fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDateTime getToDate() {
+    public Date getToDate() {
         return toDate;
     }
 
-    public void setToDate(LocalDateTime toDate) {
+    public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
 

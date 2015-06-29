@@ -39,3 +39,12 @@ CREATE TABLE t_user(
     password VARCHAR(50),
     status CHAR(1)
 );
+
+CREATE TABLE t_domain_user(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    domain_fk BIGINT NOT NULL REFERENCES t_domain(id),
+    user_fk BIGINT NOT NULL REFERENCES t_user(id),
+
+    from_date DATETIME
+)

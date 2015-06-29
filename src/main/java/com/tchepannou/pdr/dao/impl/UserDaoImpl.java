@@ -21,7 +21,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     }
 
     @Override
-    public User findById(long id) {
+    public User findById(final long id) {
         try {
             return queryForObject(
                     "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE U.id=? AND P.deleted=?",
@@ -34,7 +34,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     }
 
     @Override
-    public User findByParty(long partyId) {
+    public User findByParty(final long partyId) {
         try {
             return queryForObject(
                     "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE P.id=? AND P.deleted=?",
@@ -52,7 +52,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
         update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                final String sql = "INSERT INTO t_user(party_fk, login, password, status, from_date, to_date, deleted) VALUES(?,?,?,?,?,?,?)";
+                final String sql = "INSERT INTO t_user(party_fk, login, password, status, from_date, deleted) VALUES(?,?,?,?,?,?)";
                 final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
                 final UserStatus status = user.getStatus();
 
@@ -61,8 +61,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
                 ps.setString(3, user.getPassword());
                 ps.setString(4, status != null ? String.valueOf(status.getCode()) : null);
                 ps.setTimestamp(5, DateUtils.asTimestamp(user.getFromDate()));
-                ps.setTimestamp(6, DateUtils.asTimestamp(user.getToDate()));
-                ps.setBoolean(7, false);
+                ps.setBoolean(6, false);
                 return ps;
             }
         }, holder);
@@ -71,29 +70,29 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     }
 
     @Override
-    public void update(User user) {
-        String sql = "UPDATE t_user SET login=?, password=?, status=? WHERE id=?";
-        update(sql, new Object[]{
+    public void update(final User user) {
+        final String sql = "UPDATE t_user SET login=?, password=?, status=? WHERE id=?";
+        update(sql,
                 user.getLogin(),
                 user.getPartyId(),
                 String.valueOf(user.getStatus().getCode()),
                 user.getId()
-        });
+        );
     }
 
     @Override
-    public void delete(long id) {
-        String sql = "UPDATE t_user SET deleted=?, login=?, to_date=? WHERE id=?";
-        update(sql, new Object[]{
+    public void delete(final long id) {
+        final String sql = "UPDATE t_user SET deleted=?, login=?, to_date=? WHERE id=?";
+        update(sql,
                 true,
                 UUID.randomUUID().toString(),
                 new java.util.Date (),
                 id
-        });
+        );
     }
 
     private RowMapper<User> getRowMapper (){
-        return new RowMapper() {
+        return new RowMapper<User>() {
             @Override
             public User mapRow(final ResultSet rs, final int i) throws SQLException {
                 final User obj = new User ();
@@ -101,8 +100,8 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
                 obj.setPartyId(rs.getLong("party_fk"));
 
                 obj.setDeleted(rs.getBoolean("deleted"));
-                obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
-                obj.setToDate(DateUtils.asLocalDateTime(rs.getTimestamp("to_date")));
+                obj.setFromDate(rs.getTimestamp("from_date"));
+                obj.setToDate(rs.getTimestamp("to_date"));
 
                 obj.setLogin(rs.getString("login"));
                 obj.setPassword(rs.getString("password"));

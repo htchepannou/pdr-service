@@ -2,9 +2,9 @@ package com.tchepannou.pdr.dto.user;
 
 import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.util.DateUtils;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 public class UserResponse implements Serializable {
     //-- Attribute
@@ -12,8 +12,8 @@ public class UserResponse implements Serializable {
     private long partyId;
     private String login;
     private String status;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
+    private String fromDate;
+    private String toDate;
 
     //-- Constructor
     public UserResponse(final Builder builder){
@@ -24,8 +24,8 @@ public class UserResponse implements Serializable {
 
         this.login = user.getLogin();
         this.status = user.getStatus().name();
-        this.fromDate = user.getFromDate();
-        this.toDate = user.getToDate();
+        this.fromDate = DateUtils.asString(user.getFromDate());
+        this.toDate = DateUtils.asString(user.getToDate());
     }
 
     //-- Getter
@@ -45,11 +45,11 @@ public class UserResponse implements Serializable {
         return status;
     }
 
-    public LocalDateTime getFromDate() {
+    public String getFromDate() {
         return fromDate;
     }
 
-    public LocalDateTime getToDate() {
+    public String getToDate() {
         return toDate;
     }
 

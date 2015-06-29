@@ -1,6 +1,7 @@
 package com.tchepannou.pdr.util;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,6 +9,8 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class DateUtils {
+    public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     private DateUtils (){
 
     }
@@ -54,5 +57,20 @@ public class DateUtils {
         }
 
         return Date.from(date.atZone(zone).toInstant());
+    }
+
+    public static Timestamp asTimestamp (Date date) {
+        if (date == null) {
+            return null;
+        }
+        else if (date instanceof Timestamp) {
+            return (Timestamp) date;
+        } else {
+            return new Timestamp(date.getTime());
+        }
+    }
+
+    public static String asString (Date date) {
+        return date != null ? new SimpleDateFormat(DATETIME_PATTERN).format(date) : null;
     }
 }
