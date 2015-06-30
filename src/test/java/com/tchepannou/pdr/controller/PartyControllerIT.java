@@ -47,7 +47,7 @@ public class PartyControllerIT {
             .body("lastName", is("Sponsible"))
             .body("prefix", is("Mr"))
             .body("suffix", is("PHD"))
-            .body("birthDate", is("1973-12-27"))
+            .body("birthDate", is("1973-12-27 00:00:00"))
             .body("gender", is("MALE"))
             .body("kind", is("PERSON"))
         ;

@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.domain;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Party extends Persistent {
     //-- Attribute
@@ -10,7 +10,7 @@ public class Party extends Persistent {
     private String lastName;
     private String prefix;
     private String suffix;
-    private LocalDate birthDate;
+    private Date birthDate;
     private Gender gender;
     private int heigth;
     private int weight;
@@ -49,11 +49,11 @@ public class Party extends Persistent {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

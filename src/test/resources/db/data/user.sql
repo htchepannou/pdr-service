@@ -19,7 +19,6 @@ insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date,
 insert into t_user (id, party_fk, login, password, from_date, to_date, status, deleted) values (
     301, 300, 'ray301.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A', 1);
 
-
 -- update
 insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight)
     values (1000, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250);

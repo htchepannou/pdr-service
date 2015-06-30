@@ -4,7 +4,6 @@ import com.tchepannou.pdr.dao.PartyDao;
 import com.tchepannou.pdr.domain.Gender;
 import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.domain.PartyKind;
-import com.tchepannou.pdr.util.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,7 +42,7 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
                 domain.setLastName(rs.getString("last_name"));
                 domain.setPrefix(rs.getString("prefix"));
                 domain.setSuffix(rs.getString("suffix"));
-                domain.setBirthDate(DateUtils.asLocalDate(rs.getDate("birth_date")));
+                domain.setBirthDate(rs.getDate("birth_date"));
                 domain.setHeigth(rs.getInt("height"));
                 domain.setWeight(rs.getInt("weight"));
                 domain.setGender(Gender.fromText(rs.getString ("gender")));

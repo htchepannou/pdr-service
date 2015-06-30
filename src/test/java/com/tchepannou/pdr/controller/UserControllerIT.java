@@ -137,6 +137,28 @@ public class UserControllerIT {
     }
 
     @Test
+    public void test_create_duplicateLogin () throws Exception {
+        CreateUserRequest request = new CreateUserRequest();
+        request.setPartyId(100);
+        request.setLogin("ray.sponsible");
+        request.setPassword("__secret__");
+
+        // @formatter:off
+        given ()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+            .post("/api/users")
+        .then()
+            .statusCode(HttpStatus.SC_CONFLICT)
+            .log()
+                .all()
+            .body("message", is("duplicate_login"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_update () throws Exception {
         UpdateUserRequest request = new UpdateUserRequest();
         request.setLogin("john.smith");

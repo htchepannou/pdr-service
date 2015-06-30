@@ -1,13 +1,13 @@
 package com.tchepannou.pdr.domain;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class DomainUser extends Persistent {
     //-- Attribute
     private long domainId;
     private long userId;
     private long roleId;
-    private LocalDateTime fromDate;
+    private Date fromDate;
 
     //-- Constructor
     public DomainUser (){
@@ -44,11 +44,11 @@ public class DomainUser extends Persistent {
         this.roleId = roleId;
     }
 
-    public LocalDateTime getFromDate() {
+    public Date getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(LocalDateTime fromDate) {
+    public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
     }
 }

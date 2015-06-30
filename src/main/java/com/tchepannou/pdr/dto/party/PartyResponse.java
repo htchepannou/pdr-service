@@ -4,8 +4,7 @@ import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Gender;
 import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.domain.PartyKind;
-
-import java.time.LocalDate;
+import com.tchepannou.pdr.util.DateUtils;
 
 public class PartyResponse {
     //-- Attribute
@@ -14,7 +13,7 @@ public class PartyResponse {
     private String name;
     private String firstName;
     private String lastName;
-    private LocalDate birthDate;
+    private String birthDate;
     private Gender gender;
     private int heigth;
     private int weight;
@@ -30,7 +29,7 @@ public class PartyResponse {
         this.name = party.getName();
         this.firstName = party.getFirstName();
         this.lastName = party.getLastName();
-        this.birthDate = party.getBirthDate();
+        this.birthDate = DateUtils.asString(party.getBirthDate());
         this.gender = party.getGender();
         this.heigth = party.getHeigth();
         this.weight = party.getWeight();
@@ -76,7 +75,7 @@ public class PartyResponse {
         return lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 

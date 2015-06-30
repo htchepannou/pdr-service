@@ -80,7 +80,7 @@ public class DomainUserDaoImpl extends JdbcTemplate implements DomainUserDao {
                 obj.setUserId(rs.getLong("user_fk"));
                 obj.setRoleId(rs.getLong("role_fk"));
 
-                obj.setFromDate(DateUtils.asLocalDateTime(rs.getTimestamp("from_date")));
+                obj.setFromDate(rs.getTimestamp("from_date"));
                 return obj;
             }
         };
