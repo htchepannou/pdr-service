@@ -64,6 +64,9 @@ CREATE TABLE t_domain_user(
 
     domain_fk BIGINT NOT NULL REFERENCES t_domain(id),
     user_fk BIGINT NOT NULL REFERENCES t_user(id),
+    role_fk BIGINT NOT NULL REFERENCES t_role(id),
 
-    from_date DATETIME
+    from_date DATETIME,
+
+    UNIQUE(domain_fk, user_fk, role_fk)
 )

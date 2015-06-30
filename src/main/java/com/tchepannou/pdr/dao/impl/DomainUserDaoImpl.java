@@ -27,7 +27,7 @@ public class DomainUserDaoImpl extends JdbcTemplate implements DomainUserDao {
         try {
             return queryForObject(
                     "SELECT * FROM t_domain_user WHERE domain_fk=? AND user_fk=? AND role_fk=?",
-                    new Object[]{domainId, userId},
+                    new Object[]{domainId, userId, roleId},
                     getRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {    // NOSONAR

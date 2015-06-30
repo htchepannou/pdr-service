@@ -2,9 +2,8 @@ package com.tchepannou.pdr.domain;
 
 import java.time.LocalDateTime;
 
-public class DomainUser {
+public class DomainUser extends Persistent {
     //-- Attribute
-    private long id;
     private long domainId;
     private long userId;
     private long roleId;
@@ -21,14 +20,6 @@ public class DomainUser {
     }
 
     //-- Getter/Setter
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public long getDomainId() {
         return domainId;
     }

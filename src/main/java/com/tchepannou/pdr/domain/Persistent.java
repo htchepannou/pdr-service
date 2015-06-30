@@ -1,7 +1,6 @@
 package com.tchepannou.pdr.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -27,7 +26,7 @@ public abstract class Persistent implements Serializable{
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return Long.hashCode(id);
     }
 
     @Override

@@ -1,19 +1,10 @@
 package com.tchepannou.pdr.domain;
 
-public class Permission {
+public class Permission extends Persistent {
     //-- Attributes
-    private long id;
     private String name;
 
     //-- Getter/Setter
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }

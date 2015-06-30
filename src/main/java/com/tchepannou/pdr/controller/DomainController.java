@@ -19,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -113,12 +111,13 @@ public class DomainController {
         final List<Role> roles = domainUsers.stream()
                 .map(domainUser -> roleService.findById(domainUser.getRoleId()))
                 .collect(Collectors.toList());
-        final Set<Permission> permissions = roles.stream()
+        final List<Permission> permissions = roles.stream()
                 .flatMap(role -> permissionService.findByRole(role.getId()).stream())
-                .collect(Collectors.toSet());
+                .distinct()
+                .collect(Collectors.toList());
 
         return new PermissionListResponse.Builder()
-                .withPermissions(new ArrayList<>(permissions))
+                .withPermissions(permissions)
                 .build();
     }
 

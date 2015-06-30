@@ -5,7 +5,9 @@ import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.internal.mapper.ObjectMapperType;
 import com.tchepannou.pdr.Starter;
 import com.tchepannou.pdr.dao.DomainDao;
+import com.tchepannou.pdr.dao.DomainUserDao;
 import com.tchepannou.pdr.domain.Domain;
+import com.tchepannou.pdr.domain.DomainUser;
 import com.tchepannou.pdr.dto.domain.DomainRequest;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -18,12 +20,12 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.greaterThan;
 
@@ -40,6 +42,9 @@ public class DomainControllerIT {
 
     @Autowired
     private DomainDao domainDao;
+
+    @Autowired
+    private DomainUserDao domainUserDao;
 
 
     @Before
@@ -185,7 +190,6 @@ public class DomainControllerIT {
         // @formatter:on
     }
 
-
     @Test
     public void test_update_not_found () {
         final DomainRequest req = createDomainRequest("update_not_found", "this is a test");
@@ -246,6 +250,86 @@ public class DomainControllerIT {
             .log()
                 .all();
         // @formatter:on
+    }
+
+    @Test
+    public void test_roles(){
+        // @formatter:off
+        when()
+            .get("/api/domains/100/users/400/roles")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+            .body("roles.id", contains(400, 401))
+            .body("roles.name", contains("admin", "member"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_permissions(){
+        // @formatter:off
+        when()
+            .get("/api/domains/100/users/500/permissions")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+            .body("permissions.id", contains(500, 501, 502))
+            .body("permissions.name", contains("perm500", "perm501", "perm502"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_grant () {
+        // @formatter:off
+        when()
+            .post("/api/domains/100/users/600/roles/601")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+        ;
+        // @formatter:on
+
+        DomainUser domainUser = domainUserDao.findByDomainByUser(100, 600, 601);
+        assertThat(domainUser).isNotNull();
+    }
+
+    @Test
+    public void test_grant_twice () {
+        int size = domainUserDao.findByDomainByUser(100, 600).size();
+
+        // @formatter:off
+        when()
+            .post("/api/domains/100/users/600/roles/600")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+        ;
+        // @formatter:on
+
+        List<DomainUser> domainUsers = domainUserDao.findByDomainByUser(100, 600);
+        assertThat(domainUsers).hasSize(size);
+    }
+
+    @Test
+    public void test_revoke () {
+        // @formatter:off
+        when()
+            .delete("/api/domains/100/users/600/roles/600")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+        ;
+        // @formatter:on
+
+        DomainUser domainUser = domainUserDao.findByDomainByUser(100, 600, 601);
+        assertThat(domainUser).isNull();
     }
 
     private DomainRequest createDomainRequest (String name, String description){

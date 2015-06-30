@@ -18,7 +18,10 @@ public class PermissionDaoImpl extends JdbcTemplate implements PermissionDao {
 
     @Override
     public List<Permission> findByRole(final long roleId) {
-        return query("SELECT P.* FROM t_permission P JOIN t_role_permission R ON P.id=R.permission_fk", getRowMapper());
+        return query(
+                "SELECT P.* FROM t_permission P JOIN t_role_permission R ON P.id=R.permission_fk WHERE role_fk=?",
+                new Object[] {roleId},
+                getRowMapper());
     }
 
     //-- Private
