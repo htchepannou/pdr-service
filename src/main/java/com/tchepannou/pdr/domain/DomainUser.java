@@ -7,7 +7,18 @@ public class DomainUser {
     private long id;
     private long domainId;
     private long userId;
+    private long roleId;
     private LocalDateTime fromDate;
+
+    //-- Constructor
+    public DomainUser (){
+
+    }
+    public DomainUser (final long domainId, final long userId, final long roleId) {
+        this.domainId = domainId;
+        this.userId = userId;
+        this.roleId = roleId;
+    }
 
     //-- Getter/Setter
     public long getId() {
@@ -32,6 +43,14 @@ public class DomainUser {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 
     public LocalDateTime getFromDate() {

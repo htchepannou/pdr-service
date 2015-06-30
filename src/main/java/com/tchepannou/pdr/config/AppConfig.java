@@ -55,6 +55,11 @@ public class AppConfig {
     }
 
     @Bean
+    public DomainUserService domainUserService () {
+        return new DomainUserServiceImpl();
+    }
+
+    @Bean
     public PartyService partyService () {
         return new PartyServiceImpl();
     }
