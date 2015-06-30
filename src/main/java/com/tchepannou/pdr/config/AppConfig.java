@@ -46,7 +46,7 @@ public class AppConfig {
 
     @Bean
     public PasswordEncryptor passwordEncryptor(){
-        return new Md5PasswordEncryptor();
+        return new PasswordEncryptorImpl();
     }
 
     @Bean

@@ -6,7 +6,7 @@ values (100, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M'
 insert into t_domain(id, name, description) values(100, 'admin.moralab.com', 'Admin site');
 
 insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
-  100, 100, 'ray.sponsible', '5ebe2294ecd0e0f08eab7690d2a6ee69', '1973-12-27 10:30:45', null, 'A');
+  100, 100, 'ray.sponsible', 'SCHublZJUN03uJ576K868m63mM0Sa/83', '1973-12-27 10:30:45', null, 'A');
 
 insert into t_domain_user(id, domain_fk, user_fk, role_fk, from_date) values(
   100, 100, 100, 100, '2014-12-27 10:30:45');
@@ -29,10 +29,10 @@ insert into t_access_token(id, user_fk, domain_fk, from_date, expiry_date, expir
 
 -- login_user_deleted
 insert into t_user (id, party_fk, login, password, from_date, to_date, status, deleted) values (
-  500, 100, 'ray500.sponsible', '5ebe2294ecd0e0f08eab7690d2a6ee69', '1973-12-27 10:30:45', null, 'A', 1);
+  500, 100, 'ray500.sponsible', 'SCHublZJUN03uJ576K868m63mM0Sa/83', '1973-12-27 10:30:45', null, 'A', 1);
 insert into t_domain_user(id, domain_fk, user_fk, role_fk, from_date) values(
   500, 100, 500, 100, '2014-12-27 10:30:45');
 
 -- login_access_denied
 insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
-  600, 100, 'ray600.sponsible', '5ebe2294ecd0e0f08eab7690d2a6ee69', '1973-12-27 10:30:45', null, 'A');
+  600, 100, 'ray600.sponsible', 'SCHublZJUN03uJ576K868m63mM0Sa/83', '1973-12-27 10:30:45', null, 'A');

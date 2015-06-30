@@ -35,7 +35,7 @@ CREATE TABLE t_user(
     from_date DATETIME,
     to_date DATETIME,
 
-    login VARCHAR(50) NOT NULL UNIQUE,
+    login VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(50),
     status CHAR(1)
 );
