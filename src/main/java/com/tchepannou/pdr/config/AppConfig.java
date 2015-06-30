@@ -50,6 +50,11 @@ public class AppConfig {
     }
 
     @Bean
+    public AccessTokenService accessTokenService () {
+        return new AccessTokenServiceImpl();
+    }
+
+    @Bean
     public DomainService domainService () {
         return new DomainServiceImpl();
     }
@@ -79,7 +84,12 @@ public class AppConfig {
         return new UserServiceImpl();
     }
     
-    
+
+    @Bean
+    public AccessTokenDao accessTokenDao () {
+        return new AccessTokenDaoImpl(dataSource());
+    }
+
     @Bean
     public DomainDao domainDao () {
         return new DomainDaoImpl(dataSource());

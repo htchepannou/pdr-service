@@ -34,6 +34,19 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     }
 
     @Override
+    public User findByLogin(final String login) {
+        try {
+            return queryForObject(
+                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE U.login=? AND P.deleted=?",
+                    new Object[]{login, false},
+                    getRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {    // NOSONAR
+            return null;
+        }
+    }
+
+    @Override
     public User findByParty(final long partyId) {
         try {
             return queryForObject(

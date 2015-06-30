@@ -58,7 +58,6 @@ CREATE TABLE t_role_permission(
 );
 
 
-
 CREATE TABLE t_domain_user(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
@@ -69,4 +68,19 @@ CREATE TABLE t_domain_user(
     from_date DATETIME,
 
     UNIQUE(domain_fk, user_fk, role_fk)
-)
+);
+    
+CREATE TABLE t_access_token(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    user_fk BIGINT NOT NULL REFERENCES t_user(id),
+    domain_fk BIGINT NOT NULL REFERENCES t_domain(id),
+
+    from_date DATETIME,
+    to_date DATETIME,
+    expiry_date DATETIME NOT NULL,
+
+    expired BIT(1),
+    user_agent VARCHAR(2048),
+    remote_ip VARCHAR(50)
+);

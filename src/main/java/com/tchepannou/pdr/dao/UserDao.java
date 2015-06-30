@@ -5,6 +5,8 @@ import com.tchepannou.pdr.domain.User;
 public interface UserDao {
     User findById (long id);
 
+    User findByLogin (String login);
+
     User findByParty (long partyId);
 
     long create (User user);

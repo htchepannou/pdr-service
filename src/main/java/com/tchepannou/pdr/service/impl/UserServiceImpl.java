@@ -27,7 +27,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByParty(long partyId) {
         User user = userDao.findByParty(partyId);
-        if (user == null || !user.isDeleted()){
+        if (user == null || user.isDeleted()){
+            throw new NotFoundException();
+        }
+        return user;
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        User user = userDao.findByLogin(login);
+        if (user == null || user.isDeleted()){
             throw new NotFoundException();
         }
         return user;
