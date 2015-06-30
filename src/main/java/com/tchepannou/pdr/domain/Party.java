@@ -97,5 +97,11 @@ public class Party extends Persistent {
         this.suffix = suffix;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

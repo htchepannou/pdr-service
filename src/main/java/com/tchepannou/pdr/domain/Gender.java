@@ -33,7 +33,7 @@ public enum Gender {
                         ? fromCode(text.toUpperCase().charAt(0))
                         : Enum.valueOf(Gender.class, text.toUpperCase());
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {  // NOSONAR
             return UNKNOWN;
         }
     }

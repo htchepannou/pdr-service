@@ -5,10 +5,9 @@ import com.tchepannou.pdr.domain.Gender;
 import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.domain.PartyKind;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
-public class PartyResponse implements Serializable{
+public class PartyResponse {
     //-- Attribute
     private long id;
     private PartyKind kind;

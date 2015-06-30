@@ -34,7 +34,7 @@ public class DomainUserServiceImpl implements DomainUserService {
         try {
             final long id = domainUserDao.create(domainUser);
             domainUser.setId(id);
-        } catch (DuplicateKeyException e) {
+        } catch (DuplicateKeyException e) { // NOSONAR
             DomainUser clone = findByDomainByUser(domainUser.getDomainId(), domainUser.getUserId(), domainUser.getRoleId());
             domainUser.setId(clone.getId());
         }

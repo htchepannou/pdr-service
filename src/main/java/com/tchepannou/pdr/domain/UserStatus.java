@@ -19,8 +19,6 @@ public enum UserStatus {
             return SUSPENDED;
         } else if (ACTIVE.code == xcode) {
             return ACTIVE;
-        } else if (SUSPENDED.code == xcode) {
-            return SUSPENDED;
         } else if (CREATED.code == xcode) {
             return CREATED;
         } else{
@@ -37,7 +35,7 @@ public enum UserStatus {
                         ? fromCode(text.toUpperCase().charAt(0))
                         : Enum.valueOf(UserStatus.class, text.toUpperCase());
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {  // NOSONAR
             return UNKNOWN;
         }
     }

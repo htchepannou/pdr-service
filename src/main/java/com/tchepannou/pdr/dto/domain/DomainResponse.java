@@ -4,9 +4,7 @@ import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Domain;
 import com.tchepannou.pdr.util.DateUtils;
 
-import java.io.Serializable;
-
-public class DomainResponse implements Serializable{
+public class DomainResponse {
     //-- Attributes
     private final long id;
     private final String name;

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class PermissionListResponse {
     //-- Attributes
-    private final List<PermissionResponse> permissions;
+    private final List<PermissionResponse> permissions; // NOSONAR
 
     //-- Constructor
     private PermissionListResponse(Builder builder){

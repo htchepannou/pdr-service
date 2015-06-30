@@ -38,7 +38,7 @@ public enum PartyKind {
                         ? fromCode(text.toUpperCase().charAt(0))
                         : Enum.valueOf(PartyKind.class, text.toUpperCase());
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {  // NOSONAR
             return UNKNOWN;
         }
     }

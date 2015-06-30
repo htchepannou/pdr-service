@@ -37,6 +37,7 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
             public Party mapRow(final ResultSet rs, final int i) throws SQLException {
                 final Party domain = new Party ();
                 domain.setId(rs.getLong("id"));
+                domain.setDeleted(rs.getBoolean("deleted"));
                 domain.setName(rs.getString("name"));
                 domain.setFirstName(rs.getString("first_name"));
                 domain.setLastName(rs.getString("last_name"));

@@ -3,12 +3,11 @@ package com.tchepannou.pdr.dto.domain;
 import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.Domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DomainListResponse implements Serializable{
+public class DomainListResponse {
     //-- Attributes
     private final List<DomainResponse> domains;
 
