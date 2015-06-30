@@ -41,12 +41,12 @@ public class RoleController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{roleId}")
     @ApiOperation("Find a role by ID")
-    public RoleResponse findById(@PathVariable final long id) {
-        final Role role = roleService.findById(id);
+    public RoleResponse findById(@PathVariable final long roleId) {
+        final Role role = roleService.findById(roleId);
         if (role == null) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(roleId);
         }
 
         return new RoleResponse.Builder()
@@ -54,10 +54,10 @@ public class RoleController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/{id}/permissions")
+    @RequestMapping(method = RequestMethod.GET, value="/{roleId}/permissions")
     @ApiOperation("Returns all the permissions of a given role")
-    public PermissionListResponse findPermissions(@PathVariable final long id) {
-        final List<Permission> all = permissionService.findByRole(id);
+    public PermissionListResponse findPermissions(@PathVariable final long roleId) {
+        final List<Permission> all = permissionService.findByRole(roleId);
         return  new PermissionListResponse.Builder()
                 .withPermissions(all)
                 .build();

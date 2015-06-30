@@ -22,12 +22,12 @@ public class PartyController {
     private PartyService partyService;
 
     //-- REST methods
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{partyId}")
     @ApiOperation("Returns a Party")
-    public PartyResponse findById(@PathVariable final long id) {
-        final Party domain = partyService.findById(id);
+    public PartyResponse findById(@PathVariable final long partyId) {
+        final Party domain = partyService.findById(partyId);
         if (domain == null) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(partyId);
         }
 
         return new PartyResponse.Builder()

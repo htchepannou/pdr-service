@@ -27,12 +27,12 @@ public class UserController {
     private PasswordEncryptor passwordEncryptor;
 
     //-- REST methods
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
     @ApiOperation("Returns a User")
-    public UserResponse findById(@PathVariable final long id) {
-        final User user = userService.findById(id);
+    public UserResponse findById(@PathVariable final long userId) {
+        final User user = userService.findById(userId);
         if (user == null || user.isDeleted()) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(userId);
         }
 
         return new UserResponse.Builder()
@@ -55,10 +55,10 @@ public class UserController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/{userId}")
     @ApiOperation("Update a user's account")
-    public UserResponse update (@PathVariable final long id, @RequestBody final UpdateUserRequest request) {
-        final User user = userService.findById(id);
+    public UserResponse update (@PathVariable final long userId, @RequestBody final UpdateUserRequest request) {
+        final User user = userService.findById(userId);
 
         if (!Strings.isNullOrEmpty(request.getStatus())) {
             user.setStatus(UserStatus.fromText(request.getStatus()));
@@ -80,9 +80,9 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
     @ApiOperation("Delete a user account")
-    public void delete (@PathVariable final long id) {
-        userService.delete(id);
+    public void delete (@PathVariable final long userId) {
+        userService.delete(userId);
     }
 }
