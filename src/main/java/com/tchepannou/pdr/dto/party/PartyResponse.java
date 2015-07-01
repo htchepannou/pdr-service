@@ -207,6 +207,14 @@ public class PartyResponse {
         return suffix;
     }
 
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
     public Map<String, PartyElectronicAddressResponse> getEmailAddresses() {
         return emailAddresses;
     }

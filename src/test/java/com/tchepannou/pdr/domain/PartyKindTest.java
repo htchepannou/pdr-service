@@ -13,9 +13,6 @@ public class PartyKindTest {
         assertThat(PartyKind.fromCode('O')).isEqualTo(PartyKind.ORGANIZATION);
         assertThat(PartyKind.fromCode('o')).isEqualTo(PartyKind.ORGANIZATION);
 
-        assertThat(PartyKind.fromCode('H')).isEqualTo(PartyKind.HOUSEHOLD);
-        assertThat(PartyKind.fromCode('h')).isEqualTo(PartyKind.HOUSEHOLD);
-
         assertThat(PartyKind.fromCode('X')).isEqualTo(PartyKind.UNKNOWN);
     }
 
@@ -26,9 +23,6 @@ public class PartyKindTest {
 
         assertThat(PartyKind.fromText("ORGANIZATION")).isEqualTo(PartyKind.ORGANIZATION);
         assertThat(PartyKind.fromText("ORGANIZATion")).isEqualTo(PartyKind.ORGANIZATION);
-
-        assertThat(PartyKind.fromText("HOUSEHOLD")).isEqualTo(PartyKind.HOUSEHOLD);
-        assertThat(PartyKind.fromText("HOUSEHOLd")).isEqualTo(PartyKind.HOUSEHOLD);
 
         assertThat(PartyKind.fromText("?unknown???")).isEqualTo(PartyKind.UNKNOWN);
     }
@@ -41,9 +35,6 @@ public class PartyKindTest {
 
         assertThat(PartyKind.fromText("O")).isEqualTo(PartyKind.ORGANIZATION);
         assertThat(PartyKind.fromText("o")).isEqualTo(PartyKind.ORGANIZATION);
-
-        assertThat(PartyKind.fromText("H")).isEqualTo(PartyKind.HOUSEHOLD);
-        assertThat(PartyKind.fromText("h")).isEqualTo(PartyKind.HOUSEHOLD);
 
         assertThat(PartyKind.fromText("?")).isEqualTo(PartyKind.UNKNOWN);
     }

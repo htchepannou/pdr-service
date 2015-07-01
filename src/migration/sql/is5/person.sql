@@ -4,6 +4,17 @@ INSERT INTO pdr.t_party(id, deleted, kind, name, from_date)
 
 UPDATE pdr.t_party P
   JOIN is5.pattr A ON P.id=A.pattr_party_fk
+SET P.birth_date=STR_TO_DATE(A.pattr_value, '%Y/%c/%d')
+WHERE A.pattr_name in ('birth_date', 'birthdate') AND A.pattr_value REGEXP '^[0-9]{4}/[0-9]{2}/[0-9]{2}$';
+
+UPDATE pdr.t_party P
+  JOIN is5.pattr A ON P.id=A.pattr_party_fk
+SET P.birth_date=STR_TO_DATE(A.pattr_value, '%Y-%c-%d')
+WHERE A.pattr_name in ('birth_date', 'birthdate') AND A.pattr_value REGEXP '^[0-9]{4}-[0-9]{2}-[0-9]{2}$';
+
+
+UPDATE pdr.t_party P
+  JOIN is5.pattr A ON P.id=A.pattr_party_fk
 SET P.gender=A.pattr_value
 WHERE A.pattr_name='gender';
 

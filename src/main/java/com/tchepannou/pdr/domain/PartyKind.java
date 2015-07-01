@@ -3,7 +3,6 @@ package com.tchepannou.pdr.domain;
 public enum PartyKind {
     PERSON('P'),
     ORGANIZATION('O'),
-    HOUSEHOLD('H'),
     UNKNOWN('?');
 
     private char code;
@@ -22,8 +21,6 @@ public enum PartyKind {
             return PERSON;
         } else if (ORGANIZATION.code == xcode) {
             return ORGANIZATION;
-        } else if (HOUSEHOLD.code == xcode) {
-            return HOUSEHOLD;
         } else {
             return UNKNOWN;
         }
