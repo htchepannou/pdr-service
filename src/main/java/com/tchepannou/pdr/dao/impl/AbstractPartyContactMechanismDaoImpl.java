@@ -13,11 +13,11 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
-public abstract class AbstractPartyContactMechanismDao<T extends PartyContactMecanism>
+public abstract class AbstractPartyContactMechanismDaoImpl<T extends PartyContactMecanism>
         extends JdbcTemplate
         implements com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao<T>
 {
-    public AbstractPartyContactMechanismDao(final DataSource dataSource) {
+    public AbstractPartyContactMechanismDaoImpl(final DataSource dataSource) {
         super(dataSource);
     }
 
@@ -27,6 +27,7 @@ public abstract class AbstractPartyContactMechanismDao<T extends PartyContactMec
     protected abstract T createPartyContactMechanism();
 
     //-- Public
+    @Override
     public T findById(final long id) {
         try {
             return queryForObject(
@@ -38,8 +39,8 @@ public abstract class AbstractPartyContactMechanismDao<T extends PartyContactMec
             return null;
         }
     }
-    
-    
+
+    @Override
     public List<T> findByParty(final long partyId) {
         return query(
                 "SELECT * FROM t_party_contact_mechanism WHERE party_fk=? AND " + getContactColumn() + " IS NOT NULL",
@@ -48,6 +49,7 @@ public abstract class AbstractPartyContactMechanismDao<T extends PartyContactMec
         );
     }
 
+    @Override
     public long create(final T address) {
         final KeyHolder holder = new GeneratedKeyHolder();
         update(new PreparedStatementCreator() {

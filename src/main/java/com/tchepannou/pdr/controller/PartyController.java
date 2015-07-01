@@ -241,7 +241,7 @@ public class PartyController {
         ElectronicAddress electronicAddress;
         try {
             electronicAddress = electronicAddressService.findByHash(hash);
-        } catch (NotFoundException e) {
+        } catch (NotFoundException e) { // NOSONAR
             electronicAddress = new ElectronicAddress();
             electronicAddress.setAddress(address);
             electronicAddressService.create(electronicAddress);

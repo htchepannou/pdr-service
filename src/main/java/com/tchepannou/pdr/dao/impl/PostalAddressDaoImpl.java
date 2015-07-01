@@ -34,6 +34,7 @@ public class PostalAddressDaoImpl extends AbstractContactMechanismDaoImpl<Postal
         return ps;
     }
 
+    @Override
     protected RowMapper<PostalAddress> getRowMapper (){
         return new RowMapper<PostalAddress>() {
             @Override

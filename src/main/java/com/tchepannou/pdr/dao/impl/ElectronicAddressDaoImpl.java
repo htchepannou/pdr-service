@@ -29,6 +29,7 @@ public class ElectronicAddressDaoImpl extends AbstractContactMechanismDaoImpl<El
         return ps;
     }
 
+    @Override
     protected RowMapper<ElectronicAddress> getRowMapper (){
         return new RowMapper<ElectronicAddress>() {
             @Override

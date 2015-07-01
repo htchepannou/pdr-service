@@ -5,7 +5,7 @@ import com.tchepannou.pdr.domain.PartyElectronicAddress;
 
 import javax.sql.DataSource;
 
-public class PartyElectronicAddressDaoImpl extends AbstractPartyContactMechanismDao<PartyElectronicAddress> implements PartyElectronicAddressDao {
+public class PartyElectronicAddressDaoImpl extends AbstractPartyContactMechanismDaoImpl<PartyElectronicAddress> implements PartyElectronicAddressDao {
     public PartyElectronicAddressDaoImpl(DataSource dataSource) {
         super(dataSource);
     }
