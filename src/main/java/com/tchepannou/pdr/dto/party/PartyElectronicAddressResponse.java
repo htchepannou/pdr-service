@@ -15,10 +15,10 @@ public class PartyElectronicAddressResponse {
 
     private PartyElectronicAddressResponse (final Builder builder){
         final PartyElectronicAddress partyElectronicAddress = builder.partyElectronicAddress;
-        final Privacy privacy = partyElectronicAddress.getPrivacy();
+        final Privacy aPrivacy = partyElectronicAddress.getPrivacy();
         this.id = partyElectronicAddress.getId();
         this.noSolicitation = partyElectronicAddress.isNoSolicitation();
-        this.privacy = privacy != null ? privacy.toString() : null;
+        this.privacy = aPrivacy != null ? aPrivacy.toString() : null;
 
         this.purpose = builder.contactMechanismPurpose != null ? builder.contactMechanismPurpose.getName() : null;
 

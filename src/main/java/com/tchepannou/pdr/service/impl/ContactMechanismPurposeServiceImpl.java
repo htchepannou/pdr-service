@@ -21,7 +21,7 @@ public class ContactMechanismPurposeServiceImpl implements ContactMechanismPurpo
         return purpose;
     }
 
-    @Deprecated
+    @Override
     public ContactMechanismPurpose findByName(final String name) {
         ContactMechanismPurpose purpose = name != null ? dao.findByName(name) : null;
         if (purpose == null){

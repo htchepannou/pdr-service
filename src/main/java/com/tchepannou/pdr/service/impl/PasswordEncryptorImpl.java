@@ -19,7 +19,7 @@ public class PasswordEncryptorImpl implements PasswordEncryptor {
         try {
             return password != null ? hash(password, null) : null;
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Encryption algorithm not supported");
+            throw new IllegalStateException("Encryption algorithm not supported", e);
         }
     }
 
@@ -58,7 +58,7 @@ public class PasswordEncryptorImpl implements PasswordEncryptor {
             // If the computed hash matches the specified hash,
             // the plain text value must be correct.
             return storedHashedPassword.equals(expectedHashString);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {  // NOSONAR
             return false;
         }
     }
@@ -107,8 +107,7 @@ public class PasswordEncryptorImpl implements PasswordEncryptor {
         }
 
         // Convert result into a base64-encoded string.
-        String hashValue = new String(new Base64().encode(hashWithSaltBytes));
-        return hashValue;
+        return new String(new Base64().encode(hashWithSaltBytes));
     }
 
 }
