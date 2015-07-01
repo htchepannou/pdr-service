@@ -34,20 +34,24 @@ public class PartyDaoImpl extends JdbcTemplate implements PartyDao {
         return new RowMapper<Party>() {
             @Override
             public Party mapRow(final ResultSet rs, final int i) throws SQLException {
-                final Party domain = new Party ();
-                domain.setId(rs.getLong("id"));
-                domain.setDeleted(rs.getBoolean("deleted"));
-                domain.setName(rs.getString("name"));
-                domain.setFirstName(rs.getString("first_name"));
-                domain.setLastName(rs.getString("last_name"));
-                domain.setPrefix(rs.getString("prefix"));
-                domain.setSuffix(rs.getString("suffix"));
-                domain.setBirthDate(rs.getDate("birth_date"));
-                domain.setHeigth(rs.getInt("height"));
-                domain.setWeight(rs.getInt("weight"));
-                domain.setGender(Gender.fromText(rs.getString ("gender")));
-                domain.setKind(PartyKind.fromText(rs.getString("kind")));
-                return domain;
+                final Party obj = new Party ();
+                obj.setId(rs.getLong("id"));
+
+                obj.setDeleted(rs.getBoolean("deleted"));
+                obj.setFromDate(rs.getTimestamp("from_date"));
+                obj.setToDate(rs.getTimestamp("to_date"));
+
+                obj.setName(rs.getString("name"));
+                obj.setFirstName(rs.getString("first_name"));
+                obj.setLastName(rs.getString("last_name"));
+                obj.setPrefix(rs.getString("prefix"));
+                obj.setSuffix(rs.getString("suffix"));
+                obj.setBirthDate(rs.getDate("birth_date"));
+                obj.setHeigth(rs.getInt("height"));
+                obj.setWeight(rs.getInt("weight"));
+                obj.setGender(Gender.fromText(rs.getString("gender")));
+                obj.setKind(PartyKind.fromText(rs.getString("kind")));
+                return obj;
             }
         };
     }

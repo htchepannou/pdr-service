@@ -13,17 +13,20 @@ import java.util.stream.Collectors;
 
 public class PartyResponse {
     //-- Attribute
-    private long id;
-    private PartyKind kind;
-    private String name;
-    private String firstName;
-    private String lastName;
-    private String birthDate;
-    private Gender gender;
-    private int heigth;
-    private int weight;
-    private String prefix;
-    private String suffix;
+    private final long id;
+    private final PartyKind kind;
+    private final String name;
+    private final String firstName;
+    private final String lastName;
+    private final String birthDate;
+    private final Gender gender;
+    private final int heigth;
+    private final int weight;
+    private final String prefix;
+    private final String suffix;
+    private final String fromDate;
+    private final String toDate;
+
     private Map<String, PartyElectronicAddressResponse> emailAddresses;
     private Map<String, PartyElectronicAddressResponse> webAddresses;
 
@@ -41,6 +44,8 @@ public class PartyResponse {
         this.weight = party.getWeight();
         this.prefix = party.getPrefix();
         this.suffix = party.getSuffix();
+        this.fromDate  = DateUtils.asString(party.getFromDate());
+        this.toDate  = DateUtils.asString(party.getToDate());
 
         addElectronicAddresses(
                 builder.electronicAddresses,

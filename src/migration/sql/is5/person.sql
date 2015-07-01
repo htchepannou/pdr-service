@@ -1,5 +1,5 @@
-INSERT INTO pdr.t_party(id, deleted, kind, name)
-    SELECT party_id, party_deleted, 'P', party_id FROM is5.party WHERE party_type_fk=1;
+INSERT INTO pdr.t_party(id, deleted, kind, name, from_date)
+    SELECT party_id, party_deleted, 'P', party_id, party_creation_date FROM is5.party WHERE party_type_fk=1;
 
 
 UPDATE pdr.t_party P

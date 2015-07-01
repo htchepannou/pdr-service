@@ -15,6 +15,8 @@ public class Party extends Persistent {
     private int heigth;
     private int weight;
     private boolean deleted;
+    private Date fromDate;
+    private Date toDate;
 
     //-- Getter/Setter
     public PartyKind getKind() {
@@ -103,5 +105,21 @@ public class Party extends Persistent {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
 }
