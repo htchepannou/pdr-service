@@ -1,6 +1,5 @@
 package com.tchepannou.pdr.dao.impl;
 
-import com.tchepannou.pdr.dao.PartyContactMechanismDao;
 import com.tchepannou.pdr.domain.PartyContactMecanism;
 import com.tchepannou.pdr.domain.Privacy;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public abstract class AbstractPartyContactMechanismDao<T extends PartyContactMecanism>
         extends JdbcTemplate
-        implements PartyContactMechanismDao<T>
+        implements com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao<T>
 {
     public AbstractPartyContactMechanismDao(final DataSource dataSource) {
         super(dataSource);

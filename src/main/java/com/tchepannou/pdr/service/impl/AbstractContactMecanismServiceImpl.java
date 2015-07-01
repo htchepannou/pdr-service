@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.service.impl;
 
-import com.tchepannou.pdr.dao.ContactMechanismDao;
+import com.tchepannou.pdr.dao.AbstractContactMechanismDao;
 import com.tchepannou.pdr.domain.ContactMechanism;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractContactMechanismService;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechanism> implements AbstractContactMechanismService<T> {
     //-- Abstract
-    protected abstract ContactMechanismDao<T> getDao ();
+    protected abstract AbstractContactMechanismDao<T> getDao ();
 
     //-- AbstractContactMechanismService overrides
     @Override

@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.service.impl;
 
-import com.tchepannou.pdr.dao.ContactMechanismDao;
+import com.tchepannou.pdr.dao.AbstractContactMechanismDao;
 import com.tchepannou.pdr.dao.ElectronicAddressDao;
 import com.tchepannou.pdr.domain.ElectronicAddress;
 import com.tchepannou.pdr.service.ElectronicAddressService;
@@ -11,7 +11,7 @@ public class ElectronicAddressServiceImpl extends AbstractContactMecanismService
     private ElectronicAddressDao dao;
 
     @Override
-    protected ContactMechanismDao<ElectronicAddress> getDao() {
+    protected AbstractContactMechanismDao<ElectronicAddress> getDao() {
         return dao;
     }
 }

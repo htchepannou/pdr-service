@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.dao.impl;
 
-import com.tchepannou.pdr.dao.ContactMechanismDao;
+import com.tchepannou.pdr.dao.AbstractContactMechanismDao;
 import com.tchepannou.pdr.domain.ContactMechanism;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public abstract class AbstractContactMechanismDaoImpl<T extends ContactMechanism>
         extends JdbcTemplate
-        implements ContactMechanismDao<T>
+        implements AbstractContactMechanismDao<T>
 {
     public AbstractContactMechanismDaoImpl(final DataSource dataSource) {
         super(dataSource);
@@ -33,7 +33,7 @@ public abstract class AbstractContactMechanismDaoImpl<T extends ContactMechanism
     protected abstract PreparedStatement preparedStatement(T address, Connection connection) throws SQLException;
 
 
-    //-- ContactMechanismDao overrides
+    //-- AbstractContactMechanismDao overrides
     @Override
     public T findByHash (String hash) {
         try {

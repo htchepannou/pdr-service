@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.service.impl;
 
-import com.tchepannou.pdr.dao.ContactMechanismDao;
+import com.tchepannou.pdr.dao.AbstractContactMechanismDao;
 import com.tchepannou.pdr.dao.PostalAddressDao;
 import com.tchepannou.pdr.domain.PostalAddress;
 import com.tchepannou.pdr.service.PostalAddressService;
@@ -11,7 +11,7 @@ public class PostalAddressServiceImpl extends AbstractContactMecanismServiceImpl
     private PostalAddressDao dao;
 
     @Override
-    protected ContactMechanismDao<PostalAddress> getDao() {
+    protected AbstractContactMechanismDao<PostalAddress> getDao() {
         return dao;
     }
 }

@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.service.impl;
 
-import com.tchepannou.pdr.dao.PartyContactMechanismDao;
+import com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao;
 import com.tchepannou.pdr.dao.PartyElectronicAddressDao;
 import com.tchepannou.pdr.domain.PartyElectronicAddress;
 import com.tchepannou.pdr.service.PartyElectronicAddressService;
@@ -11,7 +11,7 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
     private PartyElectronicAddressDao dao;
 
     @Override
-    protected PartyContactMechanismDao<PartyElectronicAddress> getDao() {
+    protected AbstractPartyContactMechanismDao<PartyElectronicAddress> getDao() {
         return dao;
     }
 }
