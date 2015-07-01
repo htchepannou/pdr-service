@@ -115,6 +115,24 @@ public class PartyControllerIT {
     }
 
     @Test
+    public void test_addElectronicAddress_badPartyId () {
+        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/9999/e-address/121")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_updateElectronicAddress () {
         final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
@@ -137,6 +155,23 @@ public class PartyControllerIT {
     }
 
     @Test
+    public void test_updateElectronicAddress_badPartyId () {
+        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/9999/e-address/121")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+    }
+    @Test
     public void test_deleteElectronicAddress () {
         final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
@@ -155,6 +190,24 @@ public class PartyControllerIT {
 
         PartyElectronicAddress address = partyElectronicAddressDao.findById(121);
         assertThat(address).isNull();
+    }
+
+    @Test
+    public void test_deleteElectronicAddress_badPartyId () {
+        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .delete("/api/parties/9999/e-address/121")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
     }
 
     //-- Attribute

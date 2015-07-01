@@ -262,7 +262,7 @@ public class DomainControllerIT {
             .log()
                 .all()
             .body("roles.id", contains(400, 401))
-            .body("roles.name", contains("admin", "member"))
+            .body("roles.name", contains("admin400", "member400"))
         ;
         // @formatter:on
     }
