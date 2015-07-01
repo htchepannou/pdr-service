@@ -108,12 +108,12 @@ CREATE TABLE t_paddress(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
     hash VARCHAR(32) NOT NULL UNIQUE,
-    street1 VARCHAR(50) NOT NULL,
-    street2 VARCHAR(50) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    zip VARCHAR(50) NOT NULL,
-    state_code VARCHAR(20) NOT NULL,
-    country_code VARCHAR(2) NOT NULL
+    street1 VARCHAR(100),
+    street2 VARCHAR(100),
+    city VARCHAR(50),
+    zip_code VARCHAR(30),
+    state_code VARCHAR(30),
+    country_code VARCHAR(3)
 );
 
 CREATE TABLE t_party_contact_mechanism(

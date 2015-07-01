@@ -12,6 +12,7 @@ delete from t_role;
 delete from t_permission;
 
 delete from t_eaddress;
+delete from t_paddress;
 delete from t_contact_mechanism_type;
 delete from t_contact_mechanism_purpose;
 

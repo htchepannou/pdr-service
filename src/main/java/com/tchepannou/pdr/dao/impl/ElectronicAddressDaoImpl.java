@@ -36,7 +36,7 @@ public class ElectronicAddressDaoImpl extends AbstractContactMechanismDaoImpl<El
                 final ElectronicAddress obj = new ElectronicAddress();
                 obj.setId(rs.getLong("id"));
                 obj.setAddress(rs.getString("address"));
-                obj.setHash(rs.getString("computeHash"));
+                obj.setHash(rs.getString("hash"));
                 return obj;
             }
         };

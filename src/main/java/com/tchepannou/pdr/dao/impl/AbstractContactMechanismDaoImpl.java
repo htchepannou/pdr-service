@@ -53,7 +53,7 @@ public abstract class AbstractContactMechanismDaoImpl<T extends ContactMechanism
             return Collections.emptyList();
         }
 
-        final StringBuilder sql = new StringBuilder("SELECT * FROM t_eaddress WHERE id IN (");
+        final StringBuilder sql = new StringBuilder("SELECT * FROM " + getTableName() + " WHERE id IN (");
         for (int i=0, size=ids.size() ; i<size ; i++) {
             if (i>0){
                 sql.append(',');

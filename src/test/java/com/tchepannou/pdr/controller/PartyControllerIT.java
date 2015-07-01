@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -91,6 +92,54 @@ public class PartyControllerIT {
         ;
         // @formatter:on
     }
+
+    @Test
+    public void test_contacts () {
+        // @formatter:off
+        when()
+            .get("/api/parties/100/contacts")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+            .body("emailAddresses.id", hasItems(101, 102))
+            .body("emailAddresses.noSolicitation", hasItems(false, true))
+            .body("emailAddresses.privacy", hasItems("PUBLIC", "HIDDEN"))
+            .body("emailAddresses.purpose", hasItems("primary", "secondary"))
+            .body("emailAddresses.address", hasItems("ray.sponsible@gmail.com", "ray.sponsible@hotmail.com"))
+
+            .body("webAddresses.id", hasItems(121, 122))
+            .body("webAddresses.noSolicitation", hasItems(false, false))
+            .body("webAddresses.privacy", hasItems("PUBLIC", "PUBLIC"))
+            .body("webAddresses.purpose", hasItems("website", "facebook"))
+            .body("webAddresses.address", hasItems("http://ray.sponsible.com", "https://facebook.com/ray_sponsible"))
+
+            .body("postalAddresses.id", hasItems(131))
+            .body("postalAddresses.noSolicitation", hasItems(false))
+            .body("postalAddresses.privacy", hasItems("PUBLIC"))
+            .body("postalAddresses.purpose", hasItems("postal"))
+            .body("postalAddresses.street1", hasItems("3030 Linton"))
+            .body("postalAddresses.city", hasItems("Montreal"))
+            .body("postalAddresses.stateCode", hasItems("QC"))
+            .body("postalAddresses.zipCode", hasItems("H1K 1H3"))
+            .body("postalAddresses.countryCode", hasItems("CAN"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_contacts_badId (){
+        // @formatter:off
+        when()
+            .get("/api/parties/99999/contacts")
+        .then()
+            .statusCode(HttpStatus.SC_NOT_FOUND)
+            .log()
+                .all()
+        ;
+        // @formatter:on
+    }
+
 
     @Test
     public void test_addElectronicAddress () {

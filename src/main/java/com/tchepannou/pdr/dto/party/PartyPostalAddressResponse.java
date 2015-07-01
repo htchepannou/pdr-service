@@ -10,7 +10,7 @@ public class PartyPostalAddressResponse extends AbstractPartyContactMechanismRes
     private String street2;
     private String city;
     private String stateCode;
-    private String zip;
+    private String zipCode;
     private String countryCode;
 
     private PartyPostalAddressResponse(final Builder builder){
@@ -20,7 +20,7 @@ public class PartyPostalAddressResponse extends AbstractPartyContactMechanismRes
         this.street2 = builder.postalAddress.getStreet2();
         this.city = builder.postalAddress.getCity();
         this.stateCode = builder.postalAddress.getStateCode();
-        this.zip = builder.postalAddress.getZip();
+        this.zipCode = builder.postalAddress.getZipCode();
         this.countryCode = builder.postalAddress.getCountryCode();
     }
 
@@ -40,8 +40,8 @@ public class PartyPostalAddressResponse extends AbstractPartyContactMechanismRes
         return stateCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getZipCode() {
+        return zipCode;
     }
 
     public String getCountryCode() {

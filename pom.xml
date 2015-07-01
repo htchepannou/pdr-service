@@ -383,7 +383,8 @@
                                         <srcFile>src/migration/sql/is5/person.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/organization.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/user.sql</srcFile>
-                                        <srcFile>src/migration/sql/is5/contact_mechanism.sql</srcFile>
+                                        <srcFile>src/migration/sql/is5/address_electronic.sql</srcFile>
+                                        <srcFile>src/migration/sql/is5/address_postal.sql</srcFile>
                                     </srcFiles>
                                 </configuration>
                             </execution>

@@ -2,7 +2,7 @@ package com.tchepannou.pdr.dto.party;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class CreatePartyPostalAddressResquest extends PartyPostalAddressResquest{
+public class CreatePartyPostalAddressRequest extends PartyPostalAddressResquest{
     //-- Attributes
     @NotBlank (message = "type")
     private String type;

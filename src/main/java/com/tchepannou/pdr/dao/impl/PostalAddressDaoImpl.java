@@ -22,14 +22,14 @@ public class PostalAddressDaoImpl extends AbstractContactMechanismDaoImpl<Postal
 
     @Override
     protected PreparedStatement preparedStatement(final PostalAddress address, final Connection connection) throws SQLException {
-        final String sql = "INSERT INTO t_paddress(hash, street1, street2, city, state_code, zip, country_code) VALUES(?,?,?,?,?,?,?)";
+        final String sql = "INSERT INTO t_paddress(hash, street1, street2, city, state_code, zip_code, country_code) VALUES(?,?,?,?,?,?,?)";
         final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
         ps.setString(1, address.getHash());
         ps.setString(2, address.getStreet1());
         ps.setString(3, address.getStreet2());
         ps.setString(4, address.getCity());
         ps.setString(5, address.getStateCode());
-        ps.setString(6, address.getZip());
+        ps.setString(6, address.getZipCode());
         ps.setString(7, address.getCountryCode());
         return ps;
     }
@@ -40,12 +40,12 @@ public class PostalAddressDaoImpl extends AbstractContactMechanismDaoImpl<Postal
             public PostalAddress mapRow(final ResultSet rs, final int i) throws SQLException {
                 final PostalAddress obj = new PostalAddress();
                 obj.setId(rs.getLong("id"));
-                obj.setHash(rs.getString("computeHash"));
+                obj.setHash(rs.getString("hash"));
                 obj.setStreet1(rs.getString("street1"));
                 obj.setStreet2(rs.getString("street2"));
                 obj.setCity(rs.getString("city"));
                 obj.setStateCode(rs.getString("state_code"));
-                obj.setZip(rs.getString("zip"));
+                obj.setZipCode(rs.getString("zip_code"));
                 obj.setCountryCode(rs.getString("country_code"));
                 return obj;
             }

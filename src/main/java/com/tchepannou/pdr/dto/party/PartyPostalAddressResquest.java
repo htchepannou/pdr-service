@@ -6,7 +6,7 @@ public class PartyPostalAddressResquest extends AbstractPartyContactMechanismRes
     private String street2;
     private String city;
     private String stateCode;
-    private String zip;
+    private String zipCode;
     private String countryCode;
 
     //-- Getter/Setter
@@ -42,12 +42,12 @@ public class PartyPostalAddressResquest extends AbstractPartyContactMechanismRes
         this.stateCode = stateCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getCountryCode() {

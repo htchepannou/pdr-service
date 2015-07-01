@@ -10,7 +10,7 @@ public class PostalAddress extends ContactMechanism {
     private String street2;
     private String city;
     private String stateCode;
-    private String zip;
+    private String zipCode;
     private String countryCode;
     private transient String hash;
 
@@ -20,14 +20,20 @@ public class PostalAddress extends ContactMechanism {
             final String street2,
             final String city,
             final String stateCode,
-            final String zip,
+            final String zipCode,
             final String countryCode
     ){
         String str = Joiner
-                .on("")
-                .skipNulls()
-                .join(street1, street2, city, stateCode, zip, countryCode);
-        return Strings.isNullOrEmpty(str) ? null : DigestUtils.md5Hex(str);
+                .on('-')
+                .join(
+                    Strings.nullToEmpty(street1),
+                    Strings.nullToEmpty(street2),
+                    Strings.nullToEmpty(city),
+                    Strings.nullToEmpty(stateCode),
+                    Strings.nullToEmpty(zipCode),
+                    Strings.nullToEmpty(countryCode)
+                );
+        return Strings.isNullOrEmpty(str) ? null : DigestUtils.md5Hex(str.toLowerCase());
     }
 
     //-- Getter/Setter
@@ -63,12 +69,12 @@ public class PostalAddress extends ContactMechanism {
         this.stateCode = stateCode;
     }
 
-    public String getZip() {
-        return zip;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getCountryCode() {
@@ -81,7 +87,7 @@ public class PostalAddress extends ContactMechanism {
 
     public String getHash() {
         if (hash == null){
-            hash = computeHash(street1, street2, city, stateCode, zip, countryCode);
+            hash = computeHash(street1, street2, city, stateCode, zipCode, countryCode);
         }
         return hash;
     }
