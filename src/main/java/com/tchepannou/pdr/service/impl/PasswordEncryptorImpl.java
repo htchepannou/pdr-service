@@ -36,26 +36,26 @@ public class PasswordEncryptorImpl implements PasswordEncryptor {
 
             byte[] hashWithSaltBytes = new Base64().decode(storedHashedPassword.getBytes());
 
-            // We must know size of hash (without salt).
+            // We must know size of computeHash (without salt).
             final int hashSizeInBytes = 16;
 
-            // Make sure that the specified hash value is long enough.
+            // Make sure that the specified computeHash value is long enough.
             if (hashWithSaltBytes.length < hashSizeInBytes) {
                 return false;
             }
 
-            // Allocate array to hold original salt bytes retrieved from hash.
+            // Allocate array to hold original salt bytes retrieved from computeHash.
             byte[] saltBytes = new byte[hashWithSaltBytes.length - hashSizeInBytes];
 
-            // Copy salt from the end of the hash to the new array.
+            // Copy salt from the end of the computeHash to the new array.
             for (int i = 0; i < saltBytes.length; i++) {
                 saltBytes[i] = hashWithSaltBytes[hashSizeInBytes + i];
             }
 
-            // Compute a new hash string.
+            // Compute a new computeHash string.
             String expectedHashString = hash(plainText, saltBytes);
 
-            // If the computed hash matches the specified hash,
+            // If the computed computeHash matches the specified computeHash,
             // the plain text value must be correct.
             return storedHashedPassword.equals(expectedHashString);
         } catch (NoSuchAlgorithmException e) {  // NOSONAR
@@ -93,10 +93,10 @@ public class PasswordEncryptorImpl implements PasswordEncryptor {
         md.update(plainTextWithSaltBytes);
         plainTextWithSaltBytes = md.digest();
 
-        // Create array which will hold hash and original salt bytes.
+        // Create array which will hold computeHash and original salt bytes.
         byte[] hashWithSaltBytes = new byte[plainTextWithSaltBytes.length + saltBytes.length];
 
-        // Copy hash bytes into resulting array.
+        // Copy computeHash bytes into resulting array.
         for (int i = 0; i < plainTextWithSaltBytes.length; i++) {
             hashWithSaltBytes[i] = plainTextWithSaltBytes[i];
         }

@@ -40,7 +40,7 @@ public class PostalAddressDaoImpl extends AbstractContactMechanismDaoImpl<Postal
             public PostalAddress mapRow(final ResultSet rs, final int i) throws SQLException {
                 final PostalAddress obj = new PostalAddress();
                 obj.setId(rs.getLong("id"));
-                obj.setHash(rs.getString("hash"));
+                obj.setHash(rs.getString("computeHash"));
                 obj.setStreet1(rs.getString("street1"));
                 obj.setStreet2(rs.getString("street2"));
                 obj.setCity(rs.getString("city"));

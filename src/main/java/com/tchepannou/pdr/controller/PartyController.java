@@ -1,10 +1,7 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.*;
-import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressResquest;
-import com.tchepannou.pdr.dto.party.PartyElectronicAddressResponse;
-import com.tchepannou.pdr.dto.party.PartyElectronicAddressResquest;
-import com.tchepannou.pdr.dto.party.PartyResponse;
+import com.tchepannou.pdr.dto.party.*;
 import com.tchepannou.pdr.exception.BadRequestException;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.*;
@@ -38,27 +35,67 @@ public class PartyController {
     @Autowired
     private PartyElectronicAddressService partyElectronicAddressService;
 
+    @Autowired
+    private PostalAddressService postalAddressService;
+
+    @Autowired
+    private PartyPostalAddressService partyPostalAddressService;
+
 
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{partyId}")
-    @ApiOperation("Returns a Party")
+    @ApiOperation("Returns a Party ")
     public PartyResponse findById(@PathVariable final long partyId) {
         final Party party = partyService.findById(partyId);
         if (party == null || party.isDeleted()) {
             throw new NotFoundException(partyId);
         }
 
-        PartyResponse.Builder builder = new PartyResponse
+        return new PartyResponse
                 .Builder()
-                .withParty(party);
-
-        withElectronicAddresses(party, builder);
-
-        return builder.build();
+                .withParty(party)
+                .build();
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/{partyId}/contacts")
+    @ApiOperation("Returns a Party contacts mechanisms")
+    public ContactMechanismListResponse contacts(@PathVariable final long partyId) {
+        final Party party = partyService.findById(partyId);
+        if (party == null || party.isDeleted()) {
+            throw new NotFoundException(partyId);
+        }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/e-address")
+        /* electronic addresses */
+        final List<PartyElectronicAddress> partyElectronicAddresses = partyElectronicAddressService.findByParty(party.getId());
+
+        final List<Long> electronicAddressIds = partyElectronicAddresses.stream()
+                .map(PartyElectronicAddress::getContactId)
+                .collect(Collectors.toList());
+
+        final List<ElectronicAddress> electronicAddresses = electronicAddressService.findByIds(electronicAddressIds);
+        
+        /* postal addresses */
+        final List<PartyPostalAddress> partyPostalAddresses = partyPostalAddressService.findByParty(party.getId());
+
+        final List<Long> postalAddressIds = partyPostalAddresses.stream()
+                .map(PartyPostalAddress::getContactId)
+                .collect(Collectors.toList());
+
+        final List<PostalAddress> postalAddresses = postalAddressService.findByIds(postalAddressIds);
+
+        return new ContactMechanismListResponse
+                .Builder()
+                .withContactMechanismPurposeService(contactMechanismPurposeService)
+                .withContactMechanismTypeService(contactMechanismTypeService)
+                .withElectronicAddresses(electronicAddresses)
+                .withPartyElectronicAddresses(partyElectronicAddresses)
+                .withPostalAddresses(postalAddresses)
+                .withPartyPostalAddresses(partyPostalAddresses)
+                .build();
+    }
+    
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/e-addresses")
     @ApiOperation("Add an electronic address to a party")
     public PartyElectronicAddressResponse addElectronicAddress (
             @PathVariable final long partyId,
@@ -83,7 +120,7 @@ public class PartyController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/e-address/{eaddressId}")
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/e-addresses/{eaddressId}")
     @ApiOperation("Update an electronic address")
     public PartyElectronicAddressResponse updateElectronicAddress (
             @PathVariable final long partyId,
@@ -109,7 +146,7 @@ public class PartyController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/e-address/{eaddressId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/e-addresses/{eaddressId}")
     @ApiOperation("Delete an electronic address")
     public void deleteElectronicAddress (
             @PathVariable final long partyId,
@@ -136,7 +173,7 @@ public class PartyController {
     }
 
     private ElectronicAddress findElectronicAddress (String address) {
-        String hash = ElectronicAddress.hash(address);
+        String hash = ElectronicAddress.computeHash(address);
         ElectronicAddress electronicAddress;
         try {
             electronicAddress = electronicAddressService.findByHash(hash);
@@ -157,22 +194,5 @@ public class PartyController {
         partyElectronicAddress.setNoSolicitation(request.isNoSolicitation());
         partyElectronicAddress.setPurposeId(purpose != null ? 0 : purpose.getId());
         partyElectronicAddressService.update(partyElectronicAddress);
-
-    }
-
-    private void withElectronicAddresses (Party party, PartyResponse.Builder builder) {
-        final List<PartyElectronicAddress> partyElectronicAddresses = partyElectronicAddressService.findByParty(party.getId());
-
-        final List<Long> addressIds = partyElectronicAddresses.stream()
-                .map(PartyElectronicAddress::getContactId)
-                .collect(Collectors.toList());
-
-        final List<ElectronicAddress> electronicAddresses = electronicAddressService.findByIds(addressIds);
-
-        builder.withContactMechanismPurposeService(contactMechanismPurposeService)
-                .withContactMechanismTypeService(contactMechanismTypeService)
-                .withElectronicAddresses(electronicAddresses)
-                .withPartyElectronicAddresses(partyElectronicAddresses);
-
     }
 }

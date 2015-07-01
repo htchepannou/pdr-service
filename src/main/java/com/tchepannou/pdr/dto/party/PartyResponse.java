@@ -1,16 +1,10 @@
 package com.tchepannou.pdr.dto.party;
 
 import com.google.common.base.Preconditions;
-import com.tchepannou.pdr.domain.*;
-import com.tchepannou.pdr.service.ContactMechanismPurposeService;
-import com.tchepannou.pdr.service.ContactMechanismTypeService;
+import com.tchepannou.pdr.domain.Gender;
+import com.tchepannou.pdr.domain.Party;
+import com.tchepannou.pdr.domain.PartyKind;
 import com.tchepannou.pdr.util.DateUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PartyResponse {
     //-- Attribute
@@ -28,9 +22,6 @@ public class PartyResponse {
     private final String fromDate;
     private final String toDate;
 
-    private List<PartyElectronicAddressResponse> emailAddresses;
-    private List<PartyElectronicAddressResponse> webAddresses;
-
     //-- Constructor
     private PartyResponse(Builder builder) {
         final Party party = builder.party;
@@ -47,91 +38,12 @@ public class PartyResponse {
         this.suffix = party.getSuffix();
         this.fromDate  = DateUtils.asString(party.getFromDate());
         this.toDate  = DateUtils.asString(party.getToDate());
-
-        addElectronicAddresses(
-                builder.electronicAddresses,
-                builder.partyElectronicAddresses,
-                builder.contactMechanismTypeService,
-                builder.contactMechanismPurposeService
-        );
-
     }
 
-    private void addElectronicAddresses (
-            final List<ElectronicAddress> electronicAddressesById,
-            final List<PartyElectronicAddress> partyElectronicAddresses,
-            final ContactMechanismTypeService contactMechanismTypeService,
-            final ContactMechanismPurposeService contactMechanismPurposeService
-    ) {
-        final Map<Long, ElectronicAddress> electronicAddressMap = electronicAddressesById
-                .stream()
-                .collect(Collectors.toMap(ElectronicAddress::getId, elt -> elt));
-
-        final Map<PartyElectronicAddress, ElectronicAddress> electronicAddresses = new HashMap<>();
-        for (PartyElectronicAddress partyElectronicAddress : partyElectronicAddresses) {
-            final ElectronicAddress electronicAddress = electronicAddressMap.get(partyElectronicAddress.getContactId());
-            if (electronicAddress != null) {
-                electronicAddresses.put(partyElectronicAddress, electronicAddress);
-            }
-        }
-
-        addElectronicAddresses(
-                electronicAddresses,
-                contactMechanismTypeService,
-                contactMechanismPurposeService
-        );
-    }
-
-    private void addElectronicAddresses (
-            final Map<PartyElectronicAddress, ElectronicAddress> electronicAddresses,
-            final ContactMechanismTypeService contactMechanismTypeService,
-            final ContactMechanismPurposeService contactMechanismPurposeService
-    ){
-        PartyElectronicAddressResponse.Builder builder = new PartyElectronicAddressResponse.Builder();
-
-        for (PartyElectronicAddress key : electronicAddresses.keySet()) {
-            ElectronicAddress address = electronicAddresses.get(key);
-            ContactMechanismType type = contactMechanismTypeService.findById(key.getTypeId());
-            ContactMechanismPurpose purpose = contactMechanismPurposeService.findById(key.getPurposeId());
-            if (address == null || type == null || purpose == null) {
-                continue;
-            }
-
-            builder.withElectronicAddress(address)
-                    .withPartyElectronicAddress(key)
-                    .withContactMechanismPurpose(purpose)
-            ;
-
-            if (type.isEmail()){
-                addEmailAddress(builder.build());
-            } else if (type.isWeb()) {
-                addWebAddress(builder.build());
-            }
-        }
-
-    }
-
-    private void addEmailAddress (final PartyElectronicAddressResponse address) {
-        if (emailAddresses == null){
-            emailAddresses = new ArrayList<>();
-        }
-        emailAddresses.add(address);
-    }
-
-    private void addWebAddress (final PartyElectronicAddressResponse address) {
-        if (webAddresses == null){
-            webAddresses = new ArrayList<>();
-        }
-        webAddresses.add(address);
-    }
 
     //-- Builder
     public static class Builder {
         private Party party;
-        private List<ElectronicAddress> electronicAddresses;
-        private List<PartyElectronicAddress> partyElectronicAddresses;
-        private ContactMechanismTypeService contactMechanismTypeService;
-        private ContactMechanismPurposeService contactMechanismPurposeService;
 
         public PartyResponse build () {
             Preconditions.checkState(party != null, "party is null");
@@ -141,26 +53,6 @@ public class PartyResponse {
 
         public Builder withParty (final Party party) {
             this.party = party;
-            return this;
-        }
-
-        public Builder withElectronicAddresses (final List<ElectronicAddress> electronicAddresses) {
-            this.electronicAddresses = electronicAddresses;
-            return this;
-        }
-
-        public Builder withPartyElectronicAddresses (final List<PartyElectronicAddress> partyElectronicAddresses) {
-            this.partyElectronicAddresses = partyElectronicAddresses;
-            return this;
-        }
-
-        public Builder withContactMechanismTypeService (final ContactMechanismTypeService contactMechanismTypeService){
-            this.contactMechanismTypeService = contactMechanismTypeService;
-            return this;
-        }
-        
-        public Builder withContactMechanismPurposeService (final ContactMechanismPurposeService contactMechanismPurposeService){
-            this.contactMechanismPurposeService = contactMechanismPurposeService;
             return this;
         }
     }
@@ -216,13 +108,5 @@ public class PartyResponse {
 
     public String getToDate() {
         return toDate;
-    }
-
-    public List<PartyElectronicAddressResponse> getEmailAddresses() {
-        return emailAddresses;
-    }
-
-    public List<PartyElectronicAddressResponse> getWebAddresses() {
-        return webAddresses;
     }
 }

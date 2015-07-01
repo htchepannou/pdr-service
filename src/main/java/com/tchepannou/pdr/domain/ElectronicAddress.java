@@ -8,7 +8,7 @@ public class ElectronicAddress extends ContactMechanism {
     private transient String hash;
 
     //-- Public
-    public static String hash (String str) {
+    public static String computeHash(String str) {
         return DigestUtils.md5Hex(str.toLowerCase());
     }
 
@@ -23,7 +23,7 @@ public class ElectronicAddress extends ContactMechanism {
 
     public String getHash () {
         if (hash == null) {
-            hash = hash(address);
+            hash = computeHash(address);
         }
         return hash;
     }

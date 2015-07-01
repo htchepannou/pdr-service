@@ -1,10 +1,6 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.dto.party;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
-import org.apache.commons.codec.digest.DigestUtils;
-
-public class PostalAddress extends ContactMechanism {
+public class PartyPostalAddressResquest extends AbstractPartyContactMechanismResquest{
     //-- Attributes
     private String street1;
     private String street2;
@@ -12,23 +8,6 @@ public class PostalAddress extends ContactMechanism {
     private String stateCode;
     private String zip;
     private String countryCode;
-    private transient String hash;
-
-    //-- Public
-    public static String computeHash(
-            final String street1,
-            final String street2,
-            final String city,
-            final String stateCode,
-            final String zip,
-            final String countryCode
-    ){
-        String str = Joiner
-                .on("")
-                .skipNulls()
-                .join(street1, street2, city, stateCode, zip, countryCode);
-        return Strings.isNullOrEmpty(str) ? null : DigestUtils.md5Hex(str);
-    }
 
     //-- Getter/Setter
     public String getStreet1() {
@@ -77,16 +56,5 @@ public class PostalAddress extends ContactMechanism {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
-    }
-
-    public String getHash() {
-        if (hash == null){
-            hash = computeHash(street1, street2, city, stateCode, zip, countryCode);
-        }
-        return hash;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
     }
 }
