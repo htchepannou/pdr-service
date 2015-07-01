@@ -1,5 +1,6 @@
 package com.tchepannou.pdr.domain;
 
+import com.google.common.base.Strings;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class ElectronicAddress extends ContactMechanism {
@@ -9,7 +10,9 @@ public class ElectronicAddress extends ContactMechanism {
 
     //-- Public
     public static String computeHash(String str) {
-        return DigestUtils.md5Hex(str.toLowerCase());
+        return DigestUtils.md5Hex(
+                    Strings.nullToEmpty(str).toLowerCase()
+        );
     }
 
     //-- Getter/Setter
