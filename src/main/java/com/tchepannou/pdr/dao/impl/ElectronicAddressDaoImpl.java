@@ -62,8 +62,8 @@ public class ElectronicAddressDaoImpl extends JdbcTemplate implements Electronic
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 final String sql = "INSERT INTO t_eaddress(hash, address) VALUES(?,?)";
                 final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
-                ps.setString(2, address.getAddress());
-                ps.setString(3, address.getHash());
+                ps.setString(1, address.getAddress());
+                ps.setString(2, address.getHash());
                 return ps;
             }
         }, holder);

@@ -31,6 +31,19 @@ public class ContactMechanismPurposeDaoImpl extends JdbcTemplate implements Cont
     }
 
     @Override
+    public ContactMechanismPurpose findByName(final String name) {
+        try {
+            return queryForObject(
+                    "SELECT * FROM t_contact_mechanism_purpose WHERE name=?",
+                    new Object[]{name.toLowerCase()},
+                    getRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {    // NOSONAR
+            return null;
+        }
+    }
+
+    @Override
     public List<ContactMechanismPurpose> findAll() {
         return query("SELECT * FROM t_contact_mechanism_purpose", getRowMapper());
     }

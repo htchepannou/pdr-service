@@ -11,10 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PartyElectronicAddressDaoImpl extends JdbcTemplate implements PartyElectronicAddressDao {
@@ -57,7 +54,12 @@ public class PartyElectronicAddressDaoImpl extends JdbcTemplate implements Party
                 ps.setLong(1, address.getPartyId());
                 ps.setLong(2, address.getContactId());
                 ps.setLong(3, address.getTypeId());
-                ps.setLong(4, address.getPurposeId());
+
+                if (address.getPurposeId() == 0){
+                    ps.setNull(4, Types.BIGINT);
+                } else {
+                    ps.setLong(4, address.getPurposeId());
+                }
                 ps.setBoolean(5, address.isNoSolicitation());
                 ps.setString(6, privacy != null ? String.valueOf(privacy.getCode()) : null);
                 return ps;
@@ -72,9 +74,9 @@ public class PartyElectronicAddressDaoImpl extends JdbcTemplate implements Party
         final String sql = "UPDATE t_party_eaddress SET contact_fk=?, purpose_fk=?, no_solicitation=?, privacy=?";
         update(sql,
                 address.getContactId(),
-                address.getPurposeId(),
+                address.getPurposeId() == 0 ? null : address.getPurposeId(),
                 address.isNoSolicitation(),
-                address.getPrivacy()
+                String.valueOf(address.getPrivacy().getCode())
         );
     }
 

@@ -44,7 +44,7 @@ CREATE TABLE t_user(
 
 CREATE TABLE t_role(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE t_permission(
@@ -89,19 +89,19 @@ CREATE TABLE t_access_token(
 
 CREATE TABLE t_contact_mechanism_type(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE t_contact_mechanism_purpose(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE t_eaddress(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
     hash VARCHAR(32) NOT NULL UNIQUE,
-    address TEXT
+    address TEXT NOT NULL
 );
 
 CREATE TABLE t_party_eaddress(

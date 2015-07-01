@@ -2,6 +2,7 @@ package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.ContactMechanismPurposeDao;
 import com.tchepannou.pdr.domain.ContactMechanismPurpose;
+import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.ContactMechanismPurposeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,8 +13,21 @@ public class ContactMechanismPurposeServiceImpl implements ContactMechanismPurpo
     private ContactMechanismPurposeDao dao;
 
     @Override
-    public ContactMechanismPurpose findById(long id) {
-        return dao.findById(id);
+    public ContactMechanismPurpose findById(final long id) {
+        ContactMechanismPurpose purpose = dao.findById(id);
+        if (purpose == null){
+            throw new NotFoundException(id);
+        }
+        return purpose;
+    }
+
+    @Deprecated
+    public ContactMechanismPurpose findByName(final String name) {
+        ContactMechanismPurpose purpose = name != null ? dao.findByName(name) : null;
+        if (purpose == null){
+            throw new NotFoundException(name);
+        }
+        return purpose;
     }
 
     @Override

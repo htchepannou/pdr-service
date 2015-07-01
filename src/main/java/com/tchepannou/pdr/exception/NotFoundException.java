@@ -10,4 +10,7 @@ public class NotFoundException extends RuntimeException{
     public NotFoundException (long id) {
         super (String.valueOf(id));
     }
+    public NotFoundException (String msg) {
+        super (msg);
+    }
 }

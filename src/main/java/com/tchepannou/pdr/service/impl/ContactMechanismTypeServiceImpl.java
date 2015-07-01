@@ -12,8 +12,13 @@ public class ContactMechanismTypeServiceImpl implements ContactMechanismTypeServ
     private ContactMechanismTypeDao dao;
 
     @Override
-    public ContactMechanismType findById(long id) {
+    public ContactMechanismType findById(final long id) {
         return dao.findById(id);
+    }
+
+    @Override
+    public ContactMechanismType findByName(final String name) {
+        return dao.findByName(name);
     }
 
     @Override

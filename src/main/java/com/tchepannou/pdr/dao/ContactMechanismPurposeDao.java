@@ -7,5 +7,7 @@ import java.util.List;
 public interface ContactMechanismPurposeDao {
     ContactMechanismPurpose findById(long id);
 
+    ContactMechanismPurpose findByName(String name);
+
     List<ContactMechanismPurpose> findAll();
 }

@@ -31,6 +31,19 @@ public class ContactMechanismTypeDaoImpl extends JdbcTemplate implements Contact
     }
 
     @Override
+    public ContactMechanismType findByName(final String name) {
+        try {
+            return queryForObject(
+                    "SELECT * FROM t_contact_mechanism_type WHERE name=?",
+                    new Object[]{name.toLowerCase()},
+                    getRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {    // NOSONAR
+            return null;
+        }
+    }
+
+    @Override
     public List<ContactMechanismType> findAll() {
         return query("SELECT * FROM t_contact_mechanism_type", getRowMapper());
     }
