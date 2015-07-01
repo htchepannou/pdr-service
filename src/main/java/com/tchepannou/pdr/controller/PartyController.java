@@ -261,7 +261,7 @@ public class PartyController {
         PostalAddress postalAddress;
         try {
             postalAddress = postalAddressService.findByHash(hash);
-        } catch (NotFoundException e) {
+        } catch (NotFoundException e) {     // NOSONAR
             postalAddress = new PostalAddress();
             postalAddress.setStreet1(request.getStreet1());
             postalAddress.setStreet2(request.getStreet2());

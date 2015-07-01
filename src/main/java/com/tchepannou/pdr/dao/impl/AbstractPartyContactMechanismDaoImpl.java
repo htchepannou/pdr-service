@@ -52,12 +52,13 @@ public abstract class AbstractPartyContactMechanismDaoImpl<T extends PartyContac
     @Override
     public long create(final T address) {
         final KeyHolder holder = new GeneratedKeyHolder();
+        final String sql = "INSERT INTO t_party_contact_mechanism(party_fk, " +
+                getContactColumn() +
+                ", type_fk, purpose_fk, no_solicitation, privacy) VALUES(?,?,?,?,?,?)";
+
         update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                final String sql = "INSERT INTO t_party_contact_mechanism(party_fk, " +
-                        getContactColumn() +
-                        ", type_fk, purpose_fk, no_solicitation, privacy) VALUES(?,?,?,?,?,?)";
                 final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
                 final Privacy privacy = address.getPrivacy();
 
@@ -79,6 +80,7 @@ public abstract class AbstractPartyContactMechanismDaoImpl<T extends PartyContac
         return holder.getKey().longValue();
     }
 
+    @Override
     public void update(final T address) {
         final String sql = "UPDATE t_party_contact_mechanism SET " +
                 getContactColumn()
@@ -91,6 +93,7 @@ public abstract class AbstractPartyContactMechanismDaoImpl<T extends PartyContac
         );
     }
 
+    @Override
     public void delete(final long id) {
         update("DELETE FROM t_party_contact_mechanism WHERE id=?", id);
     }
