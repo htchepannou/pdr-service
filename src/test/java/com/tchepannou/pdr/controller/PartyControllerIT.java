@@ -5,9 +5,12 @@ import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.internal.mapper.ObjectMapperType;
 import com.tchepannou.pdr.Starter;
 import com.tchepannou.pdr.dao.PartyElectronicAddressDao;
+import com.tchepannou.pdr.dao.PartyPostalAddressDao;
 import com.tchepannou.pdr.domain.PartyElectronicAddress;
+import com.tchepannou.pdr.domain.PartyPostalAddress;
 import com.tchepannou.pdr.domain.Privacy;
-import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressResquest;
+import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressRequest;
+import com.tchepannou.pdr.dto.party.CreatePartyPostalAddressRequest;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +41,9 @@ public class PartyControllerIT {
 
     @Autowired
     private PartyElectronicAddressDao partyElectronicAddressDao;
+
+    @Autowired
+    private PartyPostalAddressDao partyPostalAddressDao;
 
     @Before
     public void setUp (){
@@ -143,7 +149,7 @@ public class PartyControllerIT {
 
     @Test
     public void test_addElectronicAddress () {
-        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("email", "primary", "john.smith@gmail.com");
+        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("email", "primary", "john.smith@gmail.com");
 
         // @formatter:off
         given()
@@ -164,26 +170,8 @@ public class PartyControllerIT {
     }
 
     @Test
-    public void test_addElectronicAddress_badPartyId () {
-        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
-
-        // @formatter:off
-        given()
-                .contentType(ContentType.JSON)
-                .content(request, ObjectMapperType.JACKSON_2)
-        .when()
-                .post("/api/parties/9999/e-addresses/121")
-        .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .log()
-                    .all()
-                ;
-        // @formatter:on
-    }
-
-    @Test
     public void test_updateElectronicAddress () {
-        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
         // @formatter:off
         given()
@@ -205,7 +193,7 @@ public class PartyControllerIT {
 
     @Test
     public void test_updateElectronicAddress_badPartyId () {
-        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
         // @formatter:off
         given()
@@ -220,9 +208,10 @@ public class PartyControllerIT {
                 ;
         // @formatter:on
     }
+    
     @Test
     public void test_deleteElectronicAddress () {
-        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
         // @formatter:off
         given()
@@ -243,7 +232,7 @@ public class PartyControllerIT {
 
     @Test
     public void test_deleteElectronicAddress_badPartyId () {
-        final CreatePartyElectronicAddressResquest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
+        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
         // @formatter:off
         given()
@@ -259,12 +248,140 @@ public class PartyControllerIT {
         // @formatter:on
     }
 
+    @Test
+    public void test_addPostalAddress () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("email", "primary", "john.smith@gmail.com");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/p-addresses")
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .log()
+                    .all()
+                .body("noSolicitation", is(request.isNoSolicitation()))
+                .body("purpose", is(request.getPurpose()))
+                .body("privacy", is(request.getPrivacy()))
+                .body("street1", is(request.getStreet1()))
+                .body("street2", is(request.getStreet2()))
+                .body("city", is(request.getCity()))
+                .body("zipCode", is(request.getZipCode()))
+                .body("stateCode", is(request.getStateCode()))
+                .body("countryCode", is(request.getCountryCode()))
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_updatePostalAddress () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/p-addresses/131")
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .log()
+                    .all()
+                .body("noSolicitation", is(request.isNoSolicitation()))
+                .body("purpose", is(request.getPurpose()))
+                .body("privacy", is(request.getPrivacy()))
+                .body("street1", is(request.getStreet1()))
+                .body("street2", is(request.getStreet2()))
+                .body("city", is(request.getCity()))
+                .body("zipCode", is(request.getZipCode()))
+                .body("stateCode", is(request.getStateCode()))
+                .body("countryCode", is(request.getCountryCode()))
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_updatePostalAddress_badPartyId () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/9999/e-addresses/131")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_deletePostalAddress () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .delete("/api/parties/100/p-addresses/131")
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+
+        PartyPostalAddress address = partyPostalAddressDao.findById(131);
+        assertThat(address).isNull();
+    }
+
+    @Test
+    public void test_deletePostalAddress_badPartyId () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .delete("/api/parties/9999/p-addresses/131")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+    }
+
+
+
     //-- Attribute
-    private CreatePartyElectronicAddressResquest buildCreatePartyElectronicAddressResquest (String type, String purpose, String value){
-        CreatePartyElectronicAddressResquest address = new CreatePartyElectronicAddressResquest();
+    private CreatePartyElectronicAddressRequest buildCreatePartyElectronicAddressResquest (String type, String purpose, String value){
+        CreatePartyElectronicAddressRequest address = new CreatePartyElectronicAddressRequest();
         address.setType(type);
         address.setPrivacy(Privacy.PUBLIC.name());
         address.setAddress(value);
+        address.setNoSolicitation(true);
+        address.setPurpose(purpose);
+        return address;
+    }
+
+    private CreatePartyPostalAddressRequest buildCreatePartyPostalAddressResquest (String type, String purpose, String value){
+        CreatePartyPostalAddressRequest address = new CreatePartyPostalAddressRequest();
+        address.setType(type);
+        address.setPrivacy(Privacy.PUBLIC.name());
+        address.setStreet1(value);
+        address.setStreet2("Suite #30");
+        address.setCity("Montreal");
+        address.setStateCode("QC");
+        address.setZipCode("H0H 0H0");
+        address.setCountryCode("CAN");
         address.setNoSolicitation(true);
         address.setPurpose(purpose);
         return address;

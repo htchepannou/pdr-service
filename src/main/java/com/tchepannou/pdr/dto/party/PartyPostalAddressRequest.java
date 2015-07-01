@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.dto.party;
 
-public class PartyPostalAddressResquest extends AbstractPartyContactMechanismResquest{
+public class PartyPostalAddressRequest extends AbstractPartyContactMechanismRequest {
     //-- Attributes
     private String street1;
     private String street2;

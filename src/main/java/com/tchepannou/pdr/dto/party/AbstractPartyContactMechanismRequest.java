@@ -1,6 +1,6 @@
 package com.tchepannou.pdr.dto.party;
 
-public abstract class AbstractPartyContactMechanismResquest {
+public abstract class AbstractPartyContactMechanismRequest {
     //-- Attributes
     private boolean noSolicitation;
     private String privacy;

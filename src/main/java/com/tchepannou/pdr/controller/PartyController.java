@@ -99,9 +99,9 @@ public class PartyController {
     @ApiOperation("Add an electronic address to a party")
     public PartyElectronicAddressResponse addElectronicAddress (
             @PathVariable final long partyId,
-            @Valid @RequestBody CreatePartyElectronicAddressResquest request
+            @Valid @RequestBody CreatePartyElectronicAddressRequest request
     ) {
-        final ElectronicAddress electronicAddress = findElectronicAddress(request.getAddress());
+        final ElectronicAddress electronicAddress = findElectronicAddress(request);
 
         final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
 
@@ -110,7 +110,7 @@ public class PartyController {
         final PartyElectronicAddress partyElectronicAddress = new PartyElectronicAddress();
         partyElectronicAddress.setPartyId(partyId);
         partyElectronicAddress.setTypeId(type.getId());
-        update(request, purpose, partyElectronicAddress);
+        update(request, purpose, partyElectronicAddress, partyElectronicAddressService);
         partyElectronicAddressService.create(partyElectronicAddress);
 
         return new PartyElectronicAddressResponse.Builder()
@@ -125,7 +125,7 @@ public class PartyController {
     public PartyElectronicAddressResponse updateElectronicAddress (
             @PathVariable final long partyId,
             @PathVariable final long eaddressId,
-            @Valid @RequestBody PartyElectronicAddressResquest request
+            @Valid @RequestBody PartyElectronicAddressRequest request
     ) {
         final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.findById(eaddressId);
         if (partyElectronicAddress.getPartyId() != partyId) {
@@ -134,9 +134,9 @@ public class PartyController {
 
         final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
 
-        final ElectronicAddress electronicAddress = findElectronicAddress(request.getAddress());
+        final ElectronicAddress electronicAddress = findElectronicAddress(request);
 
-        update(request, purpose, partyElectronicAddress);
+        update(request, purpose, partyElectronicAddress, partyElectronicAddressService);
         partyElectronicAddressService.update(partyElectronicAddress);
 
         return new PartyElectronicAddressResponse.Builder()
@@ -159,6 +159,69 @@ public class PartyController {
         partyElectronicAddressService.delete(eaddressId);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/p-addresses")
+    @ApiOperation("Add an postal address to a party")
+    public PartyPostalAddressResponse addPostalAddress (
+            @PathVariable final long partyId,
+            @Valid @RequestBody CreatePartyPostalAddressRequest request
+    ) {
+        final PostalAddress postalAddress = findPostalAddress(request);
+
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
+
+        final PartyPostalAddress partyPostalAddress = new PartyPostalAddress();
+        partyPostalAddress.setPartyId(partyId);
+        partyPostalAddress.setTypeId(type.getId());
+        update(request, purpose, partyPostalAddress, partyPostalAddressService);
+        partyPostalAddressService.create(partyPostalAddress);
+
+        return new PartyPostalAddressResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withPostalAddress(postalAddress)
+                .withPartyPostalAddress(partyPostalAddress)
+                .build();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/p-addresses/{paddressId}")
+    @ApiOperation("Update an postal address")
+    public PartyPostalAddressResponse updatePostalAddress (
+            @PathVariable final long partyId,
+            @PathVariable final long paddressId,
+            @Valid @RequestBody PartyPostalAddressRequest request
+    ) {
+        final PartyPostalAddress partyPostalAddress = partyPostalAddressService.findById(paddressId);
+        if (partyPostalAddress.getPartyId() != partyId) {
+            throw new BadRequestException();
+        }
+
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        final PostalAddress postalAddress = findPostalAddress(request);
+
+        update(request, purpose, partyPostalAddress, partyPostalAddressService);
+        partyPostalAddressService.update(partyPostalAddress);
+
+        return new PartyPostalAddressResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withPostalAddress(postalAddress)
+                .withPartyPostalAddress(partyPostalAddress)
+                .build();
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/p-addresses/{paddressId}")
+    @ApiOperation("Delete an postal address")
+    public void deletePostalAddress (
+            @PathVariable final long partyId,
+            @PathVariable final long paddressId
+    ) {
+        PartyPostalAddress paddress = partyPostalAddressService.findById(paddressId);
+        if (paddress.getPartyId() != partyId) {
+            throw new BadRequestException();
+        }
+        partyPostalAddressService.delete(paddressId);
+    }
 
 
     //-- Private
@@ -172,8 +235,9 @@ public class PartyController {
         return null;
     }
 
-    private ElectronicAddress findElectronicAddress (String address) {
-        String hash = ElectronicAddress.computeHash(address);
+    private ElectronicAddress findElectronicAddress (PartyElectronicAddressRequest request) {
+        final String address = request.getAddress();
+        final String hash = ElectronicAddress.computeHash(address);
         ElectronicAddress electronicAddress;
         try {
             electronicAddress = electronicAddressService.findByHash(hash);
@@ -185,14 +249,40 @@ public class PartyController {
         return electronicAddress;
     }
 
-    private void update (
-            final PartyElectronicAddressResquest request,
-            final ContactMechanismPurpose purpose,
-            final PartyElectronicAddress partyElectronicAddress
-    ){
-        partyElectronicAddress.setPrivacy(Privacy.fromText(request.getPrivacy()));
-        partyElectronicAddress.setNoSolicitation(request.isNoSolicitation());
-        partyElectronicAddress.setPurposeId(purpose != null ? 0 : purpose.getId());
-        partyElectronicAddressService.update(partyElectronicAddress);
+    private PostalAddress findPostalAddress (PartyPostalAddressRequest request) {
+        final String hash = PostalAddress.computeHash(
+                request.getStreet1(),
+                request.getStreet2(),
+                request.getCity(),
+                request.getStateCode(),
+                request.getZipCode(),
+                request.getCountryCode()
+        );
+        PostalAddress postalAddress;
+        try {
+            postalAddress = postalAddressService.findByHash(hash);
+        } catch (NotFoundException e) {
+            postalAddress = new PostalAddress();
+            postalAddress.setStreet1(request.getStreet1());
+            postalAddress.setStreet2(request.getStreet2());
+            postalAddress.setCity(request.getCity());
+            postalAddress.setStateCode(request.getStateCode());
+            postalAddress.setZipCode(request.getZipCode());
+            postalAddress.setCountryCode(request.getCountryCode());
+            postalAddressService.create(postalAddress);
+        }
+        return postalAddress;
     }
+
+    private void update (
+            final AbstractPartyContactMechanismRequest request,
+            final ContactMechanismPurpose purpose,
+            final PartyContactMecanism partyPostalAddress,
+            final AbstractPartyContactMechanismService service
+    ){
+        partyPostalAddress.setPrivacy(Privacy.fromText(request.getPrivacy()));
+        partyPostalAddress.setNoSolicitation(request.isNoSolicitation());
+        partyPostalAddress.setPurposeId(purpose == null ? 0 : purpose.getId());
+        service.update(partyPostalAddress);
+    }    
 }
