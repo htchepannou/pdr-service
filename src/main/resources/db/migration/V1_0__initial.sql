@@ -110,10 +110,9 @@ CREATE TABLE t_party_eaddress(
     party_fk BIGINT NOT NULL REFERENCES t_party(id),
     contact_fk BIGINT NOT NULL REFERENCES t_eaddress(id),
     type_fk BIGINT NOT NULL REFERENCES t_contact_mechanism_type(id),
-    purpose_fk BIGINT NOT NULL REFERENCES t_contact_mechanism_purpose(id),
+    purpose_fk BIGINT REFERENCES t_contact_mechanism_purpose(id),
 
     no_solicitation BIT(1),
-    privacy CHAR(1),
-    UNIQUE (party_fk, type_fk, purpose_fk)
+    privacy CHAR(1)
 );
 

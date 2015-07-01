@@ -4,5 +4,10 @@ INSERT INTO pdr.t_party(id, deleted, kind, name, from_date)
 
 UPDATE pdr.t_party P
     JOIN is5.pattr A ON P.id=A.pattr_party_fk
+SET P.gender=IF(A.pattr_value='B', 'M', IF(A.pattr_value='G', 'F', A.pattr_value))
+WHERE A.pattr_name='gender' AND P.kind='O';
+
+UPDATE pdr.t_party P
+    JOIN is5.pattr A ON P.id=A.pattr_party_fk
     SET P.name=A.pattr_value
-    WHERE A.pattr_name='name';
+    WHERE A.pattr_name='name' AND P.kind='O';

@@ -6,6 +6,7 @@ import com.tchepannou.pdr.service.ContactMechanismPurposeService;
 import com.tchepannou.pdr.service.ContactMechanismTypeService;
 import com.tchepannou.pdr.util.DateUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +28,8 @@ public class PartyResponse {
     private final String fromDate;
     private final String toDate;
 
-    private Map<String, PartyElectronicAddressResponse> emailAddresses;
-    private Map<String, PartyElectronicAddressResponse> webAddresses;
+    private List<PartyElectronicAddressResponse> emailAddresses;
+    private List<PartyElectronicAddressResponse> webAddresses;
 
     //-- Constructor
     private PartyResponse(Builder builder) {
@@ -97,29 +98,31 @@ public class PartyResponse {
             }
 
             builder.withElectronicAddress(address)
-                    .withPartyElectronicAddress(key);
+                    .withPartyElectronicAddress(key)
+                    .withContactMechanismPurpose(purpose)
+            ;
 
             if (type.isEmail()){
-                addEmailAddress(purpose, builder.build());
+                addEmailAddress(builder.build());
             } else if (type.isWeb()) {
-                addWebAddress(purpose, builder.build());
+                addWebAddress(builder.build());
             }
         }
 
     }
 
-    private void addEmailAddress (final ContactMechanismPurpose purpose, final PartyElectronicAddressResponse address) {
+    private void addEmailAddress (final PartyElectronicAddressResponse address) {
         if (emailAddresses == null){
-            emailAddresses = new HashMap<>();
+            emailAddresses = new ArrayList<>();
         }
-        emailAddresses.put(purpose.getName(), address);
+        emailAddresses.add(address);
     }
 
-    private void addWebAddress (final ContactMechanismPurpose purpose, final PartyElectronicAddressResponse address) {
+    private void addWebAddress (final PartyElectronicAddressResponse address) {
         if (webAddresses == null){
-            webAddresses = new HashMap<>();
+            webAddresses = new ArrayList<>();
         }
-        webAddresses.put(purpose.getName(), address);
+        webAddresses.add(address);
     }
 
     //-- Builder
@@ -215,11 +218,11 @@ public class PartyResponse {
         return toDate;
     }
 
-    public Map<String, PartyElectronicAddressResponse> getEmailAddresses() {
+    public List<PartyElectronicAddressResponse> getEmailAddresses() {
         return emailAddresses;
     }
 
-    public Map<String, PartyElectronicAddressResponse> getWebAddresses() {
+    public List<PartyElectronicAddressResponse> getWebAddresses() {
         return webAddresses;
     }
 }

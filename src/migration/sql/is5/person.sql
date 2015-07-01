@@ -15,7 +15,7 @@ WHERE A.pattr_name in ('birth_date', 'birthdate') AND A.pattr_value REGEXP '^[0-
 
 UPDATE pdr.t_party P
   JOIN is5.pattr A ON P.id=A.pattr_party_fk
-SET P.gender=A.pattr_value
+SET P.gender=IF(A.pattr_value='B', 'M', IF(A.pattr_value='G', 'F', A.pattr_value))
 WHERE A.pattr_name='gender';
 
 
