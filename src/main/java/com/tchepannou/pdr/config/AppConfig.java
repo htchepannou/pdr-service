@@ -90,10 +90,20 @@ public class AppConfig {
     }
 
     @Bean
+    public PartyPostalAddressService partyPostalAddressService() {
+        return new PartyPostalAddressServiceImpl();
+    }
+
+    @Bean
     public PermissionService permissionService () {
         return new PermissionServiceImpl();
     }
 
+    @Bean
+    public PostalAddressService postalAddressService () {
+        return new PostalAddressServiceImpl();
+    }
+    
     @Bean
     public RoleService roleService () {
         return new RoleServiceImpl();
@@ -147,10 +157,20 @@ public class AppConfig {
     }
 
     @Bean
+    public PartyPostalAddressDao partyPostalAddressDao() {
+        return new PartyPostalAddressDaoImpl(dataSource());
+    }
+    
+    @Bean
     public PermissionDao permissionDao () {
         return new PermissionDaoImpl(dataSource());
     }
 
+    @Bean
+    public PostalAddressDao postalAddressDao () {
+        return new PostalAddressDaoImpl(dataSource());
+    }
+    
     @Bean
     public RoleDao roleDao () {
         return new RoleDaoImpl(dataSource());

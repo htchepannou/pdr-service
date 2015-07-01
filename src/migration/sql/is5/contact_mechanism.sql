@@ -17,27 +17,27 @@ INSERT INTO pdr.t_eaddress(address, hash)
       FROM is5.pattr
       WHERE pattr_name IN ('email', 'website_url', 'league_fixture_url', 'league_standing_url', 'state_standing_url');
 
-INSERT INTO pdr.t_party_eaddress(party_fk, contact_fk, type_fk, purpose_fk, no_solicitation)
+INSERT INTO pdr.t_party_contact_mechanism(party_fk, eaddress_fk, type_fk, purpose_fk, no_solicitation)
   SELECT DISTINCT pattr_party_fk, id, 100, 101, 0
     FROM is5.pattr JOIN pdr.t_eaddress ON  MD5(LOWER(pattr_value))=hash
     WHERE pattr_name = 'email';
 
-INSERT INTO pdr.t_party_eaddress(party_fk, contact_fk, type_fk, purpose_fk, no_solicitation)
+INSERT INTO pdr.t_party_contact_mechanism(party_fk, eaddress_fk, type_fk, purpose_fk, no_solicitation)
   SELECT DISTINCT pattr_party_fk, id, 200, 201, 0
   FROM is5.pattr JOIN pdr.t_eaddress ON  MD5(LOWER(pattr_value))=hash
   WHERE pattr_name = 'website_url';
 
-INSERT INTO pdr.t_party_eaddress(party_fk, contact_fk, type_fk, purpose_fk, no_solicitation)
+INSERT INTO pdr.t_party_contact_mechanism(party_fk, eaddress_fk, type_fk, purpose_fk, no_solicitation)
   SELECT DISTINCT pattr_party_fk, id, 200, 202, 0
   FROM is5.pattr JOIN pdr.t_eaddress ON  MD5(LOWER(pattr_value))=hash
   WHERE pattr_name = 'league_fixture_url';
 
-INSERT INTO pdr.t_party_eaddress(party_fk, contact_fk, type_fk, purpose_fk, no_solicitation)
+INSERT INTO pdr.t_party_contact_mechanism(party_fk, eaddress_fk, type_fk, purpose_fk, no_solicitation)
   SELECT DISTINCT pattr_party_fk, id, 200, 203, 0
   FROM is5.pattr JOIN pdr.t_eaddress ON  MD5(LOWER(pattr_value))=hash
   WHERE pattr_name = 'league_standing_url';
 
-INSERT INTO pdr.t_party_eaddress(party_fk, contact_fk, type_fk, purpose_fk, no_solicitation)
+INSERT INTO pdr.t_party_contact_mechanism(party_fk, eaddress_fk, type_fk, purpose_fk, no_solicitation)
   SELECT DISTINCT pattr_party_fk, id, 200, 204, 0
   FROM is5.pattr JOIN pdr.t_eaddress ON  MD5(LOWER(pattr_value))=hash
   WHERE pattr_name = 'state_standing_url';

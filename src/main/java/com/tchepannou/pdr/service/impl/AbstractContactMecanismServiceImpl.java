@@ -1,0 +1,35 @@
+package com.tchepannou.pdr.service.impl;
+
+import com.tchepannou.pdr.dao.ContactMechanismDao;
+import com.tchepannou.pdr.domain.ContactMechanism;
+import com.tchepannou.pdr.exception.NotFoundException;
+import com.tchepannou.pdr.service.AbstractContactMechanismService;
+
+import java.util.Collection;
+import java.util.List;
+
+public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechanism> implements AbstractContactMechanismService<T> {
+    //-- Abstract
+    protected abstract ContactMechanismDao<T> getDao ();
+
+    //-- AbstractContactMechanismService overrides
+    @Override
+    public T findByHash (String hash) {
+        T out = getDao().findByHash(hash);
+        if (out == null){
+            throw new NotFoundException(hash);
+        }
+        return out;
+    }
+
+    @Override
+    public List<T> findByIds(Collection<? extends Long> ids) {
+        return getDao().findByIds(ids);
+    }
+
+    @Override
+    public void create(T address) {
+        long id = getDao().create(address);
+        address.setId(id);
+    }
+}

@@ -126,19 +126,21 @@ public class PartyController {
 
     //-- Private
     private ContactMechanismPurpose findPurpose (String name){
-        if (name == null) {
-            return null;
+        if (name != null) {
+            try {
+                return contactMechanismPurposeService.findByName(name);
+            } catch (NotFoundException e) { // NOSONAR
+            }
         }
-        try {
-            return contactMechanismPurposeService.findByName(name);
-        } catch (NotFoundException e) { // NOSONAR
-            return null;
-        }
+        return null;
     }
 
     private ElectronicAddress findElectronicAddress (String address) {
-        ElectronicAddress electronicAddress = electronicAddressService.findByAddress(address);
-        if (electronicAddress == null){
+        String hash = ElectronicAddress.hash(address);
+        ElectronicAddress electronicAddress;
+        try {
+            electronicAddress = electronicAddressService.findByHash(hash);
+        } catch (NotFoundException e) {
             electronicAddress = new ElectronicAddress();
             electronicAddress.setAddress(address);
             electronicAddressService.create(electronicAddress);

@@ -104,15 +104,32 @@ CREATE TABLE t_eaddress(
     address TEXT NOT NULL
 );
 
-CREATE TABLE t_party_eaddress(
+CREATE TABLE t_paddress(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    hash VARCHAR(32) NOT NULL UNIQUE,
+    street1 VARCHAR(50) NOT NULL,
+    street2 VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    zip VARCHAR(50) NOT NULL,
+    state_code VARCHAR(20) NOT NULL,
+    country_code VARCHAR(2) NOT NULL
+);
+
+CREATE TABLE t_party_contact_mechanism(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
     party_fk BIGINT NOT NULL REFERENCES t_party(id),
-    contact_fk BIGINT NOT NULL REFERENCES t_eaddress(id),
     type_fk BIGINT NOT NULL REFERENCES t_contact_mechanism_type(id),
     purpose_fk BIGINT REFERENCES t_contact_mechanism_purpose(id),
+    paddress_fk BIGINT REFERENCES t_paddress(id),
+    eaddress_fk BIGINT REFERENCES t_eaddress(id),
 
     no_solicitation BIT(1),
     privacy CHAR(1)
 );
+
+
+
+
 
