@@ -84,3 +84,34 @@ CREATE TABLE t_access_token(
     user_agent VARCHAR(2048),
     remote_ip VARCHAR(50)
 );
+
+CREATE TABLE t_contact_mechanism_type(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE t_contact_mechanism_purpose(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE t_eaddress(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    hash VARCHAR(32) NOT NULL UNIQUE,
+    address TEXT
+);
+
+CREATE TABLE t_party_eaddress(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    party_fk BIGINT NOT NULL REFERENCES t_party(id),
+    contact_fk BIGINT NOT NULL REFERENCES t_eaddress(id),
+    type_fk BIGINT NOT NULL REFERENCES t_contact_mechanism_type(id),
+    purpose_fk BIGINT NOT NULL REFERENCES t_contact_mechanism_purpose(id),
+
+    no_solicitation BIT(1),
+    privacy CHAR(1),
+    UNIQUE (party_fk, type_fk, purpose_fk)
+);
+

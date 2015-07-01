@@ -55,6 +55,16 @@ public class AppConfig {
     }
 
     @Bean
+    public ContactMechanismPurposeDao contactMechanismPurposeDao (){
+        return new ContactMechanismPurposeDaoImpl(dataSource());
+    }
+
+    @Bean
+    public ContactMechanismTypeDao contactMechanismTypeDao (){
+        return new ContactMechanismTypeDaoImpl(dataSource());
+    }
+
+    @Bean
     public DomainService domainService () {
         return new DomainServiceImpl();
     }
@@ -65,8 +75,18 @@ public class AppConfig {
     }
 
     @Bean
+    public ElectronicAddressService electronicAddressService (){
+        return new ElectronicAddressServiceImpl();
+    }
+
+    @Bean
     public PartyService partyService () {
         return new PartyServiceImpl();
+    }
+
+    @Bean
+    public PartyElectronicAddressService partyElectronicAddressService() {
+        return new PartyElectronicAddressServiceImpl();
     }
 
     @Bean
@@ -83,11 +103,22 @@ public class AppConfig {
     public UserService userService () {
         return new UserServiceImpl();
     }
-    
+
+
 
     @Bean
     public AccessTokenDao accessTokenDao () {
         return new AccessTokenDaoImpl(dataSource());
+    }
+
+    @Bean
+    public ContactMechanismTypeService contactMechanismTypeService() {
+        return new ContactMechanismTypeServiceImpl();
+    }
+
+    @Bean
+    public ContactMechanismPurposeService contactMechanismPurposeService (){
+        return new ContactMechanismPurposeServiceImpl();
     }
 
     @Bean
@@ -101,8 +132,18 @@ public class AppConfig {
     }
 
     @Bean
+    public ElectronicAddressDao electronicAddressDao() {
+        return new ElectronicAddressDaoImpl(dataSource());
+    }
+
+    @Bean
     public PartyDao partyDao () {
         return new PartyDaoImpl(dataSource());
+    }
+
+    @Bean
+    public PartyElectronicAddressDao partyElectronicAddressDao() {
+        return new PartyElectronicAddressDaoImpl(dataSource());
     }
 
     @Bean
