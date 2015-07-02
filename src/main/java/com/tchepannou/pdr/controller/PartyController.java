@@ -41,6 +41,12 @@ public class PartyController {
     @Autowired
     private PartyPostalAddressService partyPostalAddressService;
 
+    @Autowired
+    private PhoneService phoneService;
+
+    @Autowired
+    private PartyPhoneService partyPhoneService;
+
 
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{partyId}")
@@ -82,7 +88,16 @@ public class PartyController {
                 .collect(Collectors.toList());
 
         final List<PostalAddress> postalAddresses = postalAddressService.findByIds(postalAddressIds);
+        
+        /* phones */
+        final List<PartyPhone> partyPhones = partyPhoneService.findByParty(party.getId());
 
+        final List<Long> phoneIds = partyPhones.stream()
+                .map(PartyPhone::getContactId)
+                .collect(Collectors.toList());
+
+        final List<Phone> phones = phoneService.findByIds(phoneIds);
+        
         return new ContactMechanismListResponse
                 .Builder()
                 .withContactMechanismPurposeService(contactMechanismPurposeService)
@@ -91,11 +106,13 @@ public class PartyController {
                 .withPartyElectronicAddresses(partyElectronicAddresses)
                 .withPostalAddresses(postalAddresses)
                 .withPartyPostalAddresses(partyPostalAddresses)
+                .withPhones(phones)
+                .withPartyPhones(partyPhones)
                 .build();
     }
     
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/e-addresses")
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/e-addresses")
     @ApiOperation("Add an electronic address to a party")
     public PartyElectronicAddressResponse addElectronicAddress (
             @PathVariable final long partyId,
@@ -120,7 +137,7 @@ public class PartyController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/e-addresses/{eaddressId}")
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/e-addresses/{eaddressId}")
     @ApiOperation("Update an electronic address")
     public PartyElectronicAddressResponse updateElectronicAddress (
             @PathVariable final long partyId,
@@ -146,7 +163,7 @@ public class PartyController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/e-addresses/{eaddressId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/e-addresses/{eaddressId}")
     @ApiOperation("Delete an electronic address")
     public void deleteElectronicAddress (
             @PathVariable final long partyId,
@@ -159,7 +176,7 @@ public class PartyController {
         partyElectronicAddressService.delete(eaddressId);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/p-addresses")
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/p-addresses")
     @ApiOperation("Add an postal address to a party")
     public PartyPostalAddressResponse addPostalAddress (
             @PathVariable final long partyId,
@@ -184,7 +201,7 @@ public class PartyController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/p-addresses/{paddressId}")
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/p-addresses/{paddressId}")
     @ApiOperation("Update an postal address")
     public PartyPostalAddressResponse updatePostalAddress (
             @PathVariable final long partyId,
@@ -210,7 +227,7 @@ public class PartyController {
                 .build();
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/p-addresses/{paddressId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/p-addresses/{paddressId}")
     @ApiOperation("Delete an postal address")
     public void deletePostalAddress (
             @PathVariable final long partyId,
@@ -224,6 +241,70 @@ public class PartyController {
     }
 
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/phones")
+    @ApiOperation("Add an postal address to a party")
+    public PartyPhoneResponse addPhone (
+            @PathVariable final long partyId,
+            @Valid @RequestBody CreatePartyPhoneRequest request
+    ) {
+        final Phone postalAddress = findPhone(request);
+
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
+
+        final PartyPhone partyPhone = new PartyPhone();
+        partyPhone.setPartyId(partyId);
+        partyPhone.setTypeId(type.getId());
+        update(request, purpose, partyPhone, partyPhoneService);
+        partyPhoneService.create(partyPhone);
+
+        return new PartyPhoneResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withPhone(postalAddress)
+                .withPartyPhone(partyPhone)
+                .build();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/phones/{phoneId}")
+    @ApiOperation("Update an postal address")
+    public PartyPhoneResponse updatePhone (
+            @PathVariable final long partyId,
+            @PathVariable final long phoneId,
+            @Valid @RequestBody PartyPhoneRequest request
+    ) {
+        final PartyPhone partyPhone = partyPhoneService.findById(phoneId);
+        if (partyPhone.getPartyId() != partyId) {
+            throw new BadRequestException();
+        }
+
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        final Phone postalAddress = findPhone(request);
+
+        update(request, purpose, partyPhone, partyPhoneService);
+        partyPhoneService.update(partyPhone);
+
+        return new PartyPhoneResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withPhone(postalAddress)
+                .withPartyPhone(partyPhone)
+                .build();
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/phones/{phoneId}")
+    @ApiOperation("Delete an postal address")
+    public void deletePhone (
+            @PathVariable final long partyId,
+            @PathVariable final long phoneId
+    ) {
+        PartyPhone phone = partyPhoneService.findById(phoneId);
+        if (phone.getPartyId() != partyId) {
+            throw new BadRequestException();
+        }
+        partyPhoneService.delete(phoneId);
+    }
+
     //-- Private
     private ContactMechanismPurpose findPurpose (String name){
         if (name != null) {
@@ -235,7 +316,7 @@ public class PartyController {
         return null;
     }
 
-    private ElectronicAddress findElectronicAddress (PartyElectronicAddressRequest request) {
+    private ElectronicAddress findElectronicAddress (final PartyElectronicAddressRequest request) {
         final String address = request.getAddress();
         final String hash = ElectronicAddress.computeHash(address);
         ElectronicAddress electronicAddress;
@@ -249,7 +330,7 @@ public class PartyController {
         return electronicAddress;
     }
 
-    private PostalAddress findPostalAddress (PartyPostalAddressRequest request) {
+    private PostalAddress findPostalAddress (final PartyPostalAddressRequest request) {
         final String hash = PostalAddress.computeHash(
                 request.getStreet1(),
                 request.getStreet2(),
@@ -272,6 +353,25 @@ public class PartyController {
             postalAddressService.create(postalAddress);
         }
         return postalAddress;
+    }
+
+    private Phone findPhone (final PartyPhoneRequest request) {
+        final String hash = Phone.computeHash(
+                request.getCountryCode(),
+                request.getNumber(),
+                request.getExtension()
+        );
+        Phone phone;
+        try {
+            phone = phoneService.findByHash(hash);
+        } catch (NotFoundException e) {     // NOSONAR
+            phone = new Phone();
+            phone.setCountryCode(request.getCountryCode());
+            phone.setNumber(request.getNumber());
+            phone.setExtension(request.getExtension());
+            phoneService.create(phone);
+        }
+        return phone;
     }
 
     private void update (

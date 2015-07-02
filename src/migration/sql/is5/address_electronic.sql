@@ -2,8 +2,8 @@ INSERT INTO t_contact_mechanism_type(id, name) VALUES(100, 'email');
 
 INSERT INTO t_contact_mechanism_type(id, name) VALUES(200, 'web');
 
-INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(101, 'primary');
-INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(102, 'alternate');
+INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(101, 'primary_email');
+INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(102, 'alternate_email');
 
 INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(201, 'website');
 INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(202, 'league_fixture');

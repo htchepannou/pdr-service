@@ -385,6 +385,7 @@
                                         <srcFile>src/migration/sql/is5/user.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/address_electronic.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/address_postal.sql</srcFile>
+                                        <srcFile>src/migration/sql/is5/address_phone.sql</srcFile>
                                     </srcFiles>
                                 </configuration>
                             </execution>

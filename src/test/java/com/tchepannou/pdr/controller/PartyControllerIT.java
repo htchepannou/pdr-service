@@ -5,11 +5,14 @@ import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.internal.mapper.ObjectMapperType;
 import com.tchepannou.pdr.Starter;
 import com.tchepannou.pdr.dao.PartyElectronicAddressDao;
+import com.tchepannou.pdr.dao.PartyPhoneDao;
 import com.tchepannou.pdr.dao.PartyPostalAddressDao;
 import com.tchepannou.pdr.domain.PartyElectronicAddress;
+import com.tchepannou.pdr.domain.PartyPhone;
 import com.tchepannou.pdr.domain.PartyPostalAddress;
 import com.tchepannou.pdr.domain.Privacy;
 import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressRequest;
+import com.tchepannou.pdr.dto.party.CreatePartyPhoneRequest;
 import com.tchepannou.pdr.dto.party.CreatePartyPostalAddressRequest;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -44,6 +47,9 @@ public class PartyControllerIT {
 
     @Autowired
     private PartyPostalAddressDao partyPostalAddressDao;
+
+    @Autowired
+    private PartyPhoneDao partyPhoneDao;
 
     @Before
     public void setUp (){
@@ -129,6 +135,14 @@ public class PartyControllerIT {
             .body("postalAddresses.stateCode", hasItems("QC"))
             .body("postalAddresses.zipCode", hasItems("H1K 1H3"))
             .body("postalAddresses.countryCode", hasItems("CAN"))
+
+            .body("phones.id", hasItems(141, 142))
+            .body("phones.noSolicitation", hasItems(false, true))
+            .body("phones.privacy", hasItems("PUBLIC", "HIDDEN"))
+            .body("phones.countryCode", hasItems("CAN", "USA"))
+            .body("phones.number", hasItems("5147580101", "5147580102"))
+            .body("phones.extension", hasItems(null, "123"))
+
         ;
         // @formatter:on
     }
@@ -156,7 +170,7 @@ public class PartyControllerIT {
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .post("/api/parties/100/e-addresses")
+                .post("/api/parties/100/contacts/e-addresses")
         .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log()
@@ -178,7 +192,7 @@ public class PartyControllerIT {
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .post("/api/parties/100/e-addresses/121")
+                .post("/api/parties/100/contacts/e-addresses/121")
         .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log()
@@ -200,7 +214,7 @@ public class PartyControllerIT {
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .post("/api/parties/9999/e-addresses/121")
+                .post("/api/parties/9999/contacts/e-addresses/121")
         .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .log()
@@ -211,14 +225,11 @@ public class PartyControllerIT {
     
     @Test
     public void test_deleteElectronicAddress () {
-        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
-
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .delete("/api/parties/100/e-addresses/121")
+                .delete("/api/parties/100/contacts/e-addresses/121")
         .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log()
@@ -232,14 +243,11 @@ public class PartyControllerIT {
 
     @Test
     public void test_deleteElectronicAddress_badPartyId () {
-        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
-
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .delete("/api/parties/9999/e-addresses/121")
+                .delete("/api/parties/9999/contacts/e-addresses/121")
         .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .log()
@@ -250,14 +258,14 @@ public class PartyControllerIT {
 
     @Test
     public void test_addPostalAddress () {
-        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("email", "primary", "john.smith@gmail.com");
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("postal", "primary", "3030 Linton");
 
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .post("/api/parties/100/p-addresses")
+                .post("/api/parties/100/contacts/p-addresses")
         .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log()
@@ -277,14 +285,14 @@ public class PartyControllerIT {
 
     @Test
     public void test_updatePostalAddress () {
-        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("postal", "primary", "3030 Linton");
 
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .post("/api/parties/100/p-addresses/131")
+                .post("/api/parties/100/contacts/p-addresses/131")
         .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log()
@@ -304,14 +312,14 @@ public class PartyControllerIT {
 
     @Test
     public void test_updatePostalAddress_badPartyId () {
-        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("postal", "primary", "3030 Linton");
 
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .post("/api/parties/9999/e-addresses/131")
+                .post("/api/parties/9999/contacts/p-addresses/131")
         .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .log()
@@ -322,14 +330,11 @@ public class PartyControllerIT {
 
     @Test
     public void test_deletePostalAddress () {
-        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
-
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
-                .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .delete("/api/parties/100/p-addresses/131")
+                .delete("/api/parties/100/contacts/p-addresses/131")
         .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log()
@@ -343,14 +348,109 @@ public class PartyControllerIT {
 
     @Test
     public void test_deletePostalAddress_badPartyId () {
-        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("web", "website", "http://www.google.ca");
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+        .when()
+                .delete("/api/parties/9999/contacts/p-addresses/131")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_addPhone () {
+        final CreatePartyPhoneRequest request = buildCreatePartyPhoneResquest("phone", "primary", "5147580000");
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/contacts/phones")
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .log()
+                    .all()
+                .body("noSolicitation", is(request.isNoSolicitation()))
+                .body("purpose", is(request.getPurpose()))
+                .body("privacy", is(request.getPrivacy()))
+                .body("number", is(request.getNumber()))
+                .body("extension", is(request.getExtension()))
+                .body("countryCode", is(request.getCountryCode()))
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_updatePhone () {
+        final CreatePartyPhoneRequest request = buildCreatePartyPhoneResquest("phone", "primary", "5147580000");
 
         // @formatter:off
         given()
                 .contentType(ContentType.JSON)
                 .content(request, ObjectMapperType.JACKSON_2)
         .when()
-                .delete("/api/parties/9999/p-addresses/131")
+                .post("/api/parties/100/contacts/phones/141")
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .log()
+                    .all()
+                .body("noSolicitation", is(request.isNoSolicitation()))
+                .body("purpose", is(request.getPurpose()))
+                .body("privacy", is(request.getPrivacy()))
+                .body("number", is(request.getNumber()))
+                .body("extension", is(request.getExtension()))
+                .body("countryCode", is(request.getCountryCode()))
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_updatePhone_badPartyId () {
+        final CreatePartyPhoneRequest request = buildCreatePartyPhoneResquest("phone", "primary", "5147580000");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/9999/contacts/phones/141")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_deletePhone () {
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+        .when()
+                .delete("/api/parties/100/contacts/phones/141")
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .log()
+                    .all()
+                ;
+        // @formatter:on
+
+        PartyPhone address = partyPhoneDao.findById(141);
+        assertThat(address).isNull();
+    }
+
+    @Test
+    public void test_deletePhone_badPartyId () {
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+        .when()
+                .delete("/api/parties/9999/contacts/phones/141")
         .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .log()
@@ -384,6 +484,18 @@ public class PartyControllerIT {
         address.setCountryCode("CAN");
         address.setNoSolicitation(true);
         address.setPurpose(purpose);
+        return address;
+    }
+
+    private CreatePartyPhoneRequest buildCreatePartyPhoneResquest (String type, String purpose, String value){
+        CreatePartyPhoneRequest address = new CreatePartyPhoneRequest();
+        address.setType(type);
+        address.setPrivacy(Privacy.PUBLIC.name());
+        address.setNoSolicitation(true);
+        address.setPurpose(purpose);
+        address.setCountryCode("CAN");
+        address.setNumber(value);
+        address.setExtension("123");
         return address;
     }
 }

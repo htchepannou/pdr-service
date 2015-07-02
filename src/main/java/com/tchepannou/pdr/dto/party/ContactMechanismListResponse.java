@@ -15,6 +15,7 @@ public class ContactMechanismListResponse {
     private List<PartyElectronicAddressResponse> emailAddresses;
     private List<PartyElectronicAddressResponse> webAddresses;
     private List<PartyPostalAddressResponse> postalAddresses;
+    private List<PartyPhoneResponse> phones;
 
 
     //-- Constructor
@@ -32,6 +33,13 @@ public class ContactMechanismListResponse {
                 builder.contactMechanismTypeService,
                 builder.contactMechanismPurposeService
         );
+
+        addPhones(
+                builder.phones,
+                builder.partyPhones,
+                builder.contactMechanismTypeService,
+                builder.contactMechanismPurposeService
+        );
     }
     
     //-- Builder
@@ -40,6 +48,8 @@ public class ContactMechanismListResponse {
         private List<PartyElectronicAddress> partyElectronicAddresses;
         private List<PostalAddress> postalAddresses;
         private List<PartyPostalAddress> partyPostalAddresses;
+        private List<Phone> phones;
+        private List<PartyPhone> partyPhones;
         private ContactMechanismTypeService contactMechanismTypeService;
         private ContactMechanismPurposeService contactMechanismPurposeService;
 
@@ -64,6 +74,16 @@ public class ContactMechanismListResponse {
 
         public Builder withPartyPostalAddresses (final List<PartyPostalAddress> partyPostalAddresses) {
             this.partyPostalAddresses = partyPostalAddresses;
+            return this;
+        }
+
+        public Builder withPhones (final List<Phone> phones) {
+            this.phones = phones;
+            return this;
+        }
+
+        public Builder withPartyPhones (final List<PartyPhone> partyPhones) {
+            this.partyPhones = partyPhones;
             return this;
         }
 
@@ -92,27 +112,35 @@ public class ContactMechanismListResponse {
         return postalAddresses;
     }
 
+    public List<PartyPhoneResponse> getPhones() {
+        return phones;
+    }
+
     //-- Private
     private void addElectronicAddresses (
-            final List<ElectronicAddress> electronicAddressesById,
+            final List<ElectronicAddress> electronicAddresses,
             final List<PartyElectronicAddress> partyElectronicAddresses,
             final ContactMechanismTypeService contactMechanismTypeService,
             final ContactMechanismPurposeService contactMechanismPurposeService
     ) {
-        final Map<Long, ElectronicAddress> electronicAddressMap = electronicAddressesById
+        if (electronicAddresses == null) {
+            return;
+        }
+
+        final Map<Long, ElectronicAddress> electronicAddressMap = electronicAddresses
                 .stream()
                 .collect(Collectors.toMap(ElectronicAddress::getId, elt -> elt));
 
-        final Map<PartyElectronicAddress, ElectronicAddress> electronicAddresses = new HashMap<>();
+        final Map<PartyElectronicAddress, ElectronicAddress> electronicAddressesByParty = new HashMap<>();
         for (PartyElectronicAddress partyElectronicAddress : partyElectronicAddresses) {
             final ElectronicAddress electronicAddress = electronicAddressMap.get(partyElectronicAddress.getContactId());
             if (electronicAddress != null) {
-                electronicAddresses.put(partyElectronicAddress, electronicAddress);
+                electronicAddressesByParty.put(partyElectronicAddress, electronicAddress);
             }
         }
 
         addElectronicAddresses(
-                electronicAddresses,
+                electronicAddressesByParty,
                 contactMechanismTypeService,
                 contactMechanismPurposeService
         );
@@ -148,39 +176,43 @@ public class ContactMechanismListResponse {
     }
 
     private void addPostalAddresses (
-            final List<PostalAddress> electronicAddressesById,
+            final List<PostalAddress> postalAddresses,
             final List<PartyPostalAddress> partyPostalAddresses,
             final ContactMechanismTypeService contactMechanismTypeService,
             final ContactMechanismPurposeService contactMechanismPurposeService
     ) {
-        final Map<Long, PostalAddress> electronicAddressMap = electronicAddressesById
+        if (postalAddresses == null) {
+            return;
+        }
+
+        final Map<Long, PostalAddress> electronicAddressMap = postalAddresses
                 .stream()
                 .collect(Collectors.toMap(PostalAddress::getId, elt -> elt));
 
-        final Map<PartyPostalAddress, PostalAddress> electronicAddresses = new HashMap<>();
+        final Map<PartyPostalAddress, PostalAddress> postalAddressesByParty = new HashMap<>();
         for (PartyPostalAddress partyPostalAddress : partyPostalAddresses) {
             final PostalAddress electronicAddress = electronicAddressMap.get(partyPostalAddress.getContactId());
             if (electronicAddress != null) {
-                electronicAddresses.put(partyPostalAddress, electronicAddress);
+                postalAddressesByParty.put(partyPostalAddress, electronicAddress);
             }
         }
 
         addPostalAddresses(
-                electronicAddresses,
+                postalAddressesByParty,
                 contactMechanismTypeService,
                 contactMechanismPurposeService
         );
     }  
     
     private void addPostalAddresses (
-            final Map<PartyPostalAddress, PostalAddress> electronicAddresses,
+            final Map<PartyPostalAddress, PostalAddress> postalAddresses,
             final ContactMechanismTypeService contactMechanismTypeService,
             final ContactMechanismPurposeService contactMechanismPurposeService
     ){
         PartyPostalAddressResponse.Builder builder = new PartyPostalAddressResponse.Builder();
 
-        for (PartyPostalAddress key : electronicAddresses.keySet()) {
-            PostalAddress address = electronicAddresses.get(key);
+        for (PartyPostalAddress key : postalAddresses.keySet()) {
+            PostalAddress address = postalAddresses.get(key);
             ContactMechanismType type = contactMechanismTypeService.findById(key.getTypeId());
             ContactMechanismPurpose purpose = contactMechanismPurposeService.findById(key.getPurposeId());
             if (address == null || type == null || purpose == null) {
@@ -194,8 +226,61 @@ public class ContactMechanismListResponse {
 
             addPostalAddress(builder.build());
         }
-    }    
-    
+    }
+
+    private void addPhones (
+            final List<Phone> phones,
+            final List<PartyPhone> partyPhones,
+            final ContactMechanismTypeService contactMechanismTypeService,
+            final ContactMechanismPurposeService contactMechanismPurposeService
+    ) {
+        if (phones == null) {
+            return;
+        }
+
+        final Map<Long, Phone> electronicAddressMap = phones
+                .stream()
+                .collect(Collectors.toMap(Phone::getId, elt -> elt));
+
+        final Map<PartyPhone, Phone> phonesByParty = new HashMap<>();
+        for (PartyPhone partyPhone : partyPhones) {
+            final Phone electronicAddress = electronicAddressMap.get(partyPhone.getContactId());
+            if (electronicAddress != null) {
+                phonesByParty.put(partyPhone, electronicAddress);
+            }
+        }
+
+        addPhones(
+                phonesByParty,
+                contactMechanismTypeService,
+                contactMechanismPurposeService
+        );
+    }
+
+    private void addPhones (
+            final Map<PartyPhone, Phone> phones,
+            final ContactMechanismTypeService contactMechanismTypeService,
+            final ContactMechanismPurposeService contactMechanismPurposeService
+    ){
+        PartyPhoneResponse.Builder builder = new PartyPhoneResponse.Builder();
+
+        for (PartyPhone key : phones.keySet()) {
+            Phone address = phones.get(key);
+            ContactMechanismType type = contactMechanismTypeService.findById(key.getTypeId());
+            ContactMechanismPurpose purpose = contactMechanismPurposeService.findById(key.getPurposeId());
+            if (address == null || type == null || purpose == null) {
+                continue;
+            }
+
+            builder.withPhone(address)
+                    .withPartyPhone(key)
+                    .withContactMechanismPurpose(purpose)
+            ;
+
+            addPhone(builder.build());
+        }
+    }
+
     private void addEmailAddress (final PartyElectronicAddressResponse address) {
         if (emailAddresses == null){
             emailAddresses = new ArrayList<>();
@@ -217,4 +302,10 @@ public class ContactMechanismListResponse {
         postalAddresses.add(address);
     }
 
+    private void addPhone (final PartyPhoneResponse phone) {
+        if (phones == null){
+            phones = new ArrayList<>();
+        }
+        phones.add(phone);
+    }
 }

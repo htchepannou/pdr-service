@@ -33,7 +33,7 @@ public class PostalAddress extends ContactMechanism {
                     Strings.nullToEmpty(zipCode),
                     Strings.nullToEmpty(countryCode)
                 );
-        return Strings.isNullOrEmpty(str) ? null : DigestUtils.md5Hex(str.toLowerCase());
+        return DigestUtils.md5Hex(str.toLowerCase());
     }
 
     //-- Getter/Setter

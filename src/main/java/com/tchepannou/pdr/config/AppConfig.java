@@ -90,6 +90,11 @@ public class AppConfig {
     }
 
     @Bean
+    public PartyPhoneService partyPhoneService() {
+        return new PartyPhoneServiceImpl();
+    }
+
+    @Bean
     public PartyPostalAddressService partyPostalAddressService() {
         return new PartyPostalAddressServiceImpl();
     }
@@ -97,6 +102,11 @@ public class AppConfig {
     @Bean
     public PermissionService permissionService () {
         return new PermissionServiceImpl();
+    }
+
+    @Bean
+    public PhoneService phoneService () {
+        return new PhoneServiceImpl();
     }
 
     @Bean
@@ -157,6 +167,11 @@ public class AppConfig {
     }
 
     @Bean
+    public PartyPhoneDao partyPhoneDao() {
+        return new PartyPhoneDaoImpl(dataSource());
+    }
+    
+    @Bean
     public PartyPostalAddressDao partyPostalAddressDao() {
         return new PartyPostalAddressDaoImpl(dataSource());
     }
@@ -164,6 +179,11 @@ public class AppConfig {
     @Bean
     public PermissionDao permissionDao () {
         return new PermissionDaoImpl(dataSource());
+    }
+
+    @Bean
+    public PhoneDao phoneDao () {
+        return new PhoneDaoImpl(dataSource());
     }
 
     @Bean

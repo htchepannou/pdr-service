@@ -2,7 +2,7 @@
 INSERT INTO t_contact_mechanism_type(id, name) VALUES(300, 'postal');
 
 -- Contact purpose
-INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(301, 'postal_address');
+INSERT INTO t_contact_mechanism_purpose(id, name) VALUES(301, 'primary_postal');
 
 -- Create the addresses
 INSERT INTO pdr.t_paddress(id, hash)
@@ -78,4 +78,4 @@ INSERT INTO pdr.t_party_contact_mechanism(party_fk, paddress_fk, type_fk, purpos
   FROM tmp_hash H JOIN pdr.t_paddress P ON  H.hash=P.hash;
 
 -- cleanup
-DROP TABLE IF EXISTS  tmp_hash;
+-- DROP TABLE IF EXISTS  tmp_hash;

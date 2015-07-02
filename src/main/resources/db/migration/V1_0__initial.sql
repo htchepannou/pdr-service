@@ -116,6 +116,16 @@ CREATE TABLE t_paddress(
     country_code VARCHAR(3)
 );
 
+CREATE TABLE t_phone(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    hash VARCHAR(32) NOT NULL UNIQUE,
+    country_code VARCHAR(3),
+    number VARCHAR(20),
+    extension VARCHAR(10)
+);
+
+
 CREATE TABLE t_party_contact_mechanism(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
@@ -124,6 +134,7 @@ CREATE TABLE t_party_contact_mechanism(
     purpose_fk BIGINT REFERENCES t_contact_mechanism_purpose(id),
     paddress_fk BIGINT REFERENCES t_paddress(id),
     eaddress_fk BIGINT REFERENCES t_eaddress(id),
+    phone_fk BIGINT REFERENCES t_phone(id),
 
     no_solicitation BIT(1),
     privacy CHAR(1)
