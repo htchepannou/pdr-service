@@ -140,6 +140,30 @@ CREATE TABLE t_party_contact_mechanism(
     privacy CHAR(1)
 );
 
+CREATE TABLE t_party_role_type(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE t_party_relationship_type(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    from_fk BIGINT NOT NULL REFERENCES t_party_role_type(id),
+    to_fk BIGINT NOT NULL REFERENCES t_party_role_type(id),
+
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE t_party_role(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    type_fk BIGINT NOT NULL REFERENCES t_party_role_type(id),
+    party_fk BIGINT NOT NULL REFERENCES t_party(id),
+
+    from_date DATETIME,
+    to_date DATETIME
+);
+
 
 
 

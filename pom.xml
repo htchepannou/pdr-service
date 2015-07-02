@@ -380,6 +380,7 @@
                                     <srcFiles>
                                         <srcFile>src/migration/sql/is5/domain.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/role.sql</srcFile>
+                                        <srcFile>src/migration/sql/is5/party.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/person.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/organization.sql</srcFile>
                                         <srcFile>src/migration/sql/is5/user.sql</srcFile>

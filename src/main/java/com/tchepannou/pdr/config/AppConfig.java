@@ -175,6 +175,11 @@ public class AppConfig {
     public PartyPostalAddressDao partyPostalAddressDao() {
         return new PartyPostalAddressDaoImpl(dataSource());
     }
+
+    @Bean
+    public PartyRoleTypeDao partyRoleTypeDao() {
+        return new PartyRoleTypeDaoImpl(dataSource());
+    }
     
     @Bean
     public PermissionDao permissionDao () {
