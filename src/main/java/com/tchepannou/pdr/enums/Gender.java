@@ -1,13 +1,11 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.enums;
 
-public enum PartyKind {
-    PERSON('P'),
-    ORGANIZATION('O'),
-    UNKNOWN('?');
+public enum Gender {
+    MALE('M'), FEMALE('F'), UNKNOWN('?');
 
     private char code;
 
-    PartyKind (char code) {
+    Gender (char code) {
         this.code = code;
     }
 
@@ -15,25 +13,25 @@ public enum PartyKind {
         return code;
     }
 
-    public static PartyKind fromCode (final char code) {
+    public static Gender fromCode (final char code) {
         Character xcode = Character.toUpperCase(code);
-        if (PERSON.code == xcode) {
-            return PERSON;
-        } else if (ORGANIZATION.code == xcode) {
-            return ORGANIZATION;
+        if (MALE.code == xcode) {
+            return MALE;
+        } else if (FEMALE.code == xcode) {
+            return FEMALE;
         } else {
             return UNKNOWN;
         }
     }
 
-    public static PartyKind fromText (final String text) {
+    public static Gender fromText (final String text) {
         try {
             if (text == null) {
                 return UNKNOWN;
             } else {
                 return text != null && text.length() == 1
                         ? fromCode(text.toUpperCase().charAt(0))
-                        : Enum.valueOf(PartyKind.class, text.toUpperCase());
+                        : Enum.valueOf(Gender.class, text.toUpperCase());
             }
         } catch (IllegalArgumentException e) {  // NOSONAR
             return UNKNOWN;

@@ -10,7 +10,7 @@ import com.tchepannou.pdr.dao.PartyPostalAddressDao;
 import com.tchepannou.pdr.domain.PartyElectronicAddress;
 import com.tchepannou.pdr.domain.PartyPhone;
 import com.tchepannou.pdr.domain.PartyPostalAddress;
-import com.tchepannou.pdr.domain.Privacy;
+import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressRequest;
 import com.tchepannou.pdr.dto.party.CreatePartyPhoneRequest;
 import com.tchepannou.pdr.dto.party.CreatePartyPostalAddressRequest;

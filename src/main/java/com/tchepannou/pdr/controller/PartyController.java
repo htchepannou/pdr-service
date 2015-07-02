@@ -2,6 +2,7 @@ package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.*;
 import com.tchepannou.pdr.dto.party.*;
+import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.BadRequestException;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.*;

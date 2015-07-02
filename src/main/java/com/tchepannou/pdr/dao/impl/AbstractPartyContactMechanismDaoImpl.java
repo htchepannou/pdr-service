@@ -1,7 +1,7 @@
 package com.tchepannou.pdr.dao.impl;
 
 import com.tchepannou.pdr.domain.PartyContactMecanism;
-import com.tchepannou.pdr.domain.Privacy;
+import com.tchepannou.pdr.enums.Privacy;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

@@ -1,9 +1,9 @@
 package com.tchepannou.pdr.dao.impl;
 
 import com.tchepannou.pdr.dao.PartyDao;
-import com.tchepannou.pdr.domain.Gender;
+import com.tchepannou.pdr.enums.Gender;
 import com.tchepannou.pdr.domain.Party;
-import com.tchepannou.pdr.domain.PartyKind;
+import com.tchepannou.pdr.enums.PartyKind;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

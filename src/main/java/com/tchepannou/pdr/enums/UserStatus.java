@@ -1,4 +1,4 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.enums;
 
 public enum UserStatus {
     CREATED('C'), ACTIVE('A'), SUSPENDED('S'), UNKNOWN('?');

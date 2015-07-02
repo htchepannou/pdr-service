@@ -1,9 +1,9 @@
 package com.tchepannou.pdr.dto.party;
 
 import com.google.common.base.Preconditions;
-import com.tchepannou.pdr.domain.Gender;
+import com.tchepannou.pdr.enums.Gender;
 import com.tchepannou.pdr.domain.Party;
-import com.tchepannou.pdr.domain.PartyKind;
+import com.tchepannou.pdr.enums.PartyKind;
 import com.tchepannou.pdr.util.DateUtils;
 
 public class PartyResponse {

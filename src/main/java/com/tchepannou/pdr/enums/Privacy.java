@@ -1,4 +1,4 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.enums;
 
 public enum Privacy {
     PUBLIC('P'), HIDDEN('H');

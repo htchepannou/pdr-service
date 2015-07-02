@@ -2,7 +2,7 @@ package com.tchepannou.pdr.dto.party;
 
 import com.tchepannou.pdr.domain.ContactMechanismPurpose;
 import com.tchepannou.pdr.domain.PartyContactMecanism;
-import com.tchepannou.pdr.domain.Privacy;
+import com.tchepannou.pdr.enums.Privacy;
 
 public abstract class AbstractPartyContactMechanismResponse {
     private long id;

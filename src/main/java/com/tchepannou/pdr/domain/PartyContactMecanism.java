@@ -1,5 +1,7 @@
 package com.tchepannou.pdr.domain;
 
+import com.tchepannou.pdr.enums.Privacy;
+
 public abstract class PartyContactMecanism extends Persistent{
     //-- Attributes
     private long partyId;

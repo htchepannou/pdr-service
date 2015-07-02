@@ -2,7 +2,7 @@ package com.tchepannou.pdr.controller;
 
 import com.google.common.base.Strings;
 import com.tchepannou.pdr.domain.User;
-import com.tchepannou.pdr.domain.UserStatus;
+import com.tchepannou.pdr.enums.UserStatus;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.dto.user.UpdateUserRequest;
 import com.tchepannou.pdr.dto.user.UserResponse;

@@ -1,5 +1,8 @@
 package com.tchepannou.pdr.domain;
 
+import com.tchepannou.pdr.enums.Gender;
+import com.tchepannou.pdr.enums.PartyKind;
+
 import java.util.Date;
 
 public class Party extends Persistent {

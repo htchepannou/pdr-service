@@ -1,5 +1,7 @@
 package com.tchepannou.pdr.domain;
 
+import com.tchepannou.pdr.enums.UserStatus;
+
 import java.util.Date;
 
 public class User extends Persistent {

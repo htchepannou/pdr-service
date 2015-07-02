@@ -6,7 +6,7 @@ import com.jayway.restassured.internal.mapper.ObjectMapperType;
 import com.tchepannou.pdr.Starter;
 import com.tchepannou.pdr.dao.UserDao;
 import com.tchepannou.pdr.domain.User;
-import com.tchepannou.pdr.domain.UserStatus;
+import com.tchepannou.pdr.enums.UserStatus;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.dto.user.UpdateUserRequest;
 import org.apache.http.HttpStatus;

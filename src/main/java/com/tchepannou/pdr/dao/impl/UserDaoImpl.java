@@ -2,7 +2,7 @@ package com.tchepannou.pdr.dao.impl;
 
 import com.tchepannou.pdr.dao.UserDao;
 import com.tchepannou.pdr.domain.User;
-import com.tchepannou.pdr.domain.UserStatus;
+import com.tchepannou.pdr.enums.UserStatus;
 import com.tchepannou.pdr.util.DateUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

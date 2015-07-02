@@ -1,5 +1,6 @@
-package com.tchepannou.pdr.domain;
+package com.tchepannou.pdr.enums;
 
+import com.tchepannou.pdr.enums.UserStatus;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
