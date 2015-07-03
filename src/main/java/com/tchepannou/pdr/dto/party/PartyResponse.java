@@ -20,7 +20,6 @@ public class PartyResponse {
     private final String prefix;
     private final String suffix;
     private final String fromDate;
-    private final String toDate;
 
     //-- Constructor
     private PartyResponse(Builder builder) {
@@ -37,7 +36,6 @@ public class PartyResponse {
         this.prefix = party.getPrefix();
         this.suffix = party.getSuffix();
         this.fromDate  = DateUtils.asString(party.getFromDate());
-        this.toDate  = DateUtils.asString(party.getToDate());
     }
 
 
@@ -104,9 +102,5 @@ public class PartyResponse {
 
     public String getFromDate() {
         return fromDate;
-    }
-
-    public String getToDate() {
-        return toDate;
     }
 }

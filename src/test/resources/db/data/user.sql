@@ -1,41 +1,49 @@
+INSERT INTO t_contact_mechanism_type(id, name) VALUES(100, 'email');
+
 -- findById
-insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight)
-    values (100, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250);
+insert into t_party(id, name) values (100, 'Ray Sponsible');
 
 insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
     101, 100, 'ray.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
 
--- findById_deletedParty
-insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight, deleted)
-    values (200, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250, 1);
-
-insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
-    201, 200, 'ray201.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
-
 -- findById_deleted
-insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight)
-    values (300, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250);
+insert into t_party(id, name) values (300, 'Ray Sponsible');
 
 insert into t_user (id, party_fk, login, password, from_date, to_date, status, deleted) values (
     301, 300, 'ray301.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A', 1);
 
--- update
-insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight)
-    values (1000, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250);
+-- create_duplicate email
+insert into t_party(id, name) values (400, 'Ray Sponsible');
+
+insert into t_eaddress(id, address, hash) values(400, 'ray.sponsible@gmail.com', MD5('ray.sponsible@gmail.com'));
+insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk) values(400, 400, 400, 100);
 
 insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
-    1001, 1000, 'ray1001.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
+    400, 400, '400.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
 
--- update_deleted
-insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight)
-    values (1100, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250);
+-- create_reuse_email
+insert into t_party(id, name) values (500, 'Ray Sponsible');
 
-insert into t_user (id, party_fk, login, password, from_date, to_date, status, deleted)
-    values (1101, 1100, 'ray1101.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A', 1);
+insert into t_eaddress(id, address, hash) values(500, 'ray.sponsible500@gmail.com', MD5('ray.sponsible500@gmail.com'));
+insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk) values(500, 500, 500, 100);
 
--- update
-insert into t_party(id, name, first_name, last_name, prefix, suffix, birth_date, gender, kind, height, weight)
-    values (2000, 'Ray Sponsible', 'Ray', 'Sponsible', 'Mr', 'PHD', '1973-12-27', 'M', 'P', 182, 250);
+insert into t_user (id, party_fk, login, password, from_date, to_date, status, deleted) values (
+    500, 500, '500.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A', 1);
+
+-- updateLogin
+insert into t_party(id, name) values (600, 'Ray Sponsible');
 
 insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
-    2001, 2000, '2001.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
+    600, 600, 'ray600.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
+
+-- updatePassword
+insert into t_party(id, name) values (700, 'Ray Sponsible');
+
+insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
+    700, 700, 'ray700.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');
+
+-- delete
+insert into t_party(id, name) values (1000, 'Ray Sponsible');
+
+insert into t_user (id, party_fk, login, password, from_date, to_date, status) values (
+    1000, 1000, 'ray1000.sponsible', 'secret', '1973-12-27 10:30:45', null, 'A');

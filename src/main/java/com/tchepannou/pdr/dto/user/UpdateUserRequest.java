@@ -1,5 +1,6 @@
 package com.tchepannou.pdr.dto.user;
 
+@Deprecated
 public class UpdateUserRequest {
     //-- Attributes
     private String login;

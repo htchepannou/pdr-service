@@ -22,7 +22,7 @@ public class ElectronicAddressDaoImpl extends AbstractContactMechanismDaoImpl<El
 
     @Override
     protected PreparedStatement preparedStatement(final ElectronicAddress address, final Connection connection) throws SQLException {
-        final String sql = "INSERT INTO t_eaddress(hash, address) VALUES(?,?)";
+        final String sql = "INSERT INTO t_eaddress(address, hash) VALUES(?,?)";
         final PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
         ps.setString(1, address.getAddress());
         ps.setString(2, address.getHash());

@@ -75,6 +75,8 @@ public abstract class AbstractContactMechanismDaoImpl<T extends ContactMechanism
             }
         }, holder);
 
-        return holder.getKey().longValue();
+        long id = holder.getKey().longValue();
+        address.setId(id);
+        return id;
     }
 }

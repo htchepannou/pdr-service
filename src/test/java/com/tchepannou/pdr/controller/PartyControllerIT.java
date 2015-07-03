@@ -80,19 +80,6 @@ public class PartyControllerIT {
     }
 
     @Test
-    public void test_findById_deleted(){
-        // @formatter:off
-        when()
-            .get("/api/parties/200")
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-            .log()
-                .all()
-        ;
-        // @formatter:on
-    }
-
-    @Test
     public void test_findById_badId (){
         // @formatter:off
         when()

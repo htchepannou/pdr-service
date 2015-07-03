@@ -1,10 +1,22 @@
 package com.tchepannou.pdr.dto.user;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 public class CreateUserRequest {
     //-- Attributes
-    private long partyId;
+    @NotBlank
     private String login;
+
+    @NotBlank
     private String password;
+
+    private long partyId;
+    private String firstName;
+    private String lastName;
+
+    @Email
+    private String email;
 
     //-- Getter/Setter
     public long getPartyId() {
@@ -29,5 +41,29 @@ public class CreateUserRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

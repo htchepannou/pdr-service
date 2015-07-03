@@ -7,6 +7,8 @@ public interface UserDao {
 
     User findByLogin (String login);
 
+    User findByEmail (String email);
+
     User findByParty (long partyId);
 
     long create (User user);

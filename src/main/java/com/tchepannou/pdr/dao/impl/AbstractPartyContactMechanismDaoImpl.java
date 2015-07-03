@@ -77,7 +77,10 @@ public abstract class AbstractPartyContactMechanismDaoImpl<T extends PartyContac
             }
         }, holder);
 
-        return holder.getKey().longValue();
+        long id = holder.getKey().longValue();
+        address.setId(id);
+
+        return id;
     }
 
     @Override

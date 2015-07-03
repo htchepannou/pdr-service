@@ -1,6 +1,7 @@
 package com.tchepannou.pdr.dao.impl;
 
 import com.tchepannou.pdr.dao.UserDao;
+import com.tchepannou.pdr.domain.ElectronicAddress;
 import com.tchepannou.pdr.domain.User;
 import com.tchepannou.pdr.enums.UserStatus;
 import com.tchepannou.pdr.util.DateUtils;
@@ -24,8 +25,8 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public User findById(final long id) {
         try {
             return queryForObject(
-                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE U.id=? AND P.deleted=?",
-                    new Object[]{id, false},
+                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE U.id=?",
+                    new Object[]{id},
                     getRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {    // NOSONAR
@@ -37,8 +38,30 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public User findByLogin(final String login) {
         try {
             return queryForObject(
-                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE U.login=? AND P.deleted=?",
-                    new Object[]{login, false},
+                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE LOWER(U.login)=?",
+                    new Object[]{login.toLowerCase()},
+                    getRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {    // NOSONAR
+            return null;
+        }
+    }
+
+    @Override
+    public User findByEmail(final String email) {
+        try {
+            final String hash = ElectronicAddress.computeHash(email);
+
+            final String sql = "SELECT U.*" +
+                    " FROM t_user U" +
+                    " JOIN t_party P ON U.party_fk=P.id" +
+                    " JOIN t_party_contact_mechanism CM ON P.id=CM.party_fk" +
+                    " JOIN t_eaddress E ON CM.eaddress_fk=E.id" +
+                    " WHERE E.hash=?";
+
+            return queryForObject(
+                    sql,
+                    new Object[]{hash},
                     getRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {    // NOSONAR
@@ -50,7 +73,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
     public User findByParty(final long partyId) {
         try {
             return queryForObject(
-                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE P.id=? AND P.deleted=?",
+                    "SELECT U.* FROM t_user U JOIN t_party P ON U.party_fk=P.id WHERE P.id=?",
                     new Object[]{partyId},
                     getRowMapper()
             );
@@ -79,7 +102,9 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
             }
         }, holder);
 
-        return holder.getKey().longValue();
+        long id = holder.getKey().longValue();
+        user.setId(id);
+        return id;
     }
 
     @Override
@@ -87,7 +112,7 @@ public class UserDaoImpl extends JdbcTemplate implements UserDao {
         final String sql = "UPDATE t_user SET login=?, password=?, status=? WHERE id=?";
         update(sql,
                 user.getLogin(),
-                user.getPartyId(),
+                user.getPassword(),
                 String.valueOf(user.getStatus().getCode()),
                 user.getId()
         );

@@ -1,5 +1,6 @@
 package com.tchepannou.pdr.domain;
 
+import com.google.common.base.Joiner;
 import com.tchepannou.pdr.enums.Gender;
 import com.tchepannou.pdr.enums.PartyKind;
 
@@ -17,9 +18,7 @@ public class Party extends Persistent {
     private Gender gender;
     private int heigth;
     private int weight;
-    private boolean deleted;
     private Date fromDate;
-    private Date toDate;
 
     //-- Getter/Setter
     public PartyKind getKind() {
@@ -31,6 +30,12 @@ public class Party extends Persistent {
     }
 
     public String getName() {
+        if (this.name == null && PartyKind.PERSON.equals(this.kind)) {
+            this.name = Joiner
+                    .on(' ')
+                    .skipNulls()
+                    .join(this.firstName, this.lastName);
+        }
         return name;
     }
 
@@ -102,27 +107,11 @@ public class Party extends Persistent {
         this.suffix = suffix;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public Date getFromDate() {
         return fromDate;
     }
 
     public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
     }
 }

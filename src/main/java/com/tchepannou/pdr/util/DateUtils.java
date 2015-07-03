@@ -22,6 +22,17 @@ public class DateUtils {
         }
     }
 
+    public static java.sql.Date asSqlDate (Date date) {
+        if (date == null) {
+            return null;
+        }
+        else if (date instanceof java.sql.Date) {
+            return (java.sql.Date) date;
+        } else {
+            return new java.sql.Date(date.getTime());
+        }
+    }
+
     public static String asString (Date date) {
         return date != null ? new SimpleDateFormat(DATETIME_PATTERN).format(date) : null;
     }

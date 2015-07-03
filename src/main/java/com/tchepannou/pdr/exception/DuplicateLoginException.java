@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "duplicate_login")
 public class DuplicateLoginException extends RuntimeException{
-    public DuplicateLoginException(String name, Exception e) {
-        super (name, e);
+    public DuplicateLoginException(String name) {
+        super (name);
     }
 }

@@ -12,9 +12,7 @@ CREATE TABLE t_domain(
 CREATE TABLE t_party(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
-    deleted BIT DEFAULT 0,
     from_date DATETIME,
-    to_date DATETIME,
 
     name VARCHAR(100) NOT NULL,
     first_name VARCHAR(50),
@@ -137,7 +135,9 @@ CREATE TABLE t_party_contact_mechanism(
     phone_fk BIGINT REFERENCES t_phone(id),
 
     no_solicitation BIT(1),
-    privacy CHAR(1)
+    privacy CHAR(1),
+
+    UNIQUE(party_fk, type_fk, purpose_fk, paddress_fk, eaddress_fk, phone_fk)
 );
 
 CREATE TABLE t_party_role_type(
@@ -161,7 +161,8 @@ CREATE TABLE t_party_role(
     party_fk BIGINT NOT NULL REFERENCES t_party(id),
 
     from_date DATETIME,
-    to_date DATETIME
+
+    UNIQUE(type_fk, party_fk)
 );
 
 

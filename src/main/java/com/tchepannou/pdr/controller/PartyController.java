@@ -54,10 +54,6 @@ public class PartyController {
     @ApiOperation("Returns a Party ")
     public PartyResponse findById(@PathVariable final long partyId) {
         final Party party = partyService.findById(partyId);
-        if (party == null || party.isDeleted()) {
-            throw new NotFoundException(partyId);
-        }
-
         return new PartyResponse
                 .Builder()
                 .withParty(party)
@@ -68,7 +64,7 @@ public class PartyController {
     @ApiOperation("Returns a Party contacts mechanisms")
     public ContactMechanismListResponse contacts(@PathVariable final long partyId) {
         final Party party = partyService.findById(partyId);
-        if (party == null || party.isDeleted()) {
+        if (party == null) {
             throw new NotFoundException(partyId);
         }
 

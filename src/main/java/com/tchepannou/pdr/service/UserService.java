@@ -1,17 +1,20 @@
 package com.tchepannou.pdr.service;
 
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.dto.user.CreateUserRequest;
 
 public interface UserService {
     User findById (long id);
 
-    User findByParty (long partyId);
-
     User findByLogin (String login);
 
-    void create (User user);
+    boolean isEmailAlreadyAssigned (final String email);
 
-    void update (User user);
+    User create (CreateUserRequest request);
+
+    User updatePassword (long id, String password);
+
+    User updateLogin (long id, String login);
 
     void delete (long id);
 }

@@ -19,4 +19,6 @@ public class PartyElectronicAddressDaoImpl extends AbstractPartyContactMechanism
     protected PartyElectronicAddress createPartyContactMechanism() {
         return new PartyElectronicAddress();
     }
+
+
 }

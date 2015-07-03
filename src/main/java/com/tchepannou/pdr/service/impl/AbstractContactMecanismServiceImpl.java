@@ -4,6 +4,7 @@ import com.tchepannou.pdr.dao.AbstractContactMechanismDao;
 import com.tchepannou.pdr.domain.ContactMechanism;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractContactMechanismService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +29,7 @@ public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechan
     }
 
     @Override
+    @Transactional
     public void create(T address) {
         long id = getDao().create(address);
         address.setId(id);
