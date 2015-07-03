@@ -3,9 +3,9 @@ package com.tchepannou.pdr.domain;
 import java.util.Date;
 
 public class PartyRole extends Persistent {
-    public long partyId;
-    public long typeId;
-    public Date fromDate;
+    private long partyId;
+    private long typeId;
+    private Date fromDate;
 
     public long getPartyId() {
         return partyId;

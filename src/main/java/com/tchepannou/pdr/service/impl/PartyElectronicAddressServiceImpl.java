@@ -55,7 +55,7 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
                     ElectronicAddress.computeHash(email)
             );
 
-        } catch (NotFoundException e) {
+        } catch (NotFoundException e) {     // NOSONAR
 
             final ElectronicAddress address = new ElectronicAddress();
             address.setAddress(email);

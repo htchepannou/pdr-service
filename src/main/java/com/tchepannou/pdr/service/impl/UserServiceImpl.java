@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
             userDao.create(user);
 
             return user;
-        } catch (DuplicateKeyException e){
+        } catch (DuplicateKeyException e){  // NOSONAR
             throw new DuplicateLoginException(request.getLogin());
         }
     }
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
             user.setLogin(login);
             userDao.update(user);
             return user;
-        } catch (DuplicateKeyException e){
+        } catch (DuplicateKeyException e){  // NOSONAR
             throw new DuplicateLoginException(login);
         }
     }
