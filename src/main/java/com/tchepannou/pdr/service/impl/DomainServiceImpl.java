@@ -2,6 +2,7 @@ package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.DomainDao;
 import com.tchepannou.pdr.domain.Domain;
+import com.tchepannou.pdr.dto.domain.DomainRequest;
 import com.tchepannou.pdr.exception.DuplicateNameException;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.DomainService;
@@ -32,30 +33,39 @@ public class DomainServiceImpl implements DomainService {
         return domainDao.findAll();
     }
 
-    @Transactional
     @Override
-    public void create(final Domain domain) {
+    @Transactional
+    public Domain create(final DomainRequest request) {
         try {
+            final Domain domain = new Domain ();
+            domain.setName(request.getName());
+            domain.setDescription(request.getDescription());
             domain.setFromDate(new Date());
-            long id = domainDao.create(domain);
-            domain.setId(id);
+
+            domainDao.create(domain);
+            return domain;
         } catch (DuplicateKeyException e) {
-            throw new DuplicateNameException(domain.getName() + " already assigned to another domain", e);
+            throw new DuplicateNameException(request.getName(), e);
         }
     }
 
-    @Transactional
     @Override
-    public void update(final Domain domain) {
+    @Transactional
+    public Domain update(final long id, final DomainRequest request) {
         try {
+            Domain domain = findById(id);
+            domain.setName(request.getName());
+            domain.setDescription(request.getDescription());
+
             domainDao.update(domain);
+            return domain;
         } catch (DuplicateKeyException e) {
-            throw new DuplicateNameException(domain.getName() + " already assigned to another domain", e);
+            throw new DuplicateNameException(request.getName(), e);
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void delete(final long id) {
         findById(id);       // Make sure that domain exists
 

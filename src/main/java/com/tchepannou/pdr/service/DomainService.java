@@ -1,6 +1,7 @@
 package com.tchepannou.pdr.service;
 
 import com.tchepannou.pdr.domain.Domain;
+import com.tchepannou.pdr.dto.domain.DomainRequest;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ public interface DomainService {
 
     List<Domain> findAll ();
 
-    void create (Domain domain);
+    Domain create (DomainRequest request);
 
-    void update (Domain domain);
+    Domain update (long id, DomainRequest domain);
 
     void delete (long id);
 }

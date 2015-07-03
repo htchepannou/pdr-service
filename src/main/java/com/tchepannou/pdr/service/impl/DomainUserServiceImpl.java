@@ -15,7 +15,7 @@ public class DomainUserServiceImpl implements DomainUserService {
     private DomainUserDao domainUserDao;
 
     @Override
-    public DomainUser findByDomainByUser(long domainId, long userId, long roleId) {
+    public DomainUser findByDomainByUserByRole(long domainId, long userId, long roleId) {
         final DomainUser domainUser = domainUserDao.findByDomainByUser(domainId, userId, roleId);
         if (domainUser == null){
             throw new NotFoundException();
@@ -28,21 +28,30 @@ public class DomainUserServiceImpl implements DomainUserService {
         return domainUserDao.findByDomainByUser(domainId, userId);
     }
 
-    @Transactional
     @Override
-    public void create(DomainUser domainUser) {
+    @Transactional
+    public DomainUser create(
+            final long domainId,
+            final long userId,
+            final long roleId
+    ) {
         try {
-            final long id = domainUserDao.create(domainUser);
-            domainUser.setId(id);
+            DomainUser domainUser = new DomainUser(domainId, userId, roleId);
+            domainUserDao.create(domainUser);
+            return domainUser;
         } catch (DuplicateKeyException e) { // NOSONAR
-            DomainUser clone = findByDomainByUser(domainUser.getDomainId(), domainUser.getUserId(), domainUser.getRoleId());
-            domainUser.setId(clone.getId());
+            return findByDomainByUserByRole(domainId, userId, roleId);
         }
     }
 
     @Override
     @Transactional
-    public void delete(long id) {
-        domainUserDao.delete(id);
+    public void delete(
+            final long domainId,
+            final long userId,
+            final long roleId
+    ) {
+        DomainUser domainUser = findByDomainByUserByRole(domainId, userId, roleId);
+        domainUserDao.delete(domainUser.getId());
     }
 }

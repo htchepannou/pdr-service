@@ -4,6 +4,7 @@ import com.tchepannou.pdr.dao.PartyDao;
 import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.dto.party.CreatePartyRequest;
 import com.tchepannou.pdr.enums.PartyKind;
+import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +18,11 @@ public class PartyServiceImpl implements PartyService {
     //-- PartyService overrides
     @Override
     public Party findById(long id) {
-        return partyDao.findById(id);
+        Party party = partyDao.findById(id);
+        if (party == null) {
+            throw new NotFoundException(id);
+        }
+        return party;
     }
 
     @Override

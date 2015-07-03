@@ -5,11 +5,11 @@ import com.tchepannou.pdr.domain.DomainUser;
 import java.util.List;
 
 public interface DomainUserService {
-    DomainUser findByDomainByUser (long domainId, long userId, long roleId);
+    DomainUser findByDomainByUserByRole(long domainId, long userId, long roleId);
 
     List<DomainUser> findByDomainByUser(long domainId, long userId);
 
-    void create (DomainUser domainUser);
+    DomainUser create (long domainId, long userId, long roleId);
 
-    void delete (long id);
+    void delete (long domainId, long userId, long roleId);
 }

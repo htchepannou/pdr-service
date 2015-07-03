@@ -63,7 +63,9 @@ public class DomainDaoImpl extends JdbcTemplate implements DomainDao{
                    }
                }, holder);
 
-        return holder.getKey().longValue();
+        long id = holder.getKey().longValue();
+        domain.setId(id);
+        return id;
     }
 
     @Override
