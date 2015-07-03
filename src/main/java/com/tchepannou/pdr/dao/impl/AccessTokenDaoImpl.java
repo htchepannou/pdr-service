@@ -56,7 +56,9 @@ public class AccessTokenDaoImpl extends JdbcTemplate implements AccessTokenDao {
             }
         }, holder);
 
-        return holder.getKey().longValue();
+        long id = holder.getKey().longValue();
+        token.setId(id);
+        return id;
     }
 
     @Override

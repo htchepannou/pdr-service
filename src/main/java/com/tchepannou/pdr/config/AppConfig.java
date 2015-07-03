@@ -50,11 +50,6 @@ public class AppConfig {
     }
 
     @Bean
-    public AccessTokenService accessTokenService () {
-        return new AccessTokenServiceImpl();
-    }
-
-    @Bean
     public ContactMechanismPurposeDao contactMechanismPurposeDao (){
         return new ContactMechanismPurposeDaoImpl(dataSource());
     }
@@ -131,6 +126,10 @@ public class AppConfig {
         return new AccessTokenDaoImpl(dataSource());
     }
 
+    @Bean
+    public AuthService authService () {
+        return new AuthServiceImpl();
+    }
     @Bean
     public ContactMechanismTypeService contactMechanismTypeService() {
         return new ContactMechanismTypeServiceImpl();
