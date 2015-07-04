@@ -5,7 +5,6 @@ import com.tchepannou.pdr.dao.PartyPhoneDao;
 import com.tchepannou.pdr.domain.*;
 import com.tchepannou.pdr.dto.party.CreatePartyPhoneRequest;
 import com.tchepannou.pdr.dto.party.PartyPhoneRequest;
-import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.PartyPhoneService;
 import com.tchepannou.pdr.service.PhoneService;
@@ -31,43 +30,15 @@ public class PartyPhoneServiceImpl extends AbstractPartyContactMechanismServiceI
     @Override 
     public PartyPhone addAddress(Party party, CreatePartyPhoneRequest request) {
         final Phone address = createPhone(request);
-
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
-
-        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
-
-        final PartyPhone partyPhone = new PartyPhone();
-        partyPhone.setPartyId(party.getId());
-        partyPhone.setTypeId(type.getId());
-        partyPhone.setContactId(address.getId());
-        partyPhone.setPrivacy(Privacy.fromText(request.getPrivacy()));
-        partyPhone.setNoSolicitation(request.isNoSolicitation());
-        partyPhone.setPurposeId(purpose == null ? 0 : purpose.getId());
-
-        dao.create(partyPhone);
-
-        return partyPhone;
+        return super.addAddress(party, request.getType(), request, new PartyPhone(), address);
     }
 
     @Override 
     public PartyPhone updateAddress(Party party, long addressId, PartyPhoneRequest request) {
-        final PartyPhone phone = findById(addressId);
-        if (phone.getPartyId() != party.getId()) {
-            throw new NotFoundException();
-        }
-
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
-
+        final PartyPhone partyAddress = findById(addressId);
         final Phone address = createPhone(request);
 
-        phone.setContactId(address.getId());
-        phone.setPrivacy(Privacy.fromText(request.getPrivacy()));
-        phone.setNoSolicitation(request.isNoSolicitation());
-        phone.setPurposeId(purpose == null ? 0 : purpose.getId());
-
-        dao.update(phone);
-
-        return phone;
+        return super.updateAddress(party, request, partyAddress, address);
     }
 
     @Override
@@ -100,6 +71,4 @@ public class PartyPhoneServiceImpl extends AbstractPartyContactMechanismServiceI
         }
         return phone;
     }
-
-
 }

@@ -2,10 +2,11 @@ package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao;
 import com.tchepannou.pdr.dao.PartyPostalAddressDao;
-import com.tchepannou.pdr.domain.*;
+import com.tchepannou.pdr.domain.Party;
+import com.tchepannou.pdr.domain.PartyPostalAddress;
+import com.tchepannou.pdr.domain.PostalAddress;
 import com.tchepannou.pdr.dto.party.CreatePartyPostalAddressRequest;
 import com.tchepannou.pdr.dto.party.PartyPostalAddressRequest;
-import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.PartyPostalAddressService;
 import com.tchepannou.pdr.service.PostalAddressService;
@@ -32,44 +33,16 @@ public class PartyPostalAddressServiceImpl extends AbstractPartyContactMechanism
     @Transactional
     public PartyPostalAddress addAddress(Party party, CreatePartyPostalAddressRequest request) {
         final PostalAddress address = createPostalAddress(request);
-
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
-
-        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
-
-        final PartyPostalAddress partyPostalAddress = new PartyPostalAddress();
-        partyPostalAddress.setPartyId(party.getId());
-        partyPostalAddress.setTypeId(type.getId());
-        partyPostalAddress.setContactId(address.getId());
-        partyPostalAddress.setPrivacy(Privacy.fromText(request.getPrivacy()));
-        partyPostalAddress.setNoSolicitation(request.isNoSolicitation());
-        partyPostalAddress.setPurposeId(purpose == null ? 0 : purpose.getId());
-
-        dao.create(partyPostalAddress);
-
-        return partyPostalAddress;
+        return super.addAddress(party, request.getType(), request, new PartyPostalAddress(), address);
     }
 
     @Override
     @Transactional
     public PartyPostalAddress updateAddress(Party party, long addressId, PartyPostalAddressRequest request) {
-        final PartyPostalAddress partyPostalAddress = findById(addressId);
-        if (partyPostalAddress.getPartyId() != party.getId()) {
-            throw new NotFoundException();
-        }
-
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
-
+        final PartyPostalAddress partyAddress = findById(addressId);
         final PostalAddress address = createPostalAddress(request);
 
-        partyPostalAddress.setContactId(address.getId());
-        partyPostalAddress.setPrivacy(Privacy.fromText(request.getPrivacy()));
-        partyPostalAddress.setNoSolicitation(request.isNoSolicitation());
-        partyPostalAddress.setPurposeId(purpose == null ? 0 : purpose.getId());
-
-        dao.update(partyPostalAddress);
-
-        return partyPostalAddress;
+        return super.updateAddress(party, request, partyAddress, address);
     }
 
     @Override

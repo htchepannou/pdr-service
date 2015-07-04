@@ -1,9 +1,9 @@
 package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao;
-import com.tchepannou.pdr.domain.ContactMechanismPurpose;
-import com.tchepannou.pdr.domain.Party;
-import com.tchepannou.pdr.domain.PartyContactMecanism;
+import com.tchepannou.pdr.domain.*;
+import com.tchepannou.pdr.dto.party.AbstractPartyContactMechanismRequest;
+import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractPartyContactMechanismService;
 import com.tchepannou.pdr.service.ContactMechanismPurposeService;
@@ -69,6 +69,52 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
         }
         return null;
     }
+
+    public T addAddress(
+            final Party party,
+            final String typeName,
+            final AbstractPartyContactMechanismRequest request,
+            final T partyContactMechanism,
+            final ContactMechanism contactMechanism
+    ) {
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        final ContactMechanismType type = contactMechanismTypeService.findByName(typeName);
+
+        partyContactMechanism.setPartyId(party.getId());
+        partyContactMechanism.setTypeId(type.getId());
+        partyContactMechanism.setContactId(contactMechanism.getId());
+        partyContactMechanism.setPrivacy(Privacy.fromText(request.getPrivacy()));
+        partyContactMechanism.setNoSolicitation(request.isNoSolicitation());
+        partyContactMechanism.setPurposeId(purpose == null ? 0 : purpose.getId());
+
+        getDao().create(partyContactMechanism);
+
+        return partyContactMechanism;
+    }
+
+
+    protected T updateAddress(
+            final Party party,
+            final AbstractPartyContactMechanismRequest request,
+            final T partyContactMechanism,
+            final ContactMechanism contactMechanism
+    ) {
+        if (partyContactMechanism.getPartyId() != party.getId()) {
+            throw new NotFoundException();
+        }
+
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        partyContactMechanism.setContactId(contactMechanism.getId());
+        partyContactMechanism.setPrivacy(Privacy.fromText(request.getPrivacy()));
+        partyContactMechanism.setNoSolicitation(request.isNoSolicitation());
+        partyContactMechanism.setPurposeId(purpose == null ? 0 : purpose.getId());
+
+        getDao().update(partyContactMechanism);
+        return partyContactMechanism;
+    }
+
 
     protected void removeAddress(
             final Party party,

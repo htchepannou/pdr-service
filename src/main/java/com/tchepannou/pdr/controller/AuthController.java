@@ -1,10 +1,9 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.AccessToken;
-import com.tchepannou.pdr.domain.User;
 import com.tchepannou.pdr.dto.auth.AuthRequest;
 import com.tchepannou.pdr.dto.auth.AuthResponse;
-import com.tchepannou.pdr.service.*;
+import com.tchepannou.pdr.service.AuthService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @RestController
 @Api(basePath = "/auth", value = "Authentication", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,18 +54,5 @@ public class AuthController extends AbstractController {
     @ApiOperation("Sign a user out")
     public void logout(@PathVariable final long authId) {
         authService.logout(authId);
-    }
-
-
-    //-- Private
-    private AccessToken createAccessToken(AuthRequest request, User user) {
-        AccessToken token = new AccessToken();
-        token.setFromDate(new Date());
-        token.setUserId(user.getId());
-        token.setRemoteIp(request.getRemoteIp());
-        token.setUserAgent(request.getUserAgent());
-        token.setDomainId(request.getDomainId());
-
-        return token;
     }
 }
