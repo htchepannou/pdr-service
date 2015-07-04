@@ -5,17 +5,18 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class CreateUserRequest {
     //-- Attributes
-    @NotBlank
+    @NotBlank(message="login")
     private String login;
 
-    @NotBlank
+    @NotBlank(message="password")
     private String password;
 
     private long partyId;
+
     private String firstName;
     private String lastName;
 
-    @Email
+    @Email(message="email")
     private String email;
 
     //-- Getter/Setter

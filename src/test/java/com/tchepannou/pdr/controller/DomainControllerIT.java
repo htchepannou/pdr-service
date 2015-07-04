@@ -206,7 +206,7 @@ public class DomainControllerIT {
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .log()
                 .all()
-            .body("message", is("bad_request"))
+            .body("message", is("name"))
         ;
         // @formatter:on
     }

@@ -7,6 +7,7 @@ import com.tchepannou.pdr.dto.party.CreatePartyRequest;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.enums.PartyKind;
 import com.tchepannou.pdr.enums.UserStatus;
+import com.tchepannou.pdr.exception.AccountAlreadyExistException;
 import com.tchepannou.pdr.exception.DuplicateEmailException;
 import com.tchepannou.pdr.exception.DuplicateLoginException;
 import com.tchepannou.pdr.exception.NotFoundException;
@@ -112,24 +113,35 @@ public class UserServiceImpl implements UserService {
     //-- Private
     private Party createParty  (final CreateUserRequest request) {
         final long partyId = request.getPartyId();
+        Party party;
+
         if (partyId > 0) {
-            return partyService.findById(partyId);
+
+            party = partyService.findById(partyId);
+            final User user = userDao.findByParty(partyId);
+            if (user != null && !user.isDeleted()) {
+                throw new AccountAlreadyExistException();
+            }
+
+        } else {
+
+            /* email already assigned ? */
+            final String email = request.getEmail();
+            if (isEmailAlreadyAssigned(email)) {
+                throw new DuplicateEmailException(email);
+            }
+
+            /* create the party */
+            CreatePartyRequest partyRequest = new CreatePartyRequest();
+            partyRequest.setKind(PartyKind.PERSON.name());
+            partyRequest.setFirstName(request.getFirstName());
+            partyRequest.setLastName(request.getLastName());
+            party = partyService.create(partyRequest);
+
+            /* adf the email */
+            partyElectronicAddressService.addEmail(party, email);
         }
 
-        final String email = request.getEmail();
-        if (isEmailAlreadyAssigned(email)){
-            throw new DuplicateEmailException(email);
-        }
-
-        /* create the party */
-        CreatePartyRequest partyRequest = new CreatePartyRequest();
-        partyRequest.setKind(PartyKind.PERSON.name());
-        partyRequest.setFirstName(request.getFirstName());
-        partyRequest.setLastName(request.getLastName());
-        Party party = partyService.create(partyRequest);
-
-        /* ad the email */
-        partyElectronicAddressService.addEmail(party, email);
 
         return party;
     }

@@ -1,8 +1,11 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.dto.ErrorResponse;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.dto.user.UserResponse;
+import com.tchepannou.pdr.exception.AccountAlreadyExistException;
+import com.tchepannou.pdr.exception.DuplicateEmailException;
 import com.tchepannou.pdr.service.UserService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -10,9 +13,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -79,5 +84,25 @@ public class UserController extends AbstractController {
     @ApiOperation("Delete a user account")
     public void delete (@PathVariable final long userId) {
         userService.delete(userId);
+    }
+
+
+    //-- Error Handler
+    @ExceptionHandler(DuplicateEmailException.class)
+    @ResponseStatus(value= HttpStatus.CONFLICT)
+    public ErrorResponse handleError(
+            final HttpServletRequest request,
+            final DuplicateEmailException exception
+    ) {
+        return handleException(request, HttpStatus.CONFLICT, "duplicate_email", exception);
+    }
+
+    @ExceptionHandler(AccountAlreadyExistException.class)
+    @ResponseStatus(value= HttpStatus.CONFLICT)
+    public ErrorResponse handleError(
+            final HttpServletRequest request,
+            final AccountAlreadyExistException exception
+    ) {
+        return handleException(request, HttpStatus.CONFLICT, "account_already_exist", exception);
     }
 }
