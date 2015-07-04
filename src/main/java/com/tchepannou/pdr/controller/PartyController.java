@@ -2,8 +2,6 @@ package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.*;
 import com.tchepannou.pdr.dto.party.*;
-import com.tchepannou.pdr.enums.Privacy;
-import com.tchepannou.pdr.exception.BadRequestException;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.*;
 import com.wordnik.swagger.annotations.Api;
@@ -204,23 +202,11 @@ public class PartyController extends AbstractController{
             @PathVariable final long partyId,
             @Valid @RequestBody CreatePartyPhoneRequest request
     ) {
-        final Phone postalAddress = findPhone(request);
+        final Party party = partyService.findById(partyId);
 
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+        final PartyPhone partyPhone = partyPhoneService.addAddress(party, request);
 
-        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
-
-        final PartyPhone partyPhone = new PartyPhone();
-        partyPhone.setPartyId(partyId);
-        partyPhone.setTypeId(type.getId());
-        update(request, purpose, partyPhone, partyPhoneService);
-        partyPhoneService.create(partyPhone);
-
-        return new PartyPhoneResponse.Builder()
-                .withContactMechanismPurpose(purpose)
-                .withPhone(postalAddress)
-                .withPartyPhone(partyPhone)
-                .build();
+        return toPartyPhoneResponse(partyPhone);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/phones/{phoneId}")
@@ -230,23 +216,11 @@ public class PartyController extends AbstractController{
             @PathVariable final long phoneId,
             @Valid @RequestBody PartyPhoneRequest request
     ) {
-        final PartyPhone partyPhone = partyPhoneService.findById(phoneId);
-        if (partyPhone.getPartyId() != partyId) {
-            throw new BadRequestException();
-        }
+        final Party party = partyService.findById(partyId);
 
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+        final PartyPhone partyPhone = partyPhoneService.updateAddress(party, phoneId, request);
 
-        final Phone postalAddress = findPhone(request);
-
-        update(request, purpose, partyPhone, partyPhoneService);
-        partyPhoneService.update(partyPhone);
-
-        return new PartyPhoneResponse.Builder()
-                .withContactMechanismPurpose(purpose)
-                .withPhone(postalAddress)
-                .withPartyPhone(partyPhone)
-                .build();
+        return toPartyPhoneResponse(partyPhone);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/phones/{phoneId}")
@@ -255,11 +229,8 @@ public class PartyController extends AbstractController{
             @PathVariable final long partyId,
             @PathVariable final long phoneId
     ) {
-        PartyPhone phone = partyPhoneService.findById(phoneId);
-        if (phone.getPartyId() != partyId) {
-            throw new BadRequestException();
-        }
-        partyPhoneService.delete(phoneId);
+        final Party party = partyService.findById(partyId);
+        partyPhoneService.removeAddress(party, phoneId);
     }
 
     //-- Private
@@ -287,45 +258,15 @@ public class PartyController extends AbstractController{
                 .build();
     }
 
+    private PartyPhoneResponse toPartyPhoneResponse (final PartyPhone partyPhone) {
+        final ContactMechanismPurpose purpose = contactMechanismPurposeService.findById(partyPhone.getPurposeId());
 
-    private ContactMechanismPurpose findPurpose (String name){
-        if (name != null) {
-            try {
-                return contactMechanismPurposeService.findByName(name);
-            } catch (NotFoundException e) { // NOSONAR
-            }
-        }
-        return null;
+        final Phone phone = phoneService.findById(partyPhone.getContactId());
+
+        return new PartyPhoneResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withPhone(phone)
+                .withPartyPhone(partyPhone)
+                .build();
     }
-
-    private Phone findPhone (final PartyPhoneRequest request) {
-        final String hash = Phone.computeHash(
-                request.getCountryCode(),
-                request.getNumber(),
-                request.getExtension()
-        );
-        Phone phone;
-        try {
-            phone = phoneService.findByHash(hash);
-        } catch (NotFoundException e) {     // NOSONAR
-            phone = new Phone();
-            phone.setCountryCode(request.getCountryCode());
-            phone.setNumber(request.getNumber());
-            phone.setExtension(request.getExtension());
-            phoneService.create(phone);
-        }
-        return phone;
-    }
-
-    private void update (
-            final AbstractPartyContactMechanismRequest request,
-            final ContactMechanismPurpose purpose,
-            final PartyContactMecanism partyPostalAddress,
-            final AbstractPartyContactMechanismService service
-    ){
-        partyPostalAddress.setPrivacy(Privacy.fromText(request.getPrivacy()));
-        partyPostalAddress.setNoSolicitation(request.isNoSolicitation());
-        partyPostalAddress.setPurposeId(purpose == null ? 0 : purpose.getId());
-        service.update(partyPostalAddress);
-    }    
 }

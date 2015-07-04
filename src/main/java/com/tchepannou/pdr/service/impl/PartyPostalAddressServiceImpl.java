@@ -7,7 +7,6 @@ import com.tchepannou.pdr.dto.party.CreatePartyPostalAddressRequest;
 import com.tchepannou.pdr.dto.party.PartyPostalAddressRequest;
 import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.NotFoundException;
-import com.tchepannou.pdr.service.ContactMechanismTypeService;
 import com.tchepannou.pdr.service.PartyPostalAddressService;
 import com.tchepannou.pdr.service.PostalAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,7 @@ public class PartyPostalAddressServiceImpl extends AbstractPartyContactMechanism
 
     @Autowired
     private PostalAddressService postalAddressService;
-    
-    @Autowired
-    private ContactMechanismTypeService contactMechanismTypeService;
-    
+
     //-- AbstractPartyContactMechanismServiceImpl overrides
     @Override
     protected AbstractPartyContactMechanismDao<PartyPostalAddress> getDao() {

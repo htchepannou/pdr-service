@@ -6,6 +6,7 @@ import com.tchepannou.pdr.domain.PartyContactMecanism;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractPartyContactMechanismService;
 import com.tchepannou.pdr.service.ContactMechanismPurposeService;
+import com.tchepannou.pdr.service.ContactMechanismTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,9 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
     //-- Attributes
     @Autowired
     protected ContactMechanismPurposeService contactMechanismPurposeService;
+
+    @Autowired
+    protected ContactMechanismTypeService contactMechanismTypeService;
 
 
     //-- Abstract

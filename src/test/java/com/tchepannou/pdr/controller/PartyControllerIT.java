@@ -425,7 +425,7 @@ public class PartyControllerIT {
         .when()
                 .post("/api/parties/9999/contacts/phones/141")
         .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .log()
                     .all()
                 ;
@@ -458,7 +458,7 @@ public class PartyControllerIT {
         .when()
                 .delete("/api/parties/9999/contacts/phones/141")
         .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .log()
                     .all()
                 ;

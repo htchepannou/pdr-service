@@ -7,7 +7,6 @@ import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressRequest;
 import com.tchepannou.pdr.dto.party.PartyElectronicAddressRequest;
 import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.NotFoundException;
-import com.tchepannou.pdr.service.ContactMechanismTypeService;
 import com.tchepannou.pdr.service.ElectronicAddressService;
 import com.tchepannou.pdr.service.PartyElectronicAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,6 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
 
     @Autowired
     private ElectronicAddressService electronicAddressService;
-
-    @Autowired
-    private ContactMechanismTypeService contactMechanismTypeService;
 
 
     //-- AbstractPartyContactMechanismServiceImpl overrides
