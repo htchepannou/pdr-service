@@ -147,6 +147,26 @@ public class DomainControllerIT {
             .statusCode(HttpStatus.SC_CONFLICT)
             .log()
                 .all()
+            .body("message", is("duplicate_name"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_create_noName () {
+        final DomainRequest req = createDomainRequest(null, "this is a test");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(req)
+        .when()
+            .post("/api/domains/")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .log()
+                .all()
+            .body("message", is("name"))
         ;
         // @formatter:on
     }
@@ -173,6 +193,25 @@ public class DomainControllerIT {
     }
 
     @Test
+    public void test_update_noName () {
+        final DomainRequest req = createDomainRequest(null, "this is a test");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(req, ObjectMapperType.JACKSON_2)
+        .when()
+            .post("/api/domains/200")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .log()
+                .all()
+            .body("message", is("bad_request"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_update_duplicateName () {
         final DomainRequest req = createDomainRequest("api.moralab.com", "this is a test");
 
@@ -186,6 +225,7 @@ public class DomainControllerIT {
             .statusCode(HttpStatus.SC_CONFLICT)
             .log()
                 .all()
+            .body("message", is("duplicate_name"))
         ;
         // @formatter:on
     }

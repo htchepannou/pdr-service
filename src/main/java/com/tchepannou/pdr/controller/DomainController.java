@@ -4,20 +4,27 @@ import com.tchepannou.pdr.domain.Domain;
 import com.tchepannou.pdr.domain.DomainUser;
 import com.tchepannou.pdr.domain.Permission;
 import com.tchepannou.pdr.domain.Role;
+import com.tchepannou.pdr.dto.ErrorResponse;
 import com.tchepannou.pdr.dto.domain.DomainListResponse;
 import com.tchepannou.pdr.dto.domain.DomainRequest;
 import com.tchepannou.pdr.dto.domain.DomainResponse;
 import com.tchepannou.pdr.dto.role.PermissionListResponse;
 import com.tchepannou.pdr.dto.role.RoleListResponse;
-import com.tchepannou.pdr.service.*;
+import com.tchepannou.pdr.exception.DuplicateNameException;
+import com.tchepannou.pdr.service.DomainService;
+import com.tchepannou.pdr.service.DomainUserService;
+import com.tchepannou.pdr.service.PermissionService;
+import com.tchepannou.pdr.service.RoleService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,7 +86,7 @@ public class DomainController extends AbstractController {
     @ApiOperation("Update a domain")
     public DomainResponse update(
             @PathVariable final long domainId,
-            @RequestBody final DomainRequest request
+            @Valid @RequestBody final DomainRequest request
     ) {
         Domain domain = domainService.update(domainId, request);
         return new DomainResponse.Builder()
@@ -148,4 +155,15 @@ public class DomainController extends AbstractController {
     ) {
         domainUserService.delete(domainId, userId, roleId);
     }
+
+    //-- Message Handler
+    @ExceptionHandler(DuplicateNameException.class)
+    @ResponseStatus(value= HttpStatus.CONFLICT)
+    public ErrorResponse handleError(
+            final HttpServletRequest request,
+            final DuplicateNameException exception
+    ) {
+        return handleException(request, HttpStatus.CONFLICT, "duplicate_name", exception);
+    }
+
 }

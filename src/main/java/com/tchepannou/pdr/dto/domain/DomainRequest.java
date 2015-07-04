@@ -1,7 +1,11 @@
 package com.tchepannou.pdr.dto.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class DomainRequest {
+    @NotBlank (message = "name")
     private String name;
+
     private String description;
 
     public String getName() {
