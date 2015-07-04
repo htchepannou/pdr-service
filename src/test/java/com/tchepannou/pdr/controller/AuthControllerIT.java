@@ -215,6 +215,25 @@ public class AuthControllerIT {
     }
 
     @Test
+    public void test_login_noLogin (){
+        AuthRequest req = createAuthRequest(100, null, "secret");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(req, ObjectMapperType.JACKSON_2)
+        .when()
+            .post("/api/auth/")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .log()
+                .all()
+            .body("message", is("login"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_login_badPassword (){
         AuthRequest req = createAuthRequest(100, "ray.sponsible", "se??cret");
 
@@ -233,6 +252,24 @@ public class AuthControllerIT {
         // @formatter:on
     }
 
+    @Test
+    public void test_login_noPassword (){
+        AuthRequest req = createAuthRequest(100, "ray.sponsible", null);
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(req, ObjectMapperType.JACKSON_2)
+        .when()
+            .post("/api/auth/")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .log()
+                .all()
+            .body("message", is("password"))
+        ;
+        // @formatter:on
+    }
 
     @Test
     public void test_login_accessDenied (){
@@ -249,6 +286,25 @@ public class AuthControllerIT {
             .log()
                 .all()
             .body("message", is("access_denied"))
+        ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_login_noDomain (){
+        AuthRequest req = createAuthRequest(0, "ray600.sponsible", "secret");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(req, ObjectMapperType.JACKSON_2)
+        .when()
+            .post("/api/auth/")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .log()
+                .all()
+            .body("message", is("domainId"))
         ;
         // @formatter:on
     }

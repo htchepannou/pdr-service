@@ -2,7 +2,7 @@ package com.tchepannou.pdr.dto.auth;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
 
 public class AuthRequest {
     //-- Attributes
@@ -12,8 +12,8 @@ public class AuthRequest {
     @NotBlank(message = "password")
     private String password;
 
-    @NotNull(message = "domainId")
-    private Long domainId;
+    @Min(value = 1, message = "domainId")
+    private long domainId;
 
     private String remoteIp;
     private String userAgent;
@@ -36,11 +36,11 @@ public class AuthRequest {
         this.password = password;
     }
 
-    public Long getDomainId() {
+    public long getDomainId() {
         return domainId;
     }
 
-    public void setDomainId(Long domainId) {
+    public void setDomainId(long domainId) {
         this.domainId = domainId;
     }
 
