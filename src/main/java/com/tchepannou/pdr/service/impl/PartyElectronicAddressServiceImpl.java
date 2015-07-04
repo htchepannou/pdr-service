@@ -4,8 +4,8 @@ import com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao;
 import com.tchepannou.pdr.dao.PartyElectronicAddressDao;
 import com.tchepannou.pdr.domain.*;
 import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressRequest;
+import com.tchepannou.pdr.dto.party.PartyElectronicAddressRequest;
 import com.tchepannou.pdr.enums.Privacy;
-import com.tchepannou.pdr.exception.BadRequestException;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.ContactMechanismPurposeService;
 import com.tchepannou.pdr.service.ContactMechanismTypeService;
@@ -81,10 +81,10 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
 
     @Override
     @Transactional
-    public PartyElectronicAddress updateAddress(Party party, long addressId, CreatePartyElectronicAddressRequest request){
+    public PartyElectronicAddress updateAddress(Party party, long addressId, PartyElectronicAddressRequest request){
         final PartyElectronicAddress partyElectronicAddress = findById(addressId);
         if (partyElectronicAddress.getPartyId() != party.getId()) {
-            throw new BadRequestException();
+            throw new NotFoundException();
         }
 
         final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());

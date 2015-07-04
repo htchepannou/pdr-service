@@ -130,15 +130,7 @@ public class PartyController extends AbstractController{
 
         final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.addAddress(party, request);
 
-        final ElectronicAddress electronicAddress = electronicAddressService.findById(partyElectronicAddress.getContactId());
-
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
-
-        return new PartyElectronicAddressResponse.Builder()
-                .withContactMechanismPurpose(purpose)
-                .withElectronicAddress(electronicAddress)
-                .withPartyElectronicAddress(partyElectronicAddress)
-                .build();
+        return toPartyElectronicAddressResponse(request, partyElectronicAddress);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/e-addresses/{eaddressId}")
@@ -148,23 +140,11 @@ public class PartyController extends AbstractController{
             @PathVariable final long eaddressId,
             @Valid @RequestBody PartyElectronicAddressRequest request
     ) {
-        final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.findById(eaddressId);
-        if (partyElectronicAddress.getPartyId() != partyId) {
-            throw new NotFoundException();
-        }
+        final Party party = partyService.findById(partyId);
 
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+        final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.updateAddress(party, eaddressId, request);
 
-        final ElectronicAddress electronicAddress = findElectronicAddress(request);
-
-        update(request, purpose, partyElectronicAddress, partyElectronicAddressService);
-        partyElectronicAddressService.update(partyElectronicAddress);
-
-        return new PartyElectronicAddressResponse.Builder()
-                .withContactMechanismPurpose(purpose)
-                .withElectronicAddress(electronicAddress)
-                .withPartyElectronicAddress(partyElectronicAddress)
-                .build();
+        return toPartyElectronicAddressResponse(request, partyElectronicAddress);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/e-addresses/{eaddressId}")
@@ -310,6 +290,22 @@ public class PartyController extends AbstractController{
     }
 
     //-- Private
+    private PartyElectronicAddressResponse toPartyElectronicAddressResponse (
+            final PartyElectronicAddressRequest request,
+            final PartyElectronicAddress partyElectronicAddress
+    ) {
+        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+
+        final ElectronicAddress electronicAddress = findElectronicAddress(request);
+
+        return new PartyElectronicAddressResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withElectronicAddress(electronicAddress)
+                .withPartyElectronicAddress(partyElectronicAddress)
+                .build();
+    }
+
+
     private ContactMechanismPurpose findPurpose (String name){
         if (name != null) {
             try {
