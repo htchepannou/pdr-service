@@ -7,6 +7,4 @@ public interface PartyService {
     Party findById(long id);
 
     Party create (CreatePartyRequest request);
-
-    void update (Party party);
 }

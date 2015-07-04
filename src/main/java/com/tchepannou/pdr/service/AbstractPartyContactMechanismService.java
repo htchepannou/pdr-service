@@ -8,11 +8,4 @@ public interface AbstractPartyContactMechanismService<T extends PartyContactMeca
     T findById(long id);
 
     List<T> findByParty(long partyId);
-
-    void create(T partyElectronicAddress);
-
-    void update(T partyElectronicAddress);
-
-    void delete(long id);
-
 }

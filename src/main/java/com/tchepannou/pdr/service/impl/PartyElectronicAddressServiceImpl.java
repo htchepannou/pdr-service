@@ -41,14 +41,21 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
 
     @Override
     @Transactional
-    public PartyElectronicAddress addAddress(Party party, CreatePartyElectronicAddressRequest request) {
+    public PartyElectronicAddress addAddress(
+            final Party party,
+            final CreatePartyElectronicAddressRequest request
+    ) {
         final ElectronicAddress address = createElectronicAddress(request.getAddress());
         return super.addAddress(party, request.getType(), request, new PartyElectronicAddress(), address);
     }
 
     @Override
     @Transactional
-    public PartyElectronicAddress updateAddress(Party party, long addressId, PartyElectronicAddressRequest request){
+    public PartyElectronicAddress updateAddress(
+            final Party party,
+            final long addressId,
+            final PartyElectronicAddressRequest request
+    ){
         final PartyElectronicAddress partyAddress = findById(addressId);
         final ElectronicAddress address = createElectronicAddress(request.getAddress());
 
@@ -57,7 +64,10 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
 
     @Override
     @Transactional
-    public void removeAddress(Party party, long addressId) {
+    public void removeAddress(
+            final Party party,
+            final long addressId
+    ) {
         final PartyElectronicAddress partyElectronicAddress = findById(addressId);
         removeAddress(party, partyElectronicAddress);
     }

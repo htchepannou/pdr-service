@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractController {
+    //-- Abstract methods
     protected abstract Logger getLogger ();
 
+    //-- Error Handlers
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     public ErrorResponse handleError(
@@ -59,5 +61,4 @@ public abstract class AbstractController {
 
         return new ErrorResponse(status, message);
     }
-
 }

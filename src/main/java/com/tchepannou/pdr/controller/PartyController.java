@@ -185,7 +185,7 @@ public class PartyController extends AbstractController{
             @PathVariable final long paddressId
     ) {
         final Party party = partyService.findById(partyId);
-        partyElectronicAddressService.removeAddress(party, paddressId);
+        partyPostalAddressService.removeAddress(party, paddressId);
     }
 
 

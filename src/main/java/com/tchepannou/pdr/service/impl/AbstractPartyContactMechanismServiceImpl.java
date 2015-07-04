@@ -9,7 +9,6 @@ import com.tchepannou.pdr.service.AbstractPartyContactMechanismService;
 import com.tchepannou.pdr.service.ContactMechanismPurposeService;
 import com.tchepannou.pdr.service.ContactMechanismTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,25 +37,6 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
     @Override
     public List<T> findByParty(final long partyId) {
         return getDao().findByParty(partyId);
-    }
-
-    @Override
-    @Transactional
-    public void create(final T partyContactMechanism) {
-        long id = getDao().create(partyContactMechanism);
-        partyContactMechanism.setId(id);
-    }
-
-    @Override
-    @Transactional
-    public void update(final T partyContactMechanism) {
-        getDao().update(partyContactMechanism);
-    }
-
-    @Override
-    @Transactional
-    public void delete(long id) {
-        getDao().delete(id);
     }
 
     //-- Protected

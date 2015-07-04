@@ -37,9 +37,4 @@ public class PartyServiceImpl implements PartyService {
 
         return party;
     }
-
-    @Override
-    public void update(Party party) {
-        partyDao.update(party);
-    }
 }
