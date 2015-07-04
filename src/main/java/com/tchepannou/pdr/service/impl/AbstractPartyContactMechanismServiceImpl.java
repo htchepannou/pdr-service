@@ -2,6 +2,7 @@ package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao;
 import com.tchepannou.pdr.domain.ContactMechanismPurpose;
+import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.domain.PartyContactMecanism;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractPartyContactMechanismService;
@@ -68,4 +69,16 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
         }
         return null;
     }
+
+    protected void removeAddress(
+            final Party party,
+            final PartyContactMecanism partyContactMecanism
+    ) {
+        if (partyContactMecanism.getPartyId() != party.getId()) {
+            throw new NotFoundException();
+        }
+
+        getDao().delete(partyContactMecanism.getId());
+    }
+
 }

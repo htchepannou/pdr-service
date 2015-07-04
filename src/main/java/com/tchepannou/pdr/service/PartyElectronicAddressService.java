@@ -11,4 +11,6 @@ public interface PartyElectronicAddressService extends AbstractPartyContactMecha
     PartyElectronicAddress addAddress(Party party, CreatePartyElectronicAddressRequest request);
 
     PartyElectronicAddress updateAddress(Party party, long addressId, PartyElectronicAddressRequest request);
+
+    void removeAddress(Party party, long addressId);
 }

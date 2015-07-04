@@ -2,7 +2,6 @@ package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.*;
 import com.tchepannou.pdr.dto.party.*;
-import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -148,11 +147,8 @@ public class PartyController extends AbstractController{
             @PathVariable final long partyId,
             @PathVariable final long eaddressId
     ) {
-        PartyElectronicAddress eaddress = partyElectronicAddressService.findById(eaddressId);
-        if (eaddress.getPartyId() != partyId) {
-            throw new NotFoundException();
-        }
-        partyElectronicAddressService.delete(eaddressId);
+        final Party party = partyService.findById(partyId);
+        partyElectronicAddressService.removeAddress(party, eaddressId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/p-addresses")
@@ -188,11 +184,8 @@ public class PartyController extends AbstractController{
             @PathVariable final long partyId,
             @PathVariable final long paddressId
     ) {
-        PartyPostalAddress paddress = partyPostalAddressService.findById(paddressId);
-        if (paddress.getPartyId() != partyId) {
-            throw new NotFoundException();
-        }
-        partyPostalAddressService.delete(paddressId);
+        final Party party = partyService.findById(partyId);
+        partyElectronicAddressService.removeAddress(party, paddressId);
     }
 
 

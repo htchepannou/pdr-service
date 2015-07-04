@@ -81,6 +81,14 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
         return partyElectronicAddress;
     }
 
+    @Override
+    @Transactional
+    public void removeAddress(Party party, long addressId) {
+        final PartyElectronicAddress partyElectronicAddress = findById(addressId);
+        removeAddress(party, partyElectronicAddress);
+    }
+
+
     //-- Private
     private ElectronicAddress createElectronicAddress (final String email) {
         try {

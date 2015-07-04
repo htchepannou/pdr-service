@@ -9,4 +9,6 @@ public interface PartyPostalAddressService extends AbstractPartyContactMechanism
     PartyPostalAddress addAddress(Party party, CreatePartyPostalAddressRequest request);
 
     PartyPostalAddress updateAddress(Party party, long addressId, PartyPostalAddressRequest request);
+
+    void removeAddress(Party party, long addressId);
 }

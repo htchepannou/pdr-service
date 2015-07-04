@@ -71,8 +71,14 @@ public class PartyPostalAddressServiceImpl extends AbstractPartyContactMechanism
 
         return partyPostalAddress;
     }
-    
-    
+
+    @Override
+    @Transactional
+    public void removeAddress(Party party, long addressId) {
+        final PartyPostalAddress address = findById(addressId);
+        super.removeAddress(party, address);
+    }
+
     //-- Private
     private PostalAddress createPostalAddress (final PartyPostalAddressRequest request) {
         final String hash = PostalAddress.computeHash(
