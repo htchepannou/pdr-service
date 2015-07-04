@@ -8,6 +8,8 @@ import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,10 @@ import java.util.stream.Collectors;
 @RestController
 @Api(basePath = "/parties", value = "People, Organization and Household", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/parties", produces = MediaType.APPLICATION_JSON_VALUE)
-public class PartyController {
+public class PartyController extends AbstractController{
     //-- Attributes
+    private static final Logger LOG = LoggerFactory.getLogger(PartyController.class);
+
     @Autowired
     private PartyService partyService;
 
@@ -49,11 +53,18 @@ public class PartyController {
     private PartyPhoneService partyPhoneService;
 
 
+    //-- AbstractController overrides
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
+
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{partyId}")
     @ApiOperation("Returns a Party ")
     public PartyResponse findById(@PathVariable final long partyId) {
         final Party party = partyService.findById(partyId);
+
         return new PartyResponse
                 .Builder()
                 .withParty(party)
@@ -115,17 +126,13 @@ public class PartyController {
             @PathVariable final long partyId,
             @Valid @RequestBody CreatePartyElectronicAddressRequest request
     ) {
-        final ElectronicAddress electronicAddress = findElectronicAddress(request);
+        final Party party = partyService.findById(partyId);
+
+        final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.addAddress(party, request);
+
+        final ElectronicAddress electronicAddress = electronicAddressService.findById(partyElectronicAddress.getContactId());
 
         final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
-
-        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
-
-        final PartyElectronicAddress partyElectronicAddress = new PartyElectronicAddress();
-        partyElectronicAddress.setPartyId(partyId);
-        partyElectronicAddress.setTypeId(type.getId());
-        update(request, purpose, partyElectronicAddress, partyElectronicAddressService);
-        partyElectronicAddressService.create(partyElectronicAddress);
 
         return new PartyElectronicAddressResponse.Builder()
                 .withContactMechanismPurpose(purpose)
@@ -143,7 +150,7 @@ public class PartyController {
     ) {
         final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.findById(eaddressId);
         if (partyElectronicAddress.getPartyId() != partyId) {
-            throw new BadRequestException();
+            throw new NotFoundException();
         }
 
         final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
@@ -168,7 +175,7 @@ public class PartyController {
     ) {
         PartyElectronicAddress eaddress = partyElectronicAddressService.findById(eaddressId);
         if (eaddress.getPartyId() != partyId) {
-            throw new BadRequestException();
+            throw new NotFoundException();
         }
         partyElectronicAddressService.delete(eaddressId);
     }
@@ -207,7 +214,7 @@ public class PartyController {
     ) {
         final PartyPostalAddress partyPostalAddress = partyPostalAddressService.findById(paddressId);
         if (partyPostalAddress.getPartyId() != partyId) {
-            throw new BadRequestException();
+            throw new NotFoundException();
         }
 
         final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());

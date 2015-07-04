@@ -7,6 +7,8 @@ import com.tchepannou.pdr.service.UserService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,19 @@ import javax.validation.Valid;
 @RestController
 @Api(basePath = "/users", value = "User's Account", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+public class UserController extends AbstractController {
     //-- Attributes
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
+
+    //-- AbstractController overrides
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
 
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value = "/{userId}")

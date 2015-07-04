@@ -171,6 +171,25 @@ public class PartyControllerIT {
     }
 
     @Test
+    public void test_addElectronicAddress_noAddress () {
+        final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("email", "primary", null);
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/contacts/e-addresses")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                .body("message", is("address"))
+                ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_updateElectronicAddress () {
         final CreatePartyElectronicAddressRequest request = buildCreatePartyElectronicAddressResquest("web", "website", "http://www.google.ca");
 
@@ -203,7 +222,7 @@ public class PartyControllerIT {
         .when()
                 .post("/api/parties/9999/contacts/e-addresses/121")
         .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .log()
                     .all()
                 ;
@@ -236,7 +255,7 @@ public class PartyControllerIT {
         .when()
                 .delete("/api/parties/9999/contacts/e-addresses/121")
         .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .log()
                     .all()
                 ;
@@ -308,7 +327,7 @@ public class PartyControllerIT {
         .when()
                 .post("/api/parties/9999/contacts/p-addresses/131")
         .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .log()
                     .all()
                 ;

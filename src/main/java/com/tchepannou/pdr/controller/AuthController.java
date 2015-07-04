@@ -7,6 +7,8 @@ import com.tchepannou.pdr.dto.auth.AuthResponse;
 import com.tchepannou.pdr.service.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,18 @@ import java.util.Date;
 @RestController
 @Api(basePath = "/auth", value = "Authentication", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
-public class AuthController {
+public class AuthController extends AbstractController {
     //-- Attributes
+    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private AuthService authService;
 
+    //-- AbstractController overrides
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
 
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET, value="/{authId}")

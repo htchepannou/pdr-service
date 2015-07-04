@@ -10,6 +10,8 @@ import com.tchepannou.pdr.service.PermissionService;
 import com.tchepannou.pdr.service.RoleService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +24,21 @@ import java.util.List;
 @RestController
 @Api(basePath = "/roles", value = "User's Roles and Permissions", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(value="/api/roles", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RoleController {
+public class RoleController extends AbstractController {
     //-- Attributes
+    private static final Logger LOG = LoggerFactory.getLogger(RoleController.class);
+
     @Autowired
     private RoleService roleService;
 
     @Autowired
     private PermissionService permissionService;
+
+    //-- AbstractController overrides
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
 
     //-- REST methods
     @RequestMapping(method = RequestMethod.GET)

@@ -35,6 +35,19 @@ public abstract class AbstractContactMechanismDaoImpl<T extends ContactMechanism
 
     //-- AbstractContactMechanismDao overrides
     @Override
+    public T findById (long id) {
+        try {
+            return queryForObject(
+                    "SELECT * FROM " + getTableName() + " WHERE id=?",
+                    new Object[]{id},
+                    getRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {    // NOSONAR
+            return null;
+        }
+    }
+
+    @Override
     public T findByHash (String hash) {
         try {
             return queryForObject(

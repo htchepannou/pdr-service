@@ -15,6 +15,15 @@ public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechan
 
     //-- AbstractContactMechanismService overrides
     @Override
+    public T findById(long id) {
+        T out = getDao().findById(id);
+        if (out == null){
+            throw new NotFoundException(id);
+        }
+        return out;
+    }
+
+    @Override
     public T findByHash (String hash) {
         T out = getDao().findByHash(hash);
         if (out == null){
