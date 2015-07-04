@@ -19,6 +19,6 @@ public class PermissionServiceImpl extends AbstractPersistentEnumServiceImpl<Per
 
     @Override
     public List<Permission> findByRole(long roleId) {
-        return permissionDao.findByRole(roleId);
+        return ((PermissionDao)getDao()).findByRole(roleId);
     }
 }

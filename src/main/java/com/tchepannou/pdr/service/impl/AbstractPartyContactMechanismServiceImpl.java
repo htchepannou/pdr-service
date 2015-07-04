@@ -42,10 +42,7 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
     //-- Protected
     protected ContactMechanismPurpose findPurpose (String name){
         if (name != null) {
-            try {
-                return contactMechanismPurposeService.findByName(name);
-            } catch (NotFoundException e) { // NOSONAR
-            }
+            return contactMechanismPurposeService.findByName(name);
         }
         return null;
     }
