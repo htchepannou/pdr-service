@@ -1,17 +1,23 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.AccessToken;
+import com.tchepannou.pdr.dto.ErrorResponse;
 import com.tchepannou.pdr.dto.auth.AuthRequest;
 import com.tchepannou.pdr.dto.auth.AuthResponse;
+import com.tchepannou.pdr.exception.AccessDeniedException;
+import com.tchepannou.pdr.exception.AccessTokenExpiredException;
+import com.tchepannou.pdr.exception.AuthFailedException;
 import com.tchepannou.pdr.service.AuthService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -55,4 +61,34 @@ public class AuthController extends AbstractController {
     public void logout(@PathVariable final long authId) {
         authService.logout(authId);
     }
+
+    //-- Exception handlers
+    @ExceptionHandler(AccessTokenExpiredException.class)
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    public ErrorResponse handleError(
+            final HttpServletRequest request,
+            final AccessTokenExpiredException exception
+    ) {
+        return handleException(request, HttpStatus.NOT_FOUND, "expired", exception);
+    }
+
+    @ExceptionHandler(AuthFailedException.class)
+    @ResponseStatus(value= HttpStatus.CONFLICT)
+    public ErrorResponse handleError(
+            final HttpServletRequest request,
+            final AuthFailedException exception
+    ) {
+        return handleException(request, HttpStatus.CONFLICT, "auth_failed", exception);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value= HttpStatus.CONFLICT)
+    public ErrorResponse handleError(
+            final HttpServletRequest request,
+            final AccessDeniedException exception
+    ) {
+        return handleException(request, HttpStatus.CONFLICT, "access_denied", exception);
+    }
+
+
 }

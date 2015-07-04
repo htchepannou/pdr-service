@@ -11,12 +11,6 @@ public class ErrorResponse {
     private final Date timestamp;
 
     //-- Attributes
-    public ErrorResponse (final HttpStatus status){
-        this.timestamp = new Date();
-        this.statusCode = status.value();
-        this.message = null;
-    }
-
     public ErrorResponse (final HttpStatus status, final String message){
         this.timestamp = new Date();
         this.statusCode = status.value();

@@ -14,8 +14,7 @@ public class DateUtils {
     public static Timestamp asTimestamp (Date date) {
         if (date == null) {
             return null;
-        }
-        else if (date instanceof Timestamp) {
+        } else if (date instanceof Timestamp) {
             return (Timestamp) date;
         } else {
             return new Timestamp(date.getTime());
@@ -25,8 +24,7 @@ public class DateUtils {
     public static java.sql.Date asSqlDate (Date date) {
         if (date == null) {
             return null;
-        }
-        else if (date instanceof java.sql.Date) {
+        } else if (date instanceof java.sql.Date) {
             return (java.sql.Date) date;
         } else {
             return new java.sql.Date(date.getTime());

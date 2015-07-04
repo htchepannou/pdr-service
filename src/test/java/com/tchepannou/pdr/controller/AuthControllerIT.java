@@ -89,9 +89,10 @@ public class AuthControllerIT {
         when()
             .get("/api/auth/200")
         .then()
-            .statusCode(HttpStatus.SC_UNAUTHORIZED)
+            .statusCode(HttpStatus.SC_NOT_FOUND)
             .log()
                 .all()
+            .body("message", is("expired"))
         ;
         // @formatter:on
     }
@@ -122,9 +123,10 @@ public class AuthControllerIT {
         when()
             .delete("/api/auth/400")
         .then()
-            .statusCode(HttpStatus.SC_UNAUTHORIZED)
+            .statusCode(HttpStatus.SC_NOT_FOUND)
             .log()
                 .all()
+            .body("message", is("expired"))
         ;
         // @formatter:on
     }
@@ -243,7 +245,7 @@ public class AuthControllerIT {
         .when()
             .post("/api/auth/")
         .then()
-            .statusCode(HttpStatus.SC_FORBIDDEN)
+            .statusCode(HttpStatus.SC_CONFLICT)
             .log()
                 .all()
             .body("message", is("access_denied"))

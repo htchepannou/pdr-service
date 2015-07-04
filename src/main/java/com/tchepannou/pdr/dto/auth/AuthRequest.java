@@ -13,7 +13,7 @@ public class AuthRequest {
     private String password;
 
     @NotNull(message = "domainId")
-    private long domainId;
+    private Long domainId;
 
     private String remoteIp;
     private String userAgent;
@@ -36,11 +36,11 @@ public class AuthRequest {
         this.password = password;
     }
 
-    public long getDomainId() {
+    public Long getDomainId() {
         return domainId;
     }
 
-    public void setDomainId(long domainId) {
+    public void setDomainId(Long domainId) {
         this.domainId = domainId;
     }
 
