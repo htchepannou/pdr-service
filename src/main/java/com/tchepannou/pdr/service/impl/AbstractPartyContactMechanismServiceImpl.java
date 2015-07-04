@@ -1,14 +1,22 @@
 package com.tchepannou.pdr.service.impl;
 
 import com.tchepannou.pdr.dao.AbstractPartyContactMechanismDao;
+import com.tchepannou.pdr.domain.ContactMechanismPurpose;
 import com.tchepannou.pdr.domain.PartyContactMecanism;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractPartyContactMechanismService;
+import com.tchepannou.pdr.service.ContactMechanismPurposeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyContactMecanism>  implements AbstractPartyContactMechanismService<T> {
+    //-- Attributes
+    @Autowired
+    protected ContactMechanismPurposeService contactMechanismPurposeService;
+
+
     //-- Abstract
     protected abstract AbstractPartyContactMechanismDao<T> getDao();
 
@@ -44,5 +52,16 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
     @Transactional
     public void delete(long id) {
         getDao().delete(id);
+    }
+
+    //-- Protected
+    protected ContactMechanismPurpose findPurpose (String name){
+        if (name != null) {
+            try {
+                return contactMechanismPurposeService.findByName(name);
+            } catch (NotFoundException e) { // NOSONAR
+            }
+        }
+        return null;
     }
 }

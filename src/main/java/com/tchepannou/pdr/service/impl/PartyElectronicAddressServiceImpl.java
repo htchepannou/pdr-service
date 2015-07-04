@@ -7,7 +7,6 @@ import com.tchepannou.pdr.dto.party.CreatePartyElectronicAddressRequest;
 import com.tchepannou.pdr.dto.party.PartyElectronicAddressRequest;
 import com.tchepannou.pdr.enums.Privacy;
 import com.tchepannou.pdr.exception.NotFoundException;
-import com.tchepannou.pdr.service.ContactMechanismPurposeService;
 import com.tchepannou.pdr.service.ContactMechanismTypeService;
 import com.tchepannou.pdr.service.ElectronicAddressService;
 import com.tchepannou.pdr.service.PartyElectronicAddressService;
@@ -23,9 +22,6 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
 
     @Autowired
     private ContactMechanismTypeService contactMechanismTypeService;
-
-    @Autowired
-    private ContactMechanismPurposeService contactMechanismPurposeService;
 
 
     //-- AbstractPartyContactMechanismServiceImpl overrides
@@ -43,18 +39,6 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
         request.setAddress(email);
 
         return addAddress(party, request);
-//        final ContactMechanismType type = contactMechanismTypeService.findByName(ContactMechanismType.NAME_EMAIL);
-//
-//        final ElectronicAddress address = createElectronicAddress(email);
-//
-//        final PartyElectronicAddress partyAddress = new PartyElectronicAddress();
-//        partyAddress.setPartyId(party.getId());
-//        partyAddress.setContactId(address.getId());
-//        partyAddress.setTypeId(type.getId());
-//        partyAddress.setContactId(address.getId());
-//
-//        dao.create(partyAddress);
-//        return partyAddress;
     }
 
     @Override
@@ -102,16 +86,6 @@ public class PartyElectronicAddressServiceImpl extends AbstractPartyContactMecha
     }
 
     //-- Private
-    private ContactMechanismPurpose findPurpose (String name){
-        if (name != null) {
-            try {
-                return contactMechanismPurposeService.findByName(name);
-            } catch (NotFoundException e) { // NOSONAR
-            }
-        }
-        return null;
-    }
-
     private ElectronicAddress createElectronicAddress (final String email) {
         try {
 

@@ -360,7 +360,7 @@ public class PartyControllerIT {
         .when()
                 .delete("/api/parties/9999/contacts/p-addresses/131")
         .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .log()
                     .all()
                 ;

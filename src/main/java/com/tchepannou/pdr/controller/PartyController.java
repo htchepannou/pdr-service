@@ -75,9 +75,6 @@ public class PartyController extends AbstractController{
     @ApiOperation("Returns a Party contacts mechanisms")
     public ContactMechanismListResponse contacts(@PathVariable final long partyId) {
         final Party party = partyService.findById(partyId);
-        if (party == null) {
-            throw new NotFoundException(partyId);
-        }
 
         /* electronic addresses */
         final List<PartyElectronicAddress> partyElectronicAddresses = partyElectronicAddressService.findByParty(party.getId());
@@ -130,7 +127,7 @@ public class PartyController extends AbstractController{
 
         final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.addAddress(party, request);
 
-        return toPartyElectronicAddressResponse(request, partyElectronicAddress);
+        return toPartyElectronicAddressResponse(partyElectronicAddress);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/e-addresses/{eaddressId}")
@@ -144,7 +141,7 @@ public class PartyController extends AbstractController{
 
         final PartyElectronicAddress partyElectronicAddress = partyElectronicAddressService.updateAddress(party, eaddressId, request);
 
-        return toPartyElectronicAddressResponse(request, partyElectronicAddress);
+        return toPartyElectronicAddressResponse(partyElectronicAddress);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/e-addresses/{eaddressId}")
@@ -166,23 +163,11 @@ public class PartyController extends AbstractController{
             @PathVariable final long partyId,
             @Valid @RequestBody CreatePartyPostalAddressRequest request
     ) {
-        final PostalAddress postalAddress = findPostalAddress(request);
+        final Party party = partyService.findById(partyId);
 
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+        final PartyPostalAddress partyPostalAddress = partyPostalAddressService.addAddress(party, request);
 
-        final ContactMechanismType type = contactMechanismTypeService.findByName(request.getType());
-
-        final PartyPostalAddress partyPostalAddress = new PartyPostalAddress();
-        partyPostalAddress.setPartyId(partyId);
-        partyPostalAddress.setTypeId(type.getId());
-        update(request, purpose, partyPostalAddress, partyPostalAddressService);
-        partyPostalAddressService.create(partyPostalAddress);
-
-        return new PartyPostalAddressResponse.Builder()
-                .withContactMechanismPurpose(purpose)
-                .withPostalAddress(postalAddress)
-                .withPartyPostalAddress(partyPostalAddress)
-                .build();
+        return toPartyPostalAddressResponse(partyPostalAddress);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{partyId}/contacts/p-addresses/{paddressId}")
@@ -192,23 +177,11 @@ public class PartyController extends AbstractController{
             @PathVariable final long paddressId,
             @Valid @RequestBody PartyPostalAddressRequest request
     ) {
-        final PartyPostalAddress partyPostalAddress = partyPostalAddressService.findById(paddressId);
-        if (partyPostalAddress.getPartyId() != partyId) {
-            throw new NotFoundException();
-        }
+        final Party party = partyService.findById(partyId);
 
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+        final PartyPostalAddress partyPostalAddress = partyPostalAddressService.updateAddress(party, paddressId, request);
 
-        final PostalAddress postalAddress = findPostalAddress(request);
-
-        update(request, purpose, partyPostalAddress, partyPostalAddressService);
-        partyPostalAddressService.update(partyPostalAddress);
-
-        return new PartyPostalAddressResponse.Builder()
-                .withContactMechanismPurpose(purpose)
-                .withPostalAddress(postalAddress)
-                .withPartyPostalAddress(partyPostalAddress)
-                .build();
+        return toPartyPostalAddressResponse(partyPostalAddress);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{partyId}/contacts/p-addresses/{paddressId}")
@@ -219,7 +192,7 @@ public class PartyController extends AbstractController{
     ) {
         PartyPostalAddress paddress = partyPostalAddressService.findById(paddressId);
         if (paddress.getPartyId() != partyId) {
-            throw new BadRequestException();
+            throw new NotFoundException();
         }
         partyPostalAddressService.delete(paddressId);
     }
@@ -290,18 +263,27 @@ public class PartyController extends AbstractController{
     }
 
     //-- Private
-    private PartyElectronicAddressResponse toPartyElectronicAddressResponse (
-            final PartyElectronicAddressRequest request,
-            final PartyElectronicAddress partyElectronicAddress
-    ) {
-        final ContactMechanismPurpose purpose = findPurpose(request.getPurpose());
+    private PartyElectronicAddressResponse toPartyElectronicAddressResponse (final PartyElectronicAddress partyElectronicAddress) {
+        final ContactMechanismPurpose purpose = contactMechanismPurposeService.findById(partyElectronicAddress.getPurposeId());
 
-        final ElectronicAddress electronicAddress = findElectronicAddress(request);
+        final ElectronicAddress electronicAddress = electronicAddressService.findById(partyElectronicAddress.getContactId());
 
         return new PartyElectronicAddressResponse.Builder()
                 .withContactMechanismPurpose(purpose)
                 .withElectronicAddress(electronicAddress)
                 .withPartyElectronicAddress(partyElectronicAddress)
+                .build();
+    }
+
+    private PartyPostalAddressResponse toPartyPostalAddressResponse (final PartyPostalAddress partyPostalAddress) {
+        final ContactMechanismPurpose purpose = contactMechanismPurposeService.findById(partyPostalAddress.getPurposeId());
+
+        final PostalAddress postalAddress = postalAddressService.findById(partyPostalAddress.getContactId());
+
+        return new PartyPostalAddressResponse.Builder()
+                .withContactMechanismPurpose(purpose)
+                .withPostalAddress(postalAddress)
+                .withPartyPostalAddress(partyPostalAddress)
                 .build();
     }
 
@@ -314,45 +296,6 @@ public class PartyController extends AbstractController{
             }
         }
         return null;
-    }
-
-    private ElectronicAddress findElectronicAddress (final PartyElectronicAddressRequest request) {
-        final String address = request.getAddress();
-        final String hash = ElectronicAddress.computeHash(address);
-        ElectronicAddress electronicAddress;
-        try {
-            electronicAddress = electronicAddressService.findByHash(hash);
-        } catch (NotFoundException e) { // NOSONAR
-            electronicAddress = new ElectronicAddress();
-            electronicAddress.setAddress(address);
-            electronicAddressService.create(electronicAddress);
-        }
-        return electronicAddress;
-    }
-
-    private PostalAddress findPostalAddress (final PartyPostalAddressRequest request) {
-        final String hash = PostalAddress.computeHash(
-                request.getStreet1(),
-                request.getStreet2(),
-                request.getCity(),
-                request.getStateCode(),
-                request.getZipCode(),
-                request.getCountryCode()
-        );
-        PostalAddress postalAddress;
-        try {
-            postalAddress = postalAddressService.findByHash(hash);
-        } catch (NotFoundException e) {     // NOSONAR
-            postalAddress = new PostalAddress();
-            postalAddress.setStreet1(request.getStreet1());
-            postalAddress.setStreet2(request.getStreet2());
-            postalAddress.setCity(request.getCity());
-            postalAddress.setStateCode(request.getStateCode());
-            postalAddress.setZipCode(request.getZipCode());
-            postalAddress.setCountryCode(request.getCountryCode());
-            postalAddressService.create(postalAddress);
-        }
-        return postalAddress;
     }
 
     private Phone findPhone (final PartyPhoneRequest request) {
