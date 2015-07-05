@@ -1,9 +1,14 @@
 package com.tchepannou.pdr.dto.party;
 
+import com.tchepannou.pdr.enums.Privacy;
+
 public abstract class AbstractPartyContactMechanismRequest {
     //-- Attributes
     private boolean noSolicitation;
+
+    @com.tchepannou.pdr.validator.Enum(enumClass = Privacy.class)
     private String privacy;
+
     private String purpose;
 
     //-- Getter/Setter

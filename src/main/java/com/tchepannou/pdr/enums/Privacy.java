@@ -17,22 +17,24 @@ public enum Privacy {
         Character xcode = Character.toUpperCase(code);
         if (HIDDEN.code == xcode) {
             return HIDDEN;
-        } else {
+        } else if (PUBLIC.code == xcode ){
             return PUBLIC;
+        } else{
+            return null;
         }
     }
 
     public static Privacy fromText (final String text) {
         try {
             if (text == null) {
-                return PUBLIC;
+                return null;
             } else {
                 return text != null && text.length() == 1
                         ? fromCode(text.toUpperCase().charAt(0))
                         : Enum.valueOf(Privacy.class, text.toUpperCase());
             }
         } catch (IllegalArgumentException e) {  // NOSONAR
-            return PUBLIC;
+            return null;
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.tchepannou.pdr.enums;
 
 public enum Gender {
-    MALE('M'), FEMALE('F'), UNKNOWN('?');
+    MALE('M'), FEMALE('F');
 
     private char code;
 
@@ -20,21 +20,21 @@ public enum Gender {
         } else if (FEMALE.code == xcode) {
             return FEMALE;
         } else {
-            return UNKNOWN;
+            return null;
         }
     }
 
     public static Gender fromText (final String text) {
         try {
             if (text == null) {
-                return UNKNOWN;
+                return null;
             } else {
                 return text != null && text.length() == 1
                         ? fromCode(text.toUpperCase().charAt(0))
                         : Enum.valueOf(Gender.class, text.toUpperCase());
             }
         } catch (IllegalArgumentException e) {  // NOSONAR
-            return UNKNOWN;
+            return null;
         }
     }
 }

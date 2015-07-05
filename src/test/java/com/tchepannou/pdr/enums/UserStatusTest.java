@@ -1,6 +1,5 @@
 package com.tchepannou.pdr.enums;
 
-import com.tchepannou.pdr.enums.UserStatus;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,7 +16,7 @@ public class UserStatusTest {
         assertThat(UserStatus.fromCode('S')).isEqualTo(UserStatus.SUSPENDED);
         assertThat(UserStatus.fromCode('s')).isEqualTo(UserStatus.SUSPENDED);
 
-        assertThat(UserStatus.fromCode('X')).isEqualTo(UserStatus.UNKNOWN);
+        assertThat(UserStatus.fromCode('X')).isNull();
     }
 
     @Test
@@ -31,7 +30,7 @@ public class UserStatusTest {
         assertThat(UserStatus.fromText("SUSPENDED")).isEqualTo(UserStatus.SUSPENDED);
         assertThat(UserStatus.fromText("SUSPeNDEd")).isEqualTo(UserStatus.SUSPENDED);
 
-        assertThat(UserStatus.fromText("X????")).isEqualTo(UserStatus.UNKNOWN);
+        assertThat(UserStatus.fromText("X????")).isNull();
     }
 
 
@@ -46,11 +45,11 @@ public class UserStatusTest {
         assertThat(UserStatus.fromText("S")).isEqualTo(UserStatus.SUSPENDED);
         assertThat(UserStatus.fromText("s")).isEqualTo(UserStatus.SUSPENDED);
 
-        assertThat(UserStatus.fromText("X")).isEqualTo(UserStatus.UNKNOWN);
+        assertThat(UserStatus.fromText("X")).isNull();
     }
 
     @Test
     public void test_fromText_null() throws Exception {
-        assertThat(UserStatus.fromText(null)).isEqualTo(UserStatus.UNKNOWN);
+        assertThat(UserStatus.fromText(null)).isNull();
     }
 }

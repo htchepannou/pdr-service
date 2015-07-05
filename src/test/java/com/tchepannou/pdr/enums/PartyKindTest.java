@@ -1,6 +1,5 @@
 package com.tchepannou.pdr.enums;
 
-import com.tchepannou.pdr.enums.PartyKind;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,7 +13,7 @@ public class PartyKindTest {
         assertThat(PartyKind.fromCode('O')).isEqualTo(PartyKind.ORGANIZATION);
         assertThat(PartyKind.fromCode('o')).isEqualTo(PartyKind.ORGANIZATION);
 
-        assertThat(PartyKind.fromCode('X')).isEqualTo(PartyKind.UNKNOWN);
+        assertThat(PartyKind.fromCode('X')).isNull();
     }
 
     @Test
@@ -25,7 +24,7 @@ public class PartyKindTest {
         assertThat(PartyKind.fromText("ORGANIZATION")).isEqualTo(PartyKind.ORGANIZATION);
         assertThat(PartyKind.fromText("ORGANIZATion")).isEqualTo(PartyKind.ORGANIZATION);
 
-        assertThat(PartyKind.fromText("?unknown???")).isEqualTo(PartyKind.UNKNOWN);
+        assertThat(PartyKind.fromText("?unknown???")).isNull();
     }
 
 
@@ -37,11 +36,11 @@ public class PartyKindTest {
         assertThat(PartyKind.fromText("O")).isEqualTo(PartyKind.ORGANIZATION);
         assertThat(PartyKind.fromText("o")).isEqualTo(PartyKind.ORGANIZATION);
 
-        assertThat(PartyKind.fromText("?")).isEqualTo(PartyKind.UNKNOWN);
+        assertThat(PartyKind.fromText("?")).isNull();
     }
 
     @Test
     public void test_fromText_null() throws Exception {
-        assertThat(PartyKind.fromText(null)).isEqualTo(PartyKind.UNKNOWN);
+        assertThat(PartyKind.fromText(null)).isNull();
     }
 }

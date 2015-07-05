@@ -1,7 +1,7 @@
 package com.tchepannou.pdr.enums;
 
 public enum UserStatus {
-    CREATED('C'), ACTIVE('A'), SUSPENDED('S'), UNKNOWN('?');
+    CREATED('C'), ACTIVE('A'), SUSPENDED('S');
 
     private char code;
 
@@ -22,21 +22,21 @@ public enum UserStatus {
         } else if (CREATED.code == xcode) {
             return CREATED;
         } else{
-            return UNKNOWN;
+            return null;
         }
     }
 
     public static UserStatus fromText (final String text) {
         try {
             if (text == null) {
-                return UNKNOWN;
+                return null;
             } else {
                 return text != null && text.length() == 1
                         ? fromCode(text.toUpperCase().charAt(0))
                         : Enum.valueOf(UserStatus.class, text.toUpperCase());
             }
         } catch (IllegalArgumentException e) {  // NOSONAR
-            return UNKNOWN;
+            return null;
         }
     }
 }

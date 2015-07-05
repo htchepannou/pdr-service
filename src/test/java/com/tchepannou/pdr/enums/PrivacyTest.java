@@ -1,6 +1,5 @@
 package com.tchepannou.pdr.enums;
 
-import com.tchepannou.pdr.enums.Privacy;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +22,7 @@ public class PrivacyTest {
         assertThat(Privacy.fromText("HIDDEN")).isEqualTo(Privacy.HIDDEN);
         assertThat(Privacy.fromText("Hidden")).isEqualTo(Privacy.HIDDEN);
 
-        assertThat(Privacy.fromText("?unknown???")).isEqualTo(Privacy.PUBLIC);
+        assertThat(Privacy.fromText("?unknown???")).isNull();
     }
 
 
@@ -35,11 +34,11 @@ public class PrivacyTest {
         assertThat(Privacy.fromText("H")).isEqualTo(Privacy.HIDDEN);
         assertThat(Privacy.fromText("h")).isEqualTo(Privacy.HIDDEN);
 
-        assertThat(Privacy.fromText("?")).isEqualTo(Privacy.PUBLIC);
+        assertThat(Privacy.fromText("?")).isNull();
     }
 
     @Test
     public void test_fromText_null() throws Exception {
-        assertThat(Privacy.fromText(null)).isEqualTo(Privacy.PUBLIC);
+        assertThat(Privacy.fromText(null)).isNull();
     }
 }

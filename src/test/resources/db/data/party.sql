@@ -28,13 +28,13 @@ insert into t_eaddress(id, address, hash) values(102, 'ray.sponsible@hotmail.com
 insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk, purpose_fk, no_solicitation, privacy) values(102, 100, 102, 100, 102, 1, 'H');
 
 insert into t_eaddress(id, address, hash) values(121, 'http://ray.sponsible.com', MD5('http://ray.sponsible.com'));
-insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk, purpose_fk) values(121, 100, 121, 200, 201);
+insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk, purpose_fk, privacy) values(121, 100, 121, 200, 201, 'P');
 
 insert into t_eaddress(id, address, hash) values(122, 'https://facebook.com/ray_sponsible', MD5('https://facebook.com/ray.sponsible'));
-insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk, purpose_fk) values(122, 100, 122, 200, 202);
+insert into t_party_contact_mechanism(id, party_fk, eaddress_fk, type_fk, purpose_fk, privacy) values(122, 100, 122, 200, 202, 'P');
 
 insert into t_paddress(id, street1, city, state_code, zip_code, country_code, hash) values (131, '3030 Linton', 'Montreal', 'QC', 'H1K 1H3', 'CAN', '4304039');
-insert into t_party_contact_mechanism(id, party_fk, paddress_fk, type_fk, purpose_fk) values(131, 100, 131, 300, 301);
+insert into t_party_contact_mechanism(id, party_fk, paddress_fk, type_fk, purpose_fk, privacy) values(131, 100, 131, 300, 301, 'P');
 
 insert into t_phone(id, country_code, number, extension, hash) values (141, 'CAN', '5147580101', null, '5147580101');
 insert into t_party_contact_mechanism(id, party_fk, phone_fk, type_fk, purpose_fk) values(141, 100, 141, 400, 401);

@@ -13,8 +13,6 @@ public class GenderTest {
 
         assertThat(Gender.fromCode('F')).isEqualTo(Gender.FEMALE);
         assertThat(Gender.fromCode('f')).isEqualTo(Gender.FEMALE);
-
-        assertThat(Gender.fromCode('-')).isEqualTo(Gender.UNKNOWN);
     }
 
     @Test
@@ -24,14 +22,12 @@ public class GenderTest {
 
         assertThat(Gender.fromText("FEMALE")).isEqualTo(Gender.FEMALE);
         assertThat(Gender.fromText("fEmAle")).isEqualTo(Gender.FEMALE);
-
-        assertThat(Gender.fromText("-??")).isEqualTo(Gender.UNKNOWN);
     }
 
 
     @Test
     public void test_fromText_null() throws Exception {
-        assertThat(Gender.fromText(null)).isEqualTo(Gender.UNKNOWN);
+        assertThat(Gender.fromText(null)).isNull();
     }
 
     @Test
@@ -42,6 +38,6 @@ public class GenderTest {
         assertThat(Gender.fromText("F")).isEqualTo(Gender.FEMALE);
         assertThat(Gender.fromText("f")).isEqualTo(Gender.FEMALE);
 
-        assertThat(Gender.fromText("-")).isEqualTo(Gender.UNKNOWN);
+        assertThat(Gender.fromText("-")).isNull();
     }
 }

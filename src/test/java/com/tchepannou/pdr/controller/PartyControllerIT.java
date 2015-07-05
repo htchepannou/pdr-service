@@ -103,7 +103,7 @@ public class PartyControllerIT {
                 .all()
             .body("emailAddresses.id", hasItems(101, 102))
             .body("emailAddresses.noSolicitation", hasItems(false, true))
-            .body("emailAddresses.privacy", hasItems("PUBLIC", "HIDDEN"))
+            .body("emailAddresses.privacy", hasItems(null, "HIDDEN"))
             .body("emailAddresses.purpose", hasItems("primary", "secondary"))
             .body("emailAddresses.address", hasItems("ray.sponsible@gmail.com", "ray.sponsible@hotmail.com"))
 
@@ -125,7 +125,7 @@ public class PartyControllerIT {
 
             .body("phones.id", hasItems(141, 142))
             .body("phones.noSolicitation", hasItems(false, true))
-            .body("phones.privacy", hasItems("PUBLIC", "HIDDEN"))
+            .body("phones.privacy", hasItems(null, "HIDDEN"))
             .body("phones.countryCode", hasItems("CAN", "USA"))
             .body("phones.number", hasItems("5147580101", "5147580102"))
             .body("phones.extension", hasItems(null, "123"))

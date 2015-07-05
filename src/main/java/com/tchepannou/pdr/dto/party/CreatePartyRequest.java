@@ -2,11 +2,13 @@ package com.tchepannou.pdr.dto.party;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.tchepannou.pdr.enums.PartyKind;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class CreatePartyRequest {
     //-- Attributes
     @NotBlank(message = "kind")
+    @com.tchepannou.pdr.validator.Enum(enumClass = PartyKind.class, message="kind")
     private String kind;
 
     private String name;
