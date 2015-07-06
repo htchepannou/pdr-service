@@ -5,6 +5,7 @@ import com.tchepannou.pdr.domain.PersistentEnum;
 import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractPersistentEnumService;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public abstract class AbstractPersistentEnumServiceImpl<T extends PersistentEnum> implements AbstractPersistentEnumService<T> {
@@ -16,7 +17,7 @@ public abstract class AbstractPersistentEnumServiceImpl<T extends PersistentEnum
     public T findById(final long id) {
         T purpose = getDao().findById(id);
         if (purpose == null){
-            throw new NotFoundException(id);
+            throw new NotFoundException(id, getPersistentClass());
         }
         return purpose;
     }
@@ -25,7 +26,7 @@ public abstract class AbstractPersistentEnumServiceImpl<T extends PersistentEnum
     public T findByName(final String name) {
         T purpose = name != null ? getDao().findByName(name) : null;
         if (purpose == null){
-            throw new NotFoundException(name);
+            throw new NotFoundException(name, getPersistentClass());
         }
         return purpose;
     }
@@ -33,5 +34,10 @@ public abstract class AbstractPersistentEnumServiceImpl<T extends PersistentEnum
     @Override
     public List<T> findAll() {
         return getDao().findAll();
+    }
+
+    //-- Protected
+    protected Class getPersistentClass () {
+        return ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 }

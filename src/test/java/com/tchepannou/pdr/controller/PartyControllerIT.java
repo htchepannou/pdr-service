@@ -290,6 +290,64 @@ public class PartyControllerIT {
     }
 
     @Test
+    public void test_addPostalBadType () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("???postal", "primary", "3030 Linton");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/contacts/p-addresses")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                .body("message", is("type"))
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_addPostalBadPurpose () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("postal", "???xx", "3030 Linton");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/contacts/p-addresses")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                .body("message", is("purpose"))
+                ;
+        // @formatter:on
+    }
+
+    @Test
+    public void test_addPostalBadPrivacy () {
+        final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("postal", "primary", "3030 Linton");
+        request.setPrivacy("???");
+
+        // @formatter:off
+        given()
+                .contentType(ContentType.JSON)
+                .content(request, ObjectMapperType.JACKSON_2)
+        .when()
+                .post("/api/parties/100/contacts/p-addresses")
+        .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .log()
+                    .all()
+                .body("message", is("privacy"))
+                ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_updatePostalAddress () {
         final CreatePartyPostalAddressRequest request = buildCreatePartyPostalAddressResquest("postal", "primary", "3030 Linton");
 

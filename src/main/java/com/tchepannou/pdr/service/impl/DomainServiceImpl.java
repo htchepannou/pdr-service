@@ -20,10 +20,10 @@ public class DomainServiceImpl implements DomainService {
 
     //-- DomainService overrides
     @Override
-    public Domain findById(long id) {
+    public Domain findById(final long id) {
         Domain domain = domainDao.findById(id);
         if (domain == null || domain.isDeleted()) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(id, Domain.class);
         }
         return domain;
     }

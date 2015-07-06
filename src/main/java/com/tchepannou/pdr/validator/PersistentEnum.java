@@ -1,6 +1,7 @@
 package com.tchepannou.pdr.validator;
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
@@ -11,7 +12,9 @@ public @interface PersistentEnum {
 
     String message() default "Invalid value. This is not permitted.";
 
-    Class<? extends com.tchepannou.pdr.domain.PersistentEnum> enumClass();
+    Class<?>[] groups() default {};
 
-    boolean ignoreCase() default true;
+    Class<? extends Payload>[] payload() default {};
+
+    Class<? extends com.tchepannou.pdr.domain.PersistentEnum> enumClass();
 }

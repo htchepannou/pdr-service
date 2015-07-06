@@ -1,12 +1,23 @@
 package com.tchepannou.pdr.exception;
 
-public class NotFoundException extends RuntimeException{
-    public NotFoundException () {
+import java.io.Serializable;
+
+public class NotFoundException extends RuntimeException {
+    private final Serializable id;
+    private final Class persistentClass;
+
+    public NotFoundException(final Serializable id, final Class persistentClass) {
+        super(persistentClass.getName() + "{" + id + "} not found");
+
+        this.id = id;
+        this.persistentClass = persistentClass;
     }
-    public NotFoundException (long id) {
-        super (String.valueOf(id));
+
+    public Serializable getId() {
+        return id;
     }
-    public NotFoundException (String msg) {
-        super (msg);
+
+    public Class getPersistentClass() {
+        return persistentClass;
     }
 }

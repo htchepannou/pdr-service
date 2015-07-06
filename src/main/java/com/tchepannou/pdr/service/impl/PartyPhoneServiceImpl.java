@@ -11,6 +11,8 @@ import com.tchepannou.pdr.service.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 public class PartyPhoneServiceImpl extends AbstractPartyContactMechanismServiceImpl<PartyPhone> implements PartyPhoneService {
     //-- Attributes
     @Autowired
@@ -46,7 +48,10 @@ public class PartyPhoneServiceImpl extends AbstractPartyContactMechanismServiceI
     public void removeAddress(Party party, long addressId) {
         final PartyPhone phone = findById(addressId);
         if (phone.getPartyId() != party.getId()) {
-            throw new NotFoundException();
+            ArrayList<Long> key = new ArrayList<>();
+            key.add(party.getId());
+            key.add(phone.getId());
+            throw new NotFoundException(key, PartyPhone.class);
         }
 
         dao.delete(addressId);

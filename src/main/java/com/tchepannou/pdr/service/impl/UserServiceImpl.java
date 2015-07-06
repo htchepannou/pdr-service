@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public User findById(long id) {
         User user = userDao.findById(id);
         if (user == null || user.isDeleted()){
-            throw new NotFoundException(id);
+            throw new NotFoundException(id, User.class);
         }
         return user;
     }
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public User findByLogin(String login) {
         User user = userDao.findByLogin(login);
         if (user == null || user.isDeleted()){
-            throw new NotFoundException();
+            throw new NotFoundException(login, User.class);
         }
         return user;
     }

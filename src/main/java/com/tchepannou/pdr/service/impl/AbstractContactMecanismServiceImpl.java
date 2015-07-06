@@ -6,6 +6,7 @@ import com.tchepannou.pdr.exception.NotFoundException;
 import com.tchepannou.pdr.service.AbstractContactMechanismService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechan
     public T findById(long id) {
         T out = getDao().findById(id);
         if (out == null){
-            throw new NotFoundException(id);
+            throw new NotFoundException(id, getPersistentClass());
         }
         return out;
     }
@@ -27,7 +28,7 @@ public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechan
     public T findByHash (String hash) {
         T out = getDao().findByHash(hash);
         if (out == null){
-            throw new NotFoundException(hash);
+            throw new NotFoundException(hash, getPersistentClass());
         }
         return out;
     }
@@ -42,5 +43,10 @@ public abstract class AbstractContactMecanismServiceImpl<T extends ContactMechan
     public void create(T address) {
         long id = getDao().create(address);
         address.setId(id);
+    }
+
+    //-- Protected
+    protected Class getPersistentClass () {
+        return ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 }

@@ -56,7 +56,7 @@ public class RoleController extends AbstractController {
     public RoleResponse findById(@PathVariable final long roleId) {
         final Role role = roleService.findById(roleId);
         if (role == null) {
-            throw new NotFoundException(roleId);
+            throw new NotFoundException(roleId, Role.class);
         }
 
         return new RoleResponse.Builder()

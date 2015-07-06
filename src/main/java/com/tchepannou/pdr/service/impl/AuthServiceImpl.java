@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
     public AccessToken findById(final long id) {
         AccessToken token = accessTokenDao.findById(id);
         if (token == null) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(id, AccessToken.class);
         } else if (token.isExpired()){
             throw new AccessTokenExpiredException(id);
         }

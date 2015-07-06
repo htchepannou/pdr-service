@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DomainUserServiceImpl implements DomainUserService {
@@ -18,7 +19,11 @@ public class DomainUserServiceImpl implements DomainUserService {
     public DomainUser findByDomainByUserByRole(long domainId, long userId, long roleId) {
         final DomainUser domainUser = domainUserDao.findByDomainByUser(domainId, userId, roleId);
         if (domainUser == null){
-            throw new NotFoundException();
+            ArrayList<Long> key = new ArrayList<>();
+            key.add(domainId);
+            key.add(userId);
+            key.add(roleId);
+            throw new NotFoundException(key, DomainUser.class);
         }
         return domainUser;
     }

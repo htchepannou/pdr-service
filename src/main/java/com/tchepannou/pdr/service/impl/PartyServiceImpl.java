@@ -20,7 +20,7 @@ public class PartyServiceImpl implements PartyService {
     public Party findById(long id) {
         Party party = partyDao.findById(id);
         if (party == null) {
-            throw new NotFoundException(id);
+            throw new NotFoundException(id, Party.class);
         }
         return party;
     }
