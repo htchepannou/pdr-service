@@ -1,5 +1,6 @@
 package com.tchepannou.pdr.enums;
 
+@Deprecated
 public enum UserStatus {
     CREATED('C'), ACTIVE('A'), SUSPENDED('S');
 

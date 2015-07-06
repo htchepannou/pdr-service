@@ -1,12 +1,15 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.domain.UserStatusCode;
 import com.tchepannou.pdr.dto.ErrorResponse;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.dto.user.UserResponse;
+import com.tchepannou.pdr.dto.user.UserStatusCodeListResponse;
 import com.tchepannou.pdr.exception.AccountAlreadyExistException;
 import com.tchepannou.pdr.exception.DuplicateEmailException;
 import com.tchepannou.pdr.service.UserService;
+import com.tchepannou.pdr.service.UserStatusCodeService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Api(basePath = "/users", value = "User's Account", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,6 +33,9 @@ public class UserController extends AbstractController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserStatusCodeService userStatusCodeService;
 
 
     //-- AbstractController overrides
@@ -86,6 +93,14 @@ public class UserController extends AbstractController {
         userService.delete(userId);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/status-codes")
+    @ApiOperation("List all users' status codes")
+    public UserStatusCodeListResponse statusCodes () {
+        List<UserStatusCode> statuses = userStatusCodeService.findAll();
+        return new UserStatusCodeListResponse.Builder()
+                .withUserStatusCodes(statuses)
+                .build();
+    }
 
     //-- Error Handler
     @ExceptionHandler(DuplicateEmailException.class)

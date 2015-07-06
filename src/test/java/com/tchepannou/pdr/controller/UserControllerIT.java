@@ -67,6 +67,24 @@ public class UserControllerIT {
     }
 
     @Test
+    public void test_statusCodes (){
+
+        // @formatter:off
+        when()
+            .get("/api/users/status-codes")
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .log()
+                .all()
+            .body("userStatusCodes.id", hasItems(1, 2, 3))
+            .body("userStatusCodes.name", hasItems("new", "active", "suspended"))
+            .body("userStatusCodes.active", hasItems(false, true, true))
+            .body("userStatusCodes.defaultStatus", hasItems(true, false, true))
+        ;
+        // @formatter:on
+    }
+
+    @Test
     public void test_findById (){
 
         // @formatter:off

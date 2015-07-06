@@ -1,3 +1,9 @@
+-- status codes
+INSERT INTO t_user_status_code(id, name, active, default_status) values(1, 'new', false, true);
+INSERT INTO t_user_status_code(id, name, active, default_status) values(2, 'active', true, false);
+INSERT INTO t_user_status_code(id, name, active, default_status) values(3, 'suspended', false, false);
+
+-- users
 INSERT INTO t_user(id, party_fk, login, deleted, status, from_date)
   SELECT party_id, party_id, CONCAT('user-', party_id, '-', RAND()), party_deleted, 'A', party_creation_date FROM is5.party WHERE party_type_fk=1;
 

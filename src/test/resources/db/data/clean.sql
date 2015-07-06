@@ -2,7 +2,9 @@ delete from t_access_token;
 
 delete from t_domain_user;
 delete from t_domain;
+delete from t_user_status;
 delete from t_user;
+delete from t_user_status_code;
 
 delete from t_party_contact_mechanism;
 delete from t_party;

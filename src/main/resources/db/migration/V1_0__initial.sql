@@ -26,10 +26,29 @@ CREATE TABLE t_party(
     weight INT
 );
 
+CREATE TABLE t_user_status_code(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    name VARCHAR(100) NOT NULL UNIQUE,
+    active BIT(1),
+    default_status BIT(1)
+);
+
+
+CREATE TABLE t_user_status (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    status_code_fk BIGINT NOT NULL REFERENCES t_user_status_code(id),
+
+    from_date DATETIME NOT NULL,
+    comment TEXT
+);
+
 CREATE TABLE t_user(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
     party_fk BIGINT NOT NULL REFERENCES t_party(id),
+    status_fk BIGINT REFERENCES t_user_status(id),
 
     deleted BIT DEFAULT 0,
     from_date DATETIME,
@@ -39,6 +58,8 @@ CREATE TABLE t_user(
     password VARCHAR(50),
     status CHAR(1)
 );
+
+
 
 CREATE TABLE t_role(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,

@@ -1,5 +1,9 @@
 INSERT INTO t_contact_mechanism_type(id, name) VALUES(100, 'email');
 
+INSERT INTO t_user_status_code(id, name, active, default_status) values(1, 'new', false, true);
+INSERT INTO t_user_status_code(id, name, active, default_status) values(2, 'active', true, false);
+INSERT INTO t_user_status_code(id, name, active, default_status) values(3, 'suspended', false, false);
+
 -- findById
 insert into t_party(id, name) values (100, 'Ray Sponsible');
 
