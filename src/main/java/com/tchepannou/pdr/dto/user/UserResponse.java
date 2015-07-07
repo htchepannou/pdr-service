@@ -2,18 +2,20 @@ package com.tchepannou.pdr.dto.user;
 
 import com.google.common.base.Preconditions;
 import com.tchepannou.pdr.domain.User;
-import com.tchepannou.pdr.util.DateUtils;
+import com.tchepannou.pdr.domain.UserStatus;
+import com.tchepannou.pdr.domain.UserStatusCode;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserResponse implements Serializable {
     //-- Attribute
     private long id;
     private long partyId;
     private String login;
-    private String status;
-    private String fromDate;
-    private String toDate;
+    private Date fromDate;
+    private Date toDate;
+    private UserStatusResponse status;
 
     //-- Constructor
     public UserResponse(final Builder builder){
@@ -23,9 +25,15 @@ public class UserResponse implements Serializable {
         this.partyId = user.getPartyId();
 
         this.login = user.getLogin();
-        this.status = user.getStatus().name();
-        this.fromDate = DateUtils.asString(user.getFromDate());
-        this.toDate = DateUtils.asString(user.getToDate());
+        this.fromDate = user.getFromDate();
+        this.toDate = user.getToDate();
+
+        if (builder.userStatus != null) {
+            status = new UserStatusResponse.Builder()
+                    .withUserStatus(builder.userStatus)
+                    .withStatusCode(builder.userStatusCode)
+                    .build();
+        }
     }
 
     //-- Getter
@@ -41,21 +49,23 @@ public class UserResponse implements Serializable {
         return login;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public String getFromDate() {
+    public Date getFromDate() {
         return fromDate;
     }
 
-    public String getToDate() {
+    public Date getToDate() {
         return toDate;
+    }
+
+    public UserStatusResponse getStatus() {
+        return status;
     }
 
     //-- Builder
     public static class Builder {
         private User user;
+        private UserStatus userStatus;
+        private UserStatusCode userStatusCode;
 
         public UserResponse build () {
             Preconditions.checkState(user != null, "user not set");
@@ -64,6 +74,14 @@ public class UserResponse implements Serializable {
         }
         public Builder withUser (final User user) {
             this.user = user;
+            return this;
+        }
+        public Builder withUserStatus (final UserStatus userStatus){
+            this.userStatus = userStatus;
+            return this;
+        }
+        public Builder withUserStatusCode (final UserStatusCode userStatusCode){
+            this.userStatusCode = userStatusCode;
             return this;
         }
     }

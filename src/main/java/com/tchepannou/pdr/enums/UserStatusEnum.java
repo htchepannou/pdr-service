@@ -1,12 +1,12 @@
 package com.tchepannou.pdr.enums;
 
 @Deprecated
-public enum UserStatus {
+public enum UserStatusEnum {
     CREATED('C'), ACTIVE('A'), SUSPENDED('S');
 
     private char code;
 
-    UserStatus(char code) {
+    UserStatusEnum(char code) {
         this.code = code;
     }
 
@@ -14,7 +14,7 @@ public enum UserStatus {
         return code;
     }
 
-    public static UserStatus fromCode (final char code) {
+    public static UserStatusEnum fromCode (final char code) {
         Character xcode = Character.toUpperCase(code);
         if (SUSPENDED.code == xcode) {
             return SUSPENDED;
@@ -27,14 +27,14 @@ public enum UserStatus {
         }
     }
 
-    public static UserStatus fromText (final String text) {
+    public static UserStatusEnum fromText (final String text) {
         try {
             if (text == null) {
                 return null;
             } else {
                 return text != null && text.length() == 1
                         ? fromCode(text.toUpperCase().charAt(0))
-                        : Enum.valueOf(UserStatus.class, text.toUpperCase());
+                        : Enum.valueOf(UserStatusEnum.class, text.toUpperCase());
             }
         } catch (IllegalArgumentException e) {  // NOSONAR
             return null;

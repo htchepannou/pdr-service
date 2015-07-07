@@ -1,15 +1,16 @@
 package com.tchepannou.pdr.domain;
 
-import com.tchepannou.pdr.enums.UserStatus;
+import com.tchepannou.pdr.enums.UserStatusEnum;
 
 import java.util.Date;
 
 public class User extends Persistent {
     //-- Attributes
     private long partyId;
+    private long statusId;
     private String login;
     private String password;
-    private UserStatus status;
+    private UserStatusEnum status;
     private Date fromDate;
     private Date toDate;
     private boolean deleted;
@@ -55,11 +56,11 @@ public class User extends Persistent {
         this.toDate = toDate;
     }
 
-    public UserStatus getStatus() {
+    public UserStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(UserStatusEnum status) {
         this.status = status;
     }
 
@@ -69,5 +70,13 @@ public class User extends Persistent {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(long statusId) {
+        this.statusId = statusId;
     }
 }

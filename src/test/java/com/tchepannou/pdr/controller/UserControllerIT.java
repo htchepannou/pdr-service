@@ -98,9 +98,13 @@ public class UserControllerIT {
             .body("partyId", is(100))
             .body("login", is("ray.sponsible"))
             .body("password", nullValue())
-            .body("status", is("ACTIVE"))
-            .body("fromDate", is("1973-12-27 10:30:45"))
+            .body("fromDate", is("1973-12-27 10:30:45 -0500"))
             .body("toDate", nullValue())
+            .body("status.id", is(101))
+            .body("status.codeId", is(1))
+            .body("status.codeName", is("new"))
+            .body("status.comment", is("Initial"))
+            .body("status.date", is("1973-12-27 10:30:45 -0500"))
         ;
         // @formatter:on
     }
@@ -154,7 +158,11 @@ public class UserControllerIT {
             .body("partyId", is(410))
             .body("login", is("john.smith"))
             .body("password", nullValue())
-            .body("status", is("CREATED"))
+            .body("fromDate", notNullValue())
+            .body("status.id", greaterThan(101))
+            .body("status.codeId", is(1))
+            .body("status.codeName", is("new"))
+            .body("status.date", notNullValue())
         .extract()
             .path("id")
         ;
@@ -233,7 +241,6 @@ public class UserControllerIT {
             .body("partyId", greaterThan(100))
             .body("login", is(request.getLogin()))
             .body("password", nullValue())
-            .body("status", is("CREATED"))
             .body("fromDate", notNullValue())
             .body("toDate", nullValue())
         .extract()
@@ -289,7 +296,6 @@ public class UserControllerIT {
             .body("partyId", greaterThan(100))
             .body("login", is(request.getLogin()))
             .body("password", nullValue())
-            .body("status", is("CREATED"))
             .body("fromDate", notNullValue())
             .body("toDate", nullValue())
         .extract()
@@ -364,8 +370,7 @@ public class UserControllerIT {
             .body("partyId", is(600))
             .body("login", is(login))
             .body("password", nullValue())
-            .body("status", is("ACTIVE"))
-            .body("fromDate", is("1973-12-27 10:30:45"))
+            .body("fromDate", is("1973-12-27 10:30:45 -0500"))
             .body("toDate", nullValue())
         ;
         // @formatter:on
@@ -421,7 +426,6 @@ public class UserControllerIT {
             .body("partyId", is(700))
             .body("login", is("ray700.sponsible"))
             .body("password", nullValue())
-            .body("status", is("ACTIVE"))
             .body("toDate", nullValue())
         ;
         // @formatter:on

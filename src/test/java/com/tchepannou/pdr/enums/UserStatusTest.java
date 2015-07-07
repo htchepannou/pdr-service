@@ -7,49 +7,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserStatusTest {
     @Test
     public void test_fromCode() throws Exception {
-        assertThat(UserStatus.fromCode('A')).isEqualTo(UserStatus.ACTIVE);
-        assertThat(UserStatus.fromCode('a')).isEqualTo(UserStatus.ACTIVE);
+        assertThat(UserStatusEnum.fromCode('A')).isEqualTo(UserStatusEnum.ACTIVE);
+        assertThat(UserStatusEnum.fromCode('a')).isEqualTo(UserStatusEnum.ACTIVE);
 
-        assertThat(UserStatus.fromCode('C')).isEqualTo(UserStatus.CREATED);
-        assertThat(UserStatus.fromCode('c')).isEqualTo(UserStatus.CREATED);
+        assertThat(UserStatusEnum.fromCode('C')).isEqualTo(UserStatusEnum.CREATED);
+        assertThat(UserStatusEnum.fromCode('c')).isEqualTo(UserStatusEnum.CREATED);
 
-        assertThat(UserStatus.fromCode('S')).isEqualTo(UserStatus.SUSPENDED);
-        assertThat(UserStatus.fromCode('s')).isEqualTo(UserStatus.SUSPENDED);
+        assertThat(UserStatusEnum.fromCode('S')).isEqualTo(UserStatusEnum.SUSPENDED);
+        assertThat(UserStatusEnum.fromCode('s')).isEqualTo(UserStatusEnum.SUSPENDED);
 
-        assertThat(UserStatus.fromCode('X')).isNull();
+        assertThat(UserStatusEnum.fromCode('X')).isNull();
     }
 
     @Test
     public void test_fromText() throws Exception {
-        assertThat(UserStatus.fromText("ACTIVE")).isEqualTo(UserStatus.ACTIVE);
-        assertThat(UserStatus.fromText("ACTiVe")).isEqualTo(UserStatus.ACTIVE);
+        assertThat(UserStatusEnum.fromText("ACTIVE")).isEqualTo(UserStatusEnum.ACTIVE);
+        assertThat(UserStatusEnum.fromText("ACTiVe")).isEqualTo(UserStatusEnum.ACTIVE);
 
-        assertThat(UserStatus.fromText("CREATED")).isEqualTo(UserStatus.CREATED);
-        assertThat(UserStatus.fromText("cREaTEd")).isEqualTo(UserStatus.CREATED);
+        assertThat(UserStatusEnum.fromText("CREATED")).isEqualTo(UserStatusEnum.CREATED);
+        assertThat(UserStatusEnum.fromText("cREaTEd")).isEqualTo(UserStatusEnum.CREATED);
 
-        assertThat(UserStatus.fromText("SUSPENDED")).isEqualTo(UserStatus.SUSPENDED);
-        assertThat(UserStatus.fromText("SUSPeNDEd")).isEqualTo(UserStatus.SUSPENDED);
+        assertThat(UserStatusEnum.fromText("SUSPENDED")).isEqualTo(UserStatusEnum.SUSPENDED);
+        assertThat(UserStatusEnum.fromText("SUSPeNDEd")).isEqualTo(UserStatusEnum.SUSPENDED);
 
-        assertThat(UserStatus.fromText("X????")).isNull();
+        assertThat(UserStatusEnum.fromText("X????")).isNull();
     }
 
 
     @Test
     public void test_fromText_OneChar() throws Exception {
-        assertThat(UserStatus.fromText("A")).isEqualTo(UserStatus.ACTIVE);
-        assertThat(UserStatus.fromText("a")).isEqualTo(UserStatus.ACTIVE);
+        assertThat(UserStatusEnum.fromText("A")).isEqualTo(UserStatusEnum.ACTIVE);
+        assertThat(UserStatusEnum.fromText("a")).isEqualTo(UserStatusEnum.ACTIVE);
 
-        assertThat(UserStatus.fromText("C")).isEqualTo(UserStatus.CREATED);
-        assertThat(UserStatus.fromText("c")).isEqualTo(UserStatus.CREATED);
+        assertThat(UserStatusEnum.fromText("C")).isEqualTo(UserStatusEnum.CREATED);
+        assertThat(UserStatusEnum.fromText("c")).isEqualTo(UserStatusEnum.CREATED);
 
-        assertThat(UserStatus.fromText("S")).isEqualTo(UserStatus.SUSPENDED);
-        assertThat(UserStatus.fromText("s")).isEqualTo(UserStatus.SUSPENDED);
+        assertThat(UserStatusEnum.fromText("S")).isEqualTo(UserStatusEnum.SUSPENDED);
+        assertThat(UserStatusEnum.fromText("s")).isEqualTo(UserStatusEnum.SUSPENDED);
 
-        assertThat(UserStatus.fromText("X")).isNull();
+        assertThat(UserStatusEnum.fromText("X")).isNull();
     }
 
     @Test
     public void test_fromText_null() throws Exception {
-        assertThat(UserStatus.fromText(null)).isNull();
+        assertThat(UserStatusEnum.fromText(null)).isNull();
     }
 }

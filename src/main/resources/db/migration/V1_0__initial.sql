@@ -35,20 +35,10 @@ CREATE TABLE t_user_status_code(
 );
 
 
-CREATE TABLE t_user_status (
-    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-
-    status_code_fk BIGINT NOT NULL REFERENCES t_user_status_code(id),
-
-    from_date DATETIME NOT NULL,
-    comment TEXT
-);
-
 CREATE TABLE t_user(
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
     party_fk BIGINT NOT NULL REFERENCES t_party(id),
-    status_fk BIGINT REFERENCES t_user_status(id),
 
     deleted BIT DEFAULT 0,
     from_date DATETIME,
@@ -58,6 +48,17 @@ CREATE TABLE t_user(
     password VARCHAR(50),
     status CHAR(1)
 );
+
+CREATE TABLE t_user_status (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+
+    user_fk BIGINT NOT NULL REFERENCES t_user(id),
+    status_code_fk BIGINT NOT NULL REFERENCES t_user_status_code(id),
+
+    status_date DATETIME,
+    comment TEXT
+);
+ALTER TABLE t_user ADD COLUMN status_fk BIGINT REFERENCES t_user_status(id);
 
 
 

@@ -1,6 +1,7 @@
 package com.tchepannou.pdr.controller;
 
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.domain.UserStatus;
 import com.tchepannou.pdr.domain.UserStatusCode;
 import com.tchepannou.pdr.dto.ErrorResponse;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
@@ -10,6 +11,7 @@ import com.tchepannou.pdr.exception.AccountAlreadyExistException;
 import com.tchepannou.pdr.exception.DuplicateEmailException;
 import com.tchepannou.pdr.service.UserService;
 import com.tchepannou.pdr.service.UserStatusCodeService;
+import com.tchepannou.pdr.service.UserStatusService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.hibernate.validator.constraints.NotBlank;
@@ -37,6 +39,8 @@ public class UserController extends AbstractController {
     @Autowired
     private UserStatusCodeService userStatusCodeService;
 
+    @Autowired
+    private UserStatusService userStatusService;
 
     //-- AbstractController overrides
     @Override
@@ -49,18 +53,14 @@ public class UserController extends AbstractController {
     @ApiOperation("Returns a User")
     public UserResponse findById(@PathVariable final long userId) {
         final User user = userService.findById(userId);
-        return new UserResponse.Builder()
-                .withUser(user)
-                .build();
+        return toUserResponse(user);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation("Create a new user account")
     public UserResponse create (@Valid @RequestBody final CreateUserRequest request) {
         final User user = userService.create(request);
-        return new UserResponse.Builder()
-                .withUser(user)
-                .build();
+        return toUserResponse(user);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{userId}/password")
@@ -70,9 +70,7 @@ public class UserController extends AbstractController {
             @RequestParam(value = "password", required = true) @NotBlank final String password
     ) {
         User user = userService.updatePassword(userId, password);
-        return new UserResponse.Builder()
-                .withUser(user)
-                .build();
+        return toUserResponse(user);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/{userId}/login")
@@ -82,9 +80,7 @@ public class UserController extends AbstractController {
             @RequestParam(value = "login", required = true) @NotBlank final String login
     ) {
         User user = userService.updateLogin(userId, login);
-        return new UserResponse.Builder()
-                .withUser(user)
-                .build();
+        return toUserResponse(user);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
@@ -119,5 +115,21 @@ public class UserController extends AbstractController {
             final AccountAlreadyExistException exception
     ) {
         return handleException(request, HttpStatus.CONFLICT, "account_already_exist", exception);
+    }
+
+    //-- Private
+    private UserResponse toUserResponse (User user) {
+        UserResponse.Builder builder = new UserResponse.Builder()
+                .withUser(user);
+
+        UserStatus userStatus = userStatusService.findById(user.getStatusId());
+        if (userStatus != null) {
+            UserStatusCode statusCode = userStatusCodeService.findById(userStatus.getStatusCodeId());
+            builder
+                    .withUserStatus(userStatus)
+                    .withUserStatusCode(statusCode)
+            ;
+        }
+        return builder.build();
     }
 }

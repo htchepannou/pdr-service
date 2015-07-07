@@ -120,6 +120,11 @@ public class AppConfig {
     }
 
     @Bean
+    public UserStatusService userStatusService () {
+        return new UserStatusServiceImpl();
+    }
+
+    @Bean
     public UserStatusCodeService userStatusCodeService () {
         return new UserStatusCodeServiceImpl();
     }
@@ -209,6 +214,12 @@ public class AppConfig {
         return new UserDaoImpl(dataSource());
     }
 
+
+    @Bean
+    public UserStatusDao userStatusDao () {
+        return new UserStatusDaoImpl(dataSource());
+    }
+    
     @Bean
     public UserStatusCodeDao userStatusCodeDao () {
         return new UserStatusCodeDaoImpl(dataSource());

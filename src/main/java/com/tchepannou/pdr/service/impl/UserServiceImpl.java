@@ -3,18 +3,17 @@ package com.tchepannou.pdr.service.impl;
 import com.tchepannou.pdr.dao.UserDao;
 import com.tchepannou.pdr.domain.Party;
 import com.tchepannou.pdr.domain.User;
+import com.tchepannou.pdr.domain.UserStatus;
+import com.tchepannou.pdr.domain.UserStatusCode;
 import com.tchepannou.pdr.dto.party.CreatePartyRequest;
 import com.tchepannou.pdr.dto.user.CreateUserRequest;
 import com.tchepannou.pdr.enums.PartyKind;
-import com.tchepannou.pdr.enums.UserStatus;
+import com.tchepannou.pdr.enums.UserStatusEnum;
 import com.tchepannou.pdr.exception.AccountAlreadyExistException;
 import com.tchepannou.pdr.exception.DuplicateEmailException;
 import com.tchepannou.pdr.exception.DuplicateLoginException;
 import com.tchepannou.pdr.exception.NotFoundException;
-import com.tchepannou.pdr.service.PartyElectronicAddressService;
-import com.tchepannou.pdr.service.PartyService;
-import com.tchepannou.pdr.service.PasswordEncryptor;
-import com.tchepannou.pdr.service.UserService;
+import com.tchepannou.pdr.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncryptor passwordEncryptor;
+
+    @Autowired
+    private UserStatusService userStatusService;
+
+    @Autowired
+    private UserStatusCodeService userStatusCodeService;
 
     @Autowired
     private PartyService partyService;
@@ -65,13 +70,25 @@ public class UserServiceImpl implements UserService {
     public User create (final CreateUserRequest request) {
         final Party party = createParty(request);
         try {
+            /* create user */
             final User user = new User();
-            user.setStatus(UserStatus.CREATED);
+            user.setStatus(UserStatusEnum.CREATED);
             user.setPartyId(party.getId());
             user.setLogin(request.getLogin());
             user.setPassword(passwordEncryptor.encrypt(request.getPassword()));
             user.setFromDate(new Date());
             userDao.create(user);
+
+            /* default status */
+            final UserStatusCode statusCode = userStatusCodeService.findDefault();
+            final UserStatus status = new UserStatus();
+            status.setUserId(user.getId());
+            status.setStatusCodeId(statusCode.getId());
+            userStatusService.create(status);
+
+            /* set user's status */
+            user.setStatusId(status.getId());
+            userDao.update(user);
 
             return user;
         } catch (DuplicateKeyException e){  // NOSONAR
