@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class CreatePartyRequest {
     //-- Attributes
     @NotBlank(message = "kind")
-    @com.tchepannou.pds.validator.Enum(enumClass = PartyKind.class, message="kind")
+    @com.tchepannou.core.validator.Enum(enumClass = PartyKind.class, message="kind")
     private String kind;
 
     private String name;

@@ -1,5 +1,6 @@
 package com.tchepannou.pds.dao.impl;
 
+import com.tchepannou.core.dao.impl.AbstractPersistentEnumDaoImpl;
 import com.tchepannou.pds.dao.ContactMechanismTypeDao;
 import com.tchepannou.pds.domain.ContactMechanismType;
 

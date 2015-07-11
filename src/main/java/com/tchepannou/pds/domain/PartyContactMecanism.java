@@ -1,8 +1,9 @@
 package com.tchepannou.pds.domain;
 
+import com.tchepannou.core.domain.Persistent;
 import com.tchepannou.pds.enums.Privacy;
 
-public abstract class PartyContactMecanism extends Persistent{
+public abstract class PartyContactMecanism extends Persistent {
     //-- Attributes
     private long partyId;
     private long typeId;

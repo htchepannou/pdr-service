@@ -1,5 +1,7 @@
 package com.tchepannou.pds.domain;
 
+import com.tchepannou.core.domain.Persistent;
+
 import java.util.Date;
 
 public class PartyRole extends Persistent {

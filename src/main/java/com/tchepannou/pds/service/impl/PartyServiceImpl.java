@@ -1,11 +1,11 @@
 package com.tchepannou.pds.service.impl;
 
+import com.tchepannou.core.exception.NotFoundException;
 import com.tchepannou.pds.dao.PartyDao;
 import com.tchepannou.pds.domain.Party;
 import com.tchepannou.pds.dto.party.CreatePartyRequest;
 import com.tchepannou.pds.dto.party.PartyResponse;
 import com.tchepannou.pds.enums.PartyKind;
-import com.tchepannou.pds.exception.NotFoundException;
 import com.tchepannou.pds.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -8,8 +8,8 @@
         <version>1.2.4.RELEASE</version>
     </parent>
 
-    <groupId>com.tchepannou.cdr</groupId>
-    <artifactId>pdr-service</artifactId>
+    <groupId>com.tchepannou.pds</groupId>
+    <artifactId>pds-service</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -42,6 +42,13 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.tchepannou.core.domain</groupId>
+            <artifactId>core-domain</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
         <!-- ==== springboot ===== -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -281,8 +288,8 @@
                             <driver>com.mysql.jdbc.Driver</driver>
                             <username>root</username>
                             <sqlCommand>
-                                DROP DATABASE IF EXISTS pdr;
-                                CREATE DATABASE pdr;
+                                DROP DATABASE IF EXISTS pds;
+                                CREATE DATABASE pds;
                             </sqlCommand>
                         </configuration>
                     </execution>
@@ -294,7 +301,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/pdr</url>
+                    <url>jdbc:mysql://localhost:3306/pds</url>
                     <user>root</user>
                 </configuration>
                 <dependencies>
@@ -370,7 +377,7 @@
                                     <goal>execute</goal>
                                 </goals>
                                 <configuration>
-                                    <url>jdbc:mysql://localhost:3306/pdr</url>
+                                    <url>jdbc:mysql://localhost:3306/pds</url>
                                     <driver>com.mysql.jdbc.Driver</driver>
                                     <username>root</username>
 

@@ -1,5 +1,7 @@
 package com.tchepannou.pds.domain;
 
+import com.tchepannou.core.domain.PersistentEnum;
+
 public class ContactMechanismType extends PersistentEnum {
     //-- Attributes
     public static final String NAME_EMAIL = "email";

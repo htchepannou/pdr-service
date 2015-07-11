@@ -1,6 +1,7 @@
 package com.tchepannou.pds.domain;
 
 import com.google.common.base.Joiner;
+import com.tchepannou.core.domain.Persistent;
 import com.tchepannou.pds.enums.Gender;
 import com.tchepannou.pds.enums.PartyKind;
 

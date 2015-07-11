@@ -1,5 +1,7 @@
 package com.tchepannou.pds.service.impl;
 
+import com.tchepannou.core.exception.BadRequestException;
+import com.tchepannou.core.exception.NotFoundException;
 import com.tchepannou.pds.dao.AbstractPartyContactMechanismDao;
 import com.tchepannou.pds.dao.ContactMechanismPurposeDao;
 import com.tchepannou.pds.dao.ContactMechanismTypeDao;
@@ -7,8 +9,6 @@ import com.tchepannou.pds.dao.PartyDao;
 import com.tchepannou.pds.domain.*;
 import com.tchepannou.pds.dto.party.AbstractPartyContactMechanismRequest;
 import com.tchepannou.pds.enums.Privacy;
-import com.tchepannou.pds.exception.BadRequestException;
-import com.tchepannou.pds.exception.NotFoundException;
 import com.tchepannou.pds.service.AbstractPartyContactMechanismService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -128,10 +128,10 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
             final T partyContactMechanism
     ) {
         if (partyContactMechanism.getPartyId() != party.getId()) {
-            ArrayList<Long> key = new ArrayList<>();
+            List<Long> key = new ArrayList<>();
             key.add(party.getId());
             key.add(partyContactMechanism.getId());
-            throw new NotFoundException(key, partyContactMechanism.getClass());
+            throw new NotFoundException((ArrayList)key, partyContactMechanism.getClass());
         }
 
         try {
@@ -159,10 +159,10 @@ public abstract class AbstractPartyContactMechanismServiceImpl<T extends PartyCo
             final PartyContactMecanism partyContactMecanism
     ) {
         if (partyContactMecanism.getPartyId() != party.getId()) {
-            ArrayList<Long> key = new ArrayList<>();
+            List<Long> key = new ArrayList<>();
             key.add(party.getId());
             key.add(partyContactMecanism.getId());
-            throw new NotFoundException(key, partyContactMecanism.getClass());
+            throw new NotFoundException((ArrayList)key, partyContactMecanism.getClass());
         }
 
         getDao().delete(partyContactMecanism.getId());

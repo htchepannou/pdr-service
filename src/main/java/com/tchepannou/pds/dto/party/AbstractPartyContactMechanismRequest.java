@@ -6,7 +6,7 @@ public abstract class AbstractPartyContactMechanismRequest {
     //-- Attributes
     private boolean noSolicitation;
 
-    @com.tchepannou.pds.validator.Enum(enumClass = Privacy.class, message="privacy")
+    @com.tchepannou.core.validator.Enum(enumClass = Privacy.class, message="privacy")
     private String privacy;
 
     private String purpose;

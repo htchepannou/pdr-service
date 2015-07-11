@@ -1,11 +1,12 @@
 package com.tchepannou.pds.dao.impl;
 
+import com.tchepannou.core.dao.impl.AbstractPersistentEnumDaoImpl;
 import com.tchepannou.pds.dao.ContactMechanismPurposeDao;
 import com.tchepannou.pds.domain.ContactMechanismPurpose;
 
 import javax.sql.DataSource;
 
-public class ContactMechanismPurposeDaoImpl extends AbstractPersistentEnumDaoImpl<ContactMechanismPurpose>  implements ContactMechanismPurposeDao {
+public class ContactMechanismPurposeDaoImpl extends AbstractPersistentEnumDaoImpl<ContactMechanismPurpose> implements ContactMechanismPurposeDao {
 
     public ContactMechanismPurposeDaoImpl(final DataSource dataSource) {
         super(dataSource);

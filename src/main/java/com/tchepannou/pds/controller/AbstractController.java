@@ -1,9 +1,9 @@
 package com.tchepannou.pds.controller;
 
 import com.google.common.base.Joiner;
+import com.tchepannou.core.exception.BadRequestException;
+import com.tchepannou.core.exception.NotFoundException;
 import com.tchepannou.pds.dto.ErrorResponse;
-import com.tchepannou.pds.exception.BadRequestException;
-import com.tchepannou.pds.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
