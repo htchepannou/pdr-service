@@ -1,6 +1,5 @@
 package com.tchepannou.pds.service.impl;
 
-import com.tchepannou.core.exception.BadRequestException;
 import com.tchepannou.core.exception.NotFoundException;
 import com.tchepannou.pds.dao.AbstractPartyContactMechanismDao;
 import com.tchepannou.pds.dao.ContactMechanismPurposeDao;
@@ -9,6 +8,7 @@ import com.tchepannou.pds.dao.PartyDao;
 import com.tchepannou.pds.domain.*;
 import com.tchepannou.pds.dto.party.AbstractPartyContactMechanismRequest;
 import com.tchepannou.pds.enums.Privacy;
+import com.tchepannou.pds.exception.BadRequestException;
 import com.tchepannou.pds.service.AbstractPartyContactMechanismService;
 import org.springframework.beans.factory.annotation.Autowired;
 
